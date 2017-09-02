@@ -15,4 +15,17 @@ var lessLoader = {
 module.exports = [{
 	entry: "./src/index.imba",
 	output:  {filename: './uxa.js'}
+},{
+	entry: "./less/index.less",
+	module: {
+		rules: [{
+				test: /\.less/,
+				use: ExtractTextPlugin.extract({
+					fallback: "style-loader",
+					use: ["css-loader", lessLoader]
+				})
+			}
+		]
+	}
+	output:  {filename: './uxa.css'}
 }];

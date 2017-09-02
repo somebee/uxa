@@ -67,12 +67,7 @@
 /* 0 */
 /***/ (function(module, exports) {
 
-true;
-
-
-
-this.again();
-
+// hello
 
 /***/ })
 /******/ ]);
