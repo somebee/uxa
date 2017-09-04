@@ -3,7 +3,7 @@ export tag TextField
 	prop label
 	prop desc
 	
-	['disabled'].map do |key|
+	['disabled','placeholder'].map do |key|
 		var setter = Imba.toCamelCase("set-{key}")
 		self:prototype[key] = do |val| this.input[key]()
 		self:prototype[setter] = do |val|

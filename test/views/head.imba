@@ -25,7 +25,7 @@ export tag Head
 				<MenuItem icon='w' label='Open'>
 				<MenuItem icon='v' label='Paste in place'>
 				<MenuItem icon='v' label='Research'>
-				<MenuItem label='Go to site...'>
+				<MenuItem icon='.' label='Go to site...'>
 				<hr.sm>
 				<MenuItem icon='>' label='Home'>
 				<MenuItem icon='>' label='Back'>

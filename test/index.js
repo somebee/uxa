@@ -5045,7 +5045,7 @@
 		tag.prototype.desc = function(v){ return this._desc; }
 		tag.prototype.setDesc = function(v){ this._desc = v; return this; };
 		
-		['disabled'].map(function(key) {
+		['disabled','placeholder'].map(function(key) {
 			var setter = Imba.toCamelCase(("set-" + key));
 			tag.prototype[key] = function(val) { return this.input()[key](); };
 			return tag.prototype[setter] = function(val) {
@@ -6448,7 +6448,7 @@
 					MenuItem.build(this).setIcon('w').setLabel('Open').end(),
 					MenuItem.build(this).setIcon('v').setLabel('Paste in place').end(),
 					MenuItem.build(this).setIcon('v').setLabel('Research').end(),
-					MenuItem.build(this).setLabel('Go to site...').end(),
+					MenuItem.build(this).setIcon('.').setLabel('Go to site...').end(),
 					_T.HR(this).flag('sm').end(),
 					MenuItem.build(this).setIcon('>').setLabel('Home').end(),
 					MenuItem.build(this).setIcon('>').setLabel('Back').end(),
@@ -6529,13 +6529,16 @@
 	__webpack_require__(1);
 	var mdart = __webpack_require__(27);
 
+	var uxa$ = __webpack_require__(24), Button = uxa$.Button, TextField = uxa$.TextField;
+
 	var Home = _T.defineTag('Home', function(tag){
 		
 		tag.prototype.render = function (){
 			var self = this, __ = self.__;
-			return this.setChildren(
-				(__.A = __.A || _T.DIV(this).flag('section')).setMarkdown(mdart).end()
-			,2).synced();
+			return this.setChildren([
+				(__.A = __.A || _T.DIV(this).flag('section')).setMarkdown(mdart).end(),
+				(__.B = __.B || TextField.build(self).setLabel("Something").setPlaceholder("Nothing to see")).end()
+			],2).synced();
 		};
 	})
 	exports.Home = Home;
