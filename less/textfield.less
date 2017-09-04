@@ -1,0 +1,103 @@
+
+.textfield {
+	position: relative;
+	font-size: var(--p-size);
+	@gap: 8px;
+	@width: 100%;
+	padding-top: 16px;
+
+	--stroke: var(--input-stroke);
+	// --inactive-stroke: #777777;
+	// --invalid-stroke: #FC0035;
+	// --focus-stroke: #205FFF;
+	// --disabled-stroke: #ADAEAE;
+
+	// border-bottom: 1px solid #757575;
+
+	.input {
+		display: block;
+		padding: 7px 0px;
+		border:none;
+		background: transparent;
+		border-top: 1px solid transparent;
+		border-bottom: 1px solid var(--stroke);
+		font-size: inherit;
+		font-family: inherit;
+		color: inherit;
+		width: 100%;
+
+		&:focus {
+			outline: none;
+		}
+	}
+
+	// resting
+	label {
+		color: var(--stroke);
+		font-size: inherit;
+		font-weight:normal;
+		position:absolute;
+		pointer-events:none;
+		left:0px;
+		top: 16px;
+		padding: @gap 0px;
+		transition:0.2s ease all; 
+	}
+
+	.helper {
+		font-size: var(--h6-size);
+		color: var(--inactive-stroke);
+	}
+
+	// invalid - but no value
+	input:invalid:not(:placeholder-shown),
+	input:invalid:not(:placeholder-shown) ~ * {
+		--stroke: var(--invalid-stroke);
+	}
+
+	input:focus,
+	input:focus ~ * {
+		--stroke: var(--focus-stroke);
+	}
+
+	input:disabled {
+		border-bottom-style: dashed;
+		// opacity: 0.6;
+	}
+
+	input:disabled,
+	input:disabled ~ * {
+		--stroke: var(--disabled-stroke);
+	}
+
+	// when is the label resting
+	input:focus ~ label,
+	input:valid ~ label,
+	input:not(:placeholder-shown) ~ label{
+		top: 0px;
+		font-size: var(--h6-size);
+		color: var(--stroke);
+	}
+
+	/* BOTTOM BARS ================================= */
+	.bar {
+		position:absolute;
+		display:block;
+		width: @width;
+		height: 2px;
+		margin-top: -1px;
+		background: var(--stroke);
+		transition:0.2s ease all;
+		transform: scaleX(0);
+		opacity: 0;
+	}
+
+	// input:hover ~ .bar,
+	input:focus ~ .bar,
+	input:invalid:not(:placeholder-shown) ~ .bar {
+		transform: scaleX(1);
+		opacity: 1;
+	}
+
+	input:disabled ~ .bar { transform: scaleX(0); }
+}

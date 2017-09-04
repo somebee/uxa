@@ -1,0 +1,26 @@
+.menu {
+	// --mi-hover-bg: var(--mi-hover-bg);
+}
+
+.MenuItem {
+	padding: var(--mi-padding);
+	display: flex;
+	flex-direction: row;
+	background: var(--mi-bg);
+	color: var(--mi-color);
+	cursor: default;
+
+	.Icon:first-child {
+		margin-right: var(--mdu);
+		color: var(--mi-icon-color);
+	}
+
+	&:hover {
+		background: var(--mi-hover-bg);
+	}
+
+	&[disabled] {
+		pointer-events: none;
+		color: var(--disabled-color);
+	}
+}

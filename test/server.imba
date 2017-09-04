@@ -13,12 +13,11 @@ var app = express()
 
 
 # autocompile css
-app.get '/uxa.css' do |req, res|
-	var src = path.resolve("{__dirname}/../less/index.less")
+app.get '/:name.css' do |req, res|
+	var src = path.resolve("{__dirname}/{req:params:name}.less")
 	var dirs = [src.replace(/\/([^\/]+)$/,'')]
 	console.log 'requesting css in',dirs
 	res.type('css')
-
 	# if cssCache[path] and !cfg:debug
 	# 	console.log 'returning cached css'
 	# 	return res.send(cssCache[path])

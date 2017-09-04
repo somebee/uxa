@@ -1,0 +1,38 @@
+@import '../less/index.less';
+
+#head {
+	// background: red;
+	position: fixed;
+	left: 0px;
+	top: 0px;
+	width: 100%;
+	z-index: 10;
+	height: var(--masthead-height);
+
+	.masthead {
+		margin-right: auto;
+	}
+}
+
+#nav {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: var(--drawer-width);
+	height: 100%;
+	opacity: 0.8;
+}
+
+#main {
+	position: absolute;
+	top: 0px;
+	left: var(--drawer-width);
+	right: 0px;
+	bottom: 0px;
+	// background: blue;
+	padding-top: var(--masthead-height);
+}
+
+.section {
+	padding: 2rem;
+}
