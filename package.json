@@ -3,18 +3,18 @@
   "private": true,
   "version": "0.0.1",
   "devDependencies": {
-    "extract-text-webpack-plugin": "^3.0.0",
-    "imba": "^1.0.0-rc.3",
-    "less-plugin-autoprefix": "^1.5.1",
-    "webpack": "^3.5.5",
     "css-loader": "^0.28.5",
     "express": "^4.15.4",
+    "extract-text-webpack-plugin": "^3.0.0",
+    "imba": "^1.0.0-rc.3",
     "less": "^2.7.2",
     "less-loader": "^4.0.5",
+    "less-plugin-autoprefix": "^1.5.1",
     "marked": "^0.3.6",
     "node-watch": "^0.5.5",
     "raw-loader": "^0.5.1",
     "style-loader": "^0.18.2",
+    "webpack": "^3.5.5",
     "ws": "^3.1.0"
   },
   "main": "src/index",
@@ -22,6 +22,7 @@
     "build": "imbapack --watch --colors --display-modules"
   },
   "dependencies": {
+    "showdown": "^1.7.3",
     "snarkdown": "^1.2.2"
   }
 }

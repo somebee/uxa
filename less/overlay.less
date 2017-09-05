@@ -55,13 +55,23 @@
 		width: 500px;
 	}
 
-	&.uxa-visible {
+	&.uxa-show {
 		& > .floating {
 			transform: translateY(0px);
 			opacity: 1;
 		}
 		& > .curtain {
 			opacity: 1;
+		}
+	}
+
+	&.uxa-hide {
+		& > .floating {
+			transform: translateY(20px);
+			opacity: 0;
+		}
+		& > .curtain {
+			opacity: 0;
 		}
 	}
 

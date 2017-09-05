@@ -10,6 +10,6 @@ export tag Button < button
 			if icon
 				<Icon[icon]>
 			if label
-				<b uxa-markdown=label>
+				<b uxa:md=label>
 			
 export tag IconButton < Button

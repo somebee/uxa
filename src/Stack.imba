@@ -4,27 +4,41 @@ import Popover from './Popover'
 export tag Overlay
 	prop component
 	prop target
+	
+	prop isModal
+	prop isMenu
 
 	def render
 		<self>
 			component.flag('floating').flag('paper').end
-			<div.curtain :tap='hide'>
+			<div.curtain :tap='autohide'>
 
 	def show
 		reflow if @isMenu
 		document:body.appendChild(dom)
 		dom:offsetWidth
-		flag('uxa-visible')
+		flag('uxa-show')
 		self
 
 	def hide
-		unflag('uxa-visible')
+		flag('uxa-hide')
+		unflag('uxa-show')
+
 		setTimeout(&,200) do
 			dom:parentNode.removeChild(dom)
 		self
+		
+	def autohide
+		unless @isModal
+			hide
+			
+	def onuxahide e
+		e.halt
+		hide
 	
 	def setup
 		@isMenu = component isa Menu or component isa Popover
+		@isModal = component.hasFlag('modal')
 		console.log 'setup', target
 	
 	def reflow
