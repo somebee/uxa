@@ -11,17 +11,14 @@ export tag Overlay
 			<div.curtain :tap='hide'>
 
 	def show
-		flag('hidden')
 		reflow if @isMenu
 		document:body.appendChild(dom)
 		dom:offsetWidth
-		unflag('hidden')
-		flag('visible')
+		flag('uxa-visible')
 		self
 
 	def hide
-		flag('hidden')
-		unflag('visible')
+		unflag('uxa-visible')
 		setTimeout(&,200) do
 			dom:parentNode.removeChild(dom)
 		self
