@@ -7,9 +7,9 @@ export tag Overlay
 
 	def render
 		<self>
-			component.flag('floating').end
+			component.flag('floating').flag('paper').end
 			<div.curtain :tap='hide'>
-			
+
 	def show
 		flag('hidden')
 		reflow if @isMenu

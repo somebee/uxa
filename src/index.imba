@@ -4,6 +4,7 @@ import Button,IconButton from './Button'
 import TextField from './TextField'
 import ListItem from './ListItem'
 import Popover from './Popover'
+import Dialog from './Dialog'
 
 var snarkdown = require 'snarkdown'
 
@@ -42,3 +43,4 @@ export var TextField = TextField
 export var ListItem = ListItem
 export var MenuItem = MenuItem
 export var Popover = Popover
+export var Dialog = Dialog
