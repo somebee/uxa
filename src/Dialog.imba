@@ -49,7 +49,7 @@ export tag Dialog < Form
 			<Button.primary type='submit' label=submitLabel>
 		
 	def render
-		<self>
+		<self.uxa>
 			header
 			body
 			footer

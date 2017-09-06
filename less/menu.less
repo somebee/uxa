@@ -37,6 +37,7 @@
 
 	--bg: var(--uxa-tint-0);
 	--hover-bg: var(--uxa-tint-50);
+	--active-bg: var(--uxa-tint-100);
 	--icon-color: var(--uxa-tint-300);
 	--disabled-color: var(--uxa-tint-300);
 
@@ -51,7 +52,11 @@
 
 	&:hover {
 		--icon-color: var(--uxa-pri-A400);
-		background: var(--hover-bg);
+		--bg: var(--hover-bg);
+	}
+
+	&:active {
+		--bg: var(--active-bg);
 	}
 
 	&[disabled] {

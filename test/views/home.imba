@@ -1,6 +1,6 @@
 var mdart = require '!raw-loader!../md/article.md'
 
-import Button,TextField,TextArea,Dialog,Menu,MenuItem,Form from 'uxa'
+import Button,TextField,TextArea,Dialog,Menu,MenuItem,Form,Indicator from 'uxa'
 
 var short = """
 
@@ -122,6 +122,10 @@ tag Palette
 				<div uxa:md=long>
 				<hr>
 				<LogForm>
+				
+			<section>
+				<h2> "Indicators"
+				<Indicator type='indeterminate'>
 
 			<section>
 				<h3> "Colors"

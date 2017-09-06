@@ -38,4 +38,4 @@ export tag Indicator
 		setFlag('state',state)
 
 	def render
-		<self> <div@ind .{type}>
+		<self.uxa> <div@ind .{type}>

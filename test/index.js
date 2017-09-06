@@ -4784,6 +4784,7 @@
 	var ListItem = __webpack_require__(20).ListItem;
 	var Popover = __webpack_require__(29).Popover;
 	var Dialog = __webpack_require__(30).Dialog;
+	var Indicator = __webpack_require__(33).Indicator;
 	var Form = __webpack_require__(31).Form;
 
 	var showdown = __webpack_require__(32);
@@ -4870,6 +4871,7 @@
 	var Popover = exports.Popover = Popover;
 	var Dialog = exports.Dialog = Dialog;
 	var Form = exports.Form = Form;
+	var Indicator = exports.Indicator = Indicator;
 
 
 /***/ },
@@ -6688,7 +6690,7 @@
 	__webpack_require__(1);
 	var mdart = __webpack_require__(27);
 
-	var uxa$ = __webpack_require__(24), Button = uxa$.Button, TextField = uxa$.TextField, TextArea = uxa$.TextArea, Dialog = uxa$.Dialog, Menu = uxa$.Menu, MenuItem = uxa$.MenuItem, Form = uxa$.Form;
+	var uxa$ = __webpack_require__(24), Button = uxa$.Button, TextField = uxa$.TextField, TextArea = uxa$.TextArea, Dialog = uxa$.Dialog, Menu = uxa$.Menu, MenuItem = uxa$.MenuItem, Form = uxa$.Form, Indicator = uxa$.Indicator;
 
 	var short = "\n# Main heading\n\nThis is a short paragraph with a [link](#link) and some text.\n";
 
@@ -6823,10 +6825,15 @@
 				],2).end(),
 				
 				(__.E = __.E || _T.SECTION(self)).setContent([
-					(__.EA = __.EA || _T.H3(self).setText("Colors")).end(),
-					(__.EB = __.EB || ColorScale.build(self).setTint('tint')).end(),
-					(__.EC = __.EC || ColorScale.build(self).setTint('pri')).end(),
-					(__.ED = __.ED || ColorScale.build(self).setTint('sec')).end()
+					(__.EA = __.EA || _T.H2(self).setText("Indicators")).end(),
+					(__.EB = __.EB || Indicator.build(self).setType('indeterminate')).end()
+				],2).end(),
+				
+				(__.F = __.F || _T.SECTION(self)).setContent([
+					(__.FA = __.FA || _T.H3(self).setText("Colors")).end(),
+					(__.FB = __.FB || ColorScale.build(self).setTint('tint')).end(),
+					(__.FC = __.FC || ColorScale.build(self).setTint('pri')).end(),
+					(__.FD = __.FD || ColorScale.build(self).setTint('sec')).end()
 				// <ColorScale tint='dark'>
 				// <ColorSample bg='bg'>
 				// <ColorSample bg='alt-bg'>
@@ -6989,7 +6996,7 @@
 		};
 		
 		tag.prototype.render = function (){
-			return this.setChildren([
+			return this.flag('uxa').setChildren([
 				this.header(),
 				this.body(),
 				this.footer(),
@@ -10177,7 +10184,7 @@
 		};
 		
 		tag.prototype.render = function (){
-			return this.setChildren((this._ind || _T.DIV(this).ref_('ind',this)).setFlag(0,this.type()).end(),2).synced();
+			return this.flag('uxa').setChildren((this._ind || _T.DIV(this).ref_('ind',this)).setFlag(0,this.type()).end(),2).synced();
 		};
 	})
 	exports.Indicator = Indicator;

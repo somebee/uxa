@@ -1,0 +1,149 @@
+/* Progress Bar */
+.Indicator.uxa {
+	position: relative;
+	height: 4px;
+	display: block;
+	width: 100%;
+
+	--indicator-color: var(--uxa-pri-A200);
+	--indicator-bg: var(--uxa-tint-50);
+	// background-color: #acece6;
+	// background-color: var(--indicator-bg);
+	// border-radius: 2px;
+	// background-clip: padding-box;
+	margin: 0 0 1rem;
+	overflow: hidden;
+	background: var(--indicator-bg);
+
+	.determinate {
+		position: absolute;
+		background-color: inherit;
+		top: 0;
+		bottom: 0;
+		background-color: #75aaff;
+		background-color: var(--indicator-color);
+		transition: width .3s linear;
+	}
+
+	.indeterminate {
+		background-color: #75aaff;
+		background-color: var(--indicator-color);
+	}
+
+	.indeterminate:before {
+		content: '';
+		position: absolute;
+		background-color: inherit;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		will-change: left, right;
+		// -webkit-animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
+		animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
+		// transition: animation-play-state 0.5s step-start;
+	}
+
+	.indeterminate:after {
+		content: '';
+		position: absolute;
+		background-color: inherit;
+		top: 0;
+		left: 0;
+		bottom: 0;
+		will-change: left, right;
+		// -webkit-animation: indeterminate-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
+		// -webkit-animation-delay: 1.15s;
+		animation: indeterminate-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
+		animation-delay: 1.15s;
+		// transition: animation-play-state 0.5s step-start;
+	}
+
+	&.abs {
+		position: absolute;
+		left: 0px;
+		top: 0px;
+		border-radius: 0px;
+		margin: 0px;
+	}
+
+	&.paused,&.manual {
+		.indeterminate:before,
+		.indeterminate:after {
+			animation-play-state: paused;
+			// transition: animation-play-state 0.5s step-start;
+			// animation-play-state: paused;
+		}
+	}
+
+	&.running {
+		.indeterminate:before,
+		.indeterminate:after {
+			animation-play-state: running;
+			// transition: animation-play-state 0.5s step-start;
+			// animation-play-state: paused;
+		}
+	}
+
+	.forward {
+		position: absolute;
+		top: 0;
+		bottom: 0;
+		background-color: var(--indicator-color);
+		left: 0px;
+		width: 100%;
+		transform: scaleX(0);
+		transform-origin: 0% 0%;
+		will-change: transform,opacity;
+		opacity: 1;
+	}
+
+	&.prep .forward {
+		transition: transform 0s linear;
+	}
+
+	&.start .forward {
+		transform: scaleX(0.15);
+		transition: transform 0.8s cubic-bezier(0.250, 1.190, 0.300, 0.865);
+	}
+
+	&.busy .forward {
+		transform: scaleX(0.8);
+		transition: transform 12s linear;
+	}
+
+	&.done .forward {
+		transform: scaleX(1);
+		transition: transform 0.3s cubic-bezier(0.260, 0.025, 0.000, 0.995), opacity 0.1s ease-out 0.4s;
+		opacity: 0;
+	}
+}
+
+@keyframes indeterminate {
+	0% {
+		left: -35%;
+		right: 100%;
+	}
+	60% {
+		left: 100%;
+		right: -90%;
+	}
+	100% {
+		left: 100%;
+		right: -90%;
+	}
+}
+
+@keyframes indeterminate-short {
+	0% {
+		left: -200%;
+		right: 100%;
+	}
+	60% {
+		left: 107%;
+		right: -8%;
+	}
+	100% {
+		left: 107%;
+		right: -8%;
+	}
+}

@@ -5,6 +5,7 @@ import TextField,TextArea from './TextField'
 import ListItem from './ListItem'
 import Popover from './Popover'
 import Dialog from './Dialog'
+import Indicator from './Indicator'
 import Form from './Form'
 
 var showdown  = require('showdown')
@@ -70,3 +71,4 @@ export var MenuItem = MenuItem
 export var Popover = Popover
 export var Dialog = Dialog
 export var Form = Form
+export var Indicator = Indicator

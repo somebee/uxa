@@ -1,4 +1,4 @@
-.Dialog {
+.Dialog.uxa {
 	& > header:empty, & > footer:empty {
 		display: none;
 	}
@@ -12,10 +12,16 @@
 		padding: var(--mdu);
 	}
 
-
+	.Indicator.uxa {
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		width: 100%;
+		height: 8px;
+	}
 }
 
-.Dialog.floating {
+.Dialog.uxa.floating {
 	min-width: 300px;
 	transition: opacity 0.2s ease, transform 0.2s ease;
 	transform: translateY(-30px);
