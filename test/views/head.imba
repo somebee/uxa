@@ -2,7 +2,7 @@ import Button,IconButton,TextField,ListItem,Menu,MenuItem,Popover from 'uxa'
 
 export tag Head
 	def render
-		<self.header.lg.bar.base-bg.flat>
+		<self.masthead.lg.bar.base-bg.flat>
 			<.masthead> "Scrimba"
 			<a href="#forms"> 'forms'
 			<a href="#articles"> 'articles'

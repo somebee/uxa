@@ -10,6 +10,33 @@ This is a short paragraph with a [link](#link) and some text.
 
 """
 
+var long = """
+# Heading
+
+Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec cursus elit at
+odio congue, ac varius massa tincidunt. Nulla blandit odio vel bibendum 
+condimentum. In hac habitasse [platea](#platea) dictumst. Nam eu nisl ut erat 
+sollicitudin tincidunt. Nunc nec scelerisque felis. Nulla fringilla 
+id nulla vitae pulvinar.
+
+---
+
+## Heading 2
+
+Nullam eget urna vitae ex ullamcorper dictum ac ullamcorper nisl. Mauris a
+quam non ante ullamcorper ultrices quis quis libero. Quisque ultrices lorem
+metus. Duis mi est, elementum nec egestas a, luctus et lacus. Pellentesque
+augue libero, scelerisque sit amet purus ut, tempor sagittis neque.
+
+### Heading 3
+
+Nullam eget urna vitae ex ullamcorper dictum ac ullamcorper nisl. Mauris a
+quam non ante ullamcorper ultrices quis quis libero. Quisque ultrices lorem
+metus. Duis mi est, elementum nec egestas a, luctus et lacus. Pellentesque
+augue libero, scelerisque sit amet purus ut, tempor sagittis neque.
+
+"""
+
 tag DialogExample < Button		
 	def ontap
 		if @template
@@ -25,13 +52,13 @@ tag ColorSample
 		css(background: "var(--{bg})", color: "var(--{color})")
 		
 	def render
-		<self> <span> label
+		<self> <span> label or weight
 		
 tag ColorScale
 	prop tint
 	def render
 		<self> for item,i in [0,50,100,200,300,400,500,600,700,800,900,'A100','A200','A400','A700']
-			<ColorSample weight=item bg="uxa-{tint}-{item}" color="uxa-{tint}-{i > 5 ? 0 : 900}" label="{tint}{item}">
+			<ColorSample weight=item bg="uxa-{tint}-{item}" color="uxa-{tint}-{i > 5 ? 0 : 900}">
 		
 tag Palette
 	prop tint
@@ -61,9 +88,10 @@ tag Palette
 				<Button.primary icon='v' label="Primary">
 				
 			<section>
-				<h3> "Typography"
-				<p.mute> "Muted paragraph"
-				<div uxa:md=short>
+				<div uxa:md=long>
+				<hr>
+				<TextField label="Title" placeholder="Descriptive title" desc="Some description of this">
+				<TextField label="Secret word" placeholder="What is the secret?" required=yes pattern="uxauxa" desc="Can you guess it?">
 
 			<section>
 				<h3> "Colors"

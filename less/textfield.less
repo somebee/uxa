@@ -1,20 +1,27 @@
 
-.textfield {
+.TextField {
 	position: relative;
 	font-size: var(--p-size);
 	@gap: 8px;
 	@width: 100%;
 	padding-top: 16px;
 
-	--stroke: var(--input-stroke);
-	// --inactive-stroke: #777777;
-	// --invalid-stroke: #FC0035;
-	// --focus-stroke: #205FFF;
-	// --disabled-stroke: #ADAEAE;
+	--focus-stroke: var(--uxa-pri-A400);
+	--muted: var(--uxa-tint-300);	
+	--color: var(--uxa-tint-900);
+	--stroke: var(--uxa-tint-300);
+	--tinted: var(--uxa-pri-A400);
+	--invalid: var(--uxa-danger-A400);
+	--bar: var(--tinted);
 
-	// border-bottom: 1px solid #757575;
+	--label-color: var(--uxa-tint-300);
+	--muted-color: var(--uxa-danger-A400);
+	--desc-color: var(--label-color);
+	--bar-color: var(--uxa-pri-A400);
 
-	.input {
+	color: var(--color);
+
+	input {
 		display: block;
 		padding: 7px 0px;
 		border:none;
@@ -23,6 +30,7 @@
 		border-bottom: 1px solid var(--stroke);
 		font-size: inherit;
 		font-family: inherit;
+		color: inherit;
 		width: 100%;
 
 		&:focus {
@@ -36,7 +44,7 @@
 
 	// resting
 	label {
-		color: var(--stroke);
+		color: var(--label-color);
 		font-size: inherit;
 		font-weight:normal;
 		position:absolute;
@@ -49,50 +57,50 @@
 
 	.helper {
 		font-size: var(--h6-size);
-		color: var(--inactive-stroke);
+		color: var(--desc-color);
+	}
+
+	input:focus ~ * {
+		--label-color: var(--tinted);
+	}
+
+	input:invalid ~ * {
+		--label-color: var(--uxa-danger-A400);
+		--desc-color: var(--uxa-danger-A400);
+		--bar-color: var(--invalid);
 	}
 
 	// invalid - but no value
-	input:invalid:not(:placeholder-shown),
 	input:invalid:not(:placeholder-shown) ~ * {
-		--stroke: var(--invalid-stroke);
-	}
-
-	input:focus,
-	input:focus ~ * {
-		--stroke: var(--focus-stroke);
+		// --stroke: var(--invalid-stroke);
 	}
 
 	input:disabled {
 		border-bottom-style: dashed;
-		// opacity: 0.6;
 	}
 
-	input:disabled,
 	input:disabled ~ * {
-		--stroke: var(--disabled-stroke);
+		--label-color: var(--muted-color);
 	}
 
 	// when is the label resting
-	input:focus,input:valid,input:not(:placeholder-shown){
+	input:focus,input:not(:placeholder-shown){
 		&::-webkit-input-placeholder {
-			color: var(--disabled-stroke);
+			color: var(--muted);
 		}
-		&  ~ label {
+		& ~ label {
 			top: 0px;
 			font-size: var(--h6-size);
-			color: var(--stroke);	
 		}
 	}
 
-	/* BOTTOM BARS ================================= */
 	.bar {
 		position:absolute;
 		display:block;
 		width: @width;
 		height: 2px;
 		margin-top: -1px;
-		background: var(--stroke);
+		background: var(--bar-color);
 		transition:0.2s ease all;
 		transform: scaleX(0);
 		opacity: 0;

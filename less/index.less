@@ -20,12 +20,11 @@
 	--h4-color: var(--header-color);
 	--h5-color: var(--header-color);
 	--h6-color: var(--header-color);
-	color: var(--base-color);
 	--mi-icon-color: var(--icon-color);
 
 }
 
-.neutral, :root {
+.neutralx {
 
 	--base-bg: white;
 	--base-border-color: #ececec;
@@ -78,7 +77,7 @@
 	--mi-hover-bg: #F0F1F1;
 }
 
-.primary {
+.primaryx {
 	--base-bg: #C6E4F4;
 	--base-border-color: #A0CDEC;
 	--base-color: #032E72;
@@ -90,7 +89,7 @@
 	.inherits;
 }
 
-.dark {
+.darkx {
 	--base-bg: #202B31; // #141B1F;
 	--base-color: #bdc2c7;
 	--header-color: white;
@@ -116,21 +115,21 @@
 	--mi-hover-bg: #1E2930;
 }
 
-.success {
+.successx {
 	--base-bg: #dff0d8;
 	--base-border-color: #d0e9c6;
 	--base-color: #30652F;
 	.inherits;
 }
 
-.warning {
+.warningx {
 	--base-bg: #FCF8DD;
 	--base-border-color: #F9F0C1;
 	--base-color: #765A2D;
 	.inherits;
 }
 
-.danger {
+.dangerx {
 	--base-bg: #EED6D6;
 	--base-border-color: #E6C0C1;
 	--base-color: #973032;
@@ -138,25 +137,9 @@
 	--raised-bg: #FC3841;
 }
 
-.base-bg {
-	background: var(--base-bg);
-}
-
-h1,h2,h3,h4,h5,h6 {
-	line-height: 1.2em;
-}
-
 // predefined sizes and colors
 .text { font-size: var(--h4-size); }
 .subtext { font-size: var(--h5-size); }
-
-h1,.h1 { font-size: var(--h1-size); color: var(--h1-color); }
-h2,.h2 { font-size: var(--h2-size); color: var(--h2-color); }
-h3,.h3 { font-size: var(--h3-size); color: var(--h3-color); }
-h4,.h4 { font-size: var(--h4-size); color: var(--h4-color); }
-h5,.h5 { font-size: var(--h5-size); color: var(--h5-color); }
-h6,.h6 { font-size: var(--h6-size); color: var(--h6-color); }
-p,.p { font-size: var(--p-size); line-height: 1.5em; }
 
 .paper {
 	background: var(--uxa-paper-bg);
@@ -166,33 +149,20 @@ p,.p { font-size: var(--p-size); line-height: 1.5em; }
 	color: var(--muted-color);
 }
 
-.muted-bg {
-	background: var(--muted-bg);
-}
-
 .Popover {
-	background: var(--base-bg);
+	background: var(--uxa-tint-0);
 }
 
-// highlight
-.highlight,blockquote {
-	padding: 1.5rem;
-	background: var(--highlight-bg);
-	--color: var(--highlight-color);
-	color: var(--color);
+blockquote > :last-child {
+	margin-bottom: 0px;
 }
 
 hr {
 	display: block;
 	margin-top: var(--mdu);
 	margin-bottom: var(--mdu);
-	color: var(--stroke);
 	border: 0;
 	border-top: 1px solid;
-}
-
-a {
-	// color: var(--link-color);
 }
 
 .vbox {
@@ -223,9 +193,7 @@ a {
 	}
 }
 
-header,.header {
-	height: var(--bar-height);
-}
+
 
 @import "icons.less";
 @import "panel.less";
@@ -236,26 +204,6 @@ header,.header {
 @import "bar.less";
 @import "list.less";
 @import "menu.less";
-
-// highlight
-
-// paddings and margins
-
-// badge
-// pill
-
-// just for test
-body {
-	// padding: 4rem;
-}
-
-.page {
-	padding: 4rem;
-}
-
-.page[id]:not(:target) {
-	display: none;
-}
 
 #nav {
 	position: absolute;

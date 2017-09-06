@@ -9,7 +9,7 @@ import Dialog from './Dialog'
 var snarkdown = require 'snarkdown'
 
 var showdown  = require('showdown')
-var mdconverter = showdown.Converter.new(noHeaderId: yes)
+var mdconverter = showdown.Converter.new(noHeaderId: yes, tables: yes)
 
 var MarkdownCache = {}
 var SetterCache = {}
