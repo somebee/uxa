@@ -1,6 +1,6 @@
 var mdart = require '!raw-loader!../md/article.md'
 
-import Button,TextField,Dialog,Menu,MenuItem from 'uxa'
+import Button,TextField,TextArea,Dialog,Menu,MenuItem,Form from 'uxa'
 
 var short = """
 
@@ -36,6 +36,25 @@ metus. Duis mi est, elementum nec egestas a, luctus et lacus. Pellentesque
 augue libero, scelerisque sit amet purus ut, tempor sagittis neque.
 
 """
+
+tag LogForm < Form
+	
+	def fill
+		setFormData(title: "Something", desc: "Hello there mate!!")
+	
+	def render
+		<self>
+			<TextField label="Title" name='title' placeholder="Descriptive title" desc="Some description of this">
+			<TextField label="Secret word" name='secret' placeholder="What is the secret?" required=yes pattern="uxauxa" desc="Can you guess it?">
+			<TextArea label="Description" name='desc' desc="Please feel free to describe" placeholder="Some description" required=yes>
+			<TextField label="Alias" name='alias' desc="This field is disabled" disabled=yes>
+			<Button.primary label="Submit" type='submit'>
+			<Button.primary label="Fill" type='button' :tap='fill'>
+
+	def onsubmit e
+		e.cancel.halt
+		console.log "submit",formData
+		
 
 tag DialogExample < Button		
 	def ontap
@@ -102,9 +121,7 @@ tag Palette
 			<section>
 				<div uxa:md=long>
 				<hr>
-				<TextField label="Title" placeholder="Descriptive title" desc="Some description of this">
-				<TextField label="Secret word" placeholder="What is the secret?" required=yes pattern="uxauxa" desc="Can you guess it?">
-				<TextField label="Alias" desc="This field is disabled" disabled=yes>
+				<LogForm>
 
 			<section>
 				<h3> "Colors"

@@ -1,12 +1,11 @@
 import Stack from './Stack'
 import Menu,MenuItem from './Menu'
 import Button,IconButton from './Button'
-import TextField from './TextField'
+import TextField,TextArea from './TextField'
 import ListItem from './ListItem'
 import Popover from './Popover'
 import Dialog from './Dialog'
-
-var snarkdown = require 'snarkdown'
+import Form from './Form'
 
 var showdown  = require('showdown')
 var mdconverter = showdown.Converter.new(noHeaderId: yes, tables: yes)
@@ -65,7 +64,9 @@ export var Button = Button
 export var IconButton = IconButton
 export var Menu = Menu
 export var TextField = TextField
+export var TextArea = TextArea
 export var ListItem = ListItem
 export var MenuItem = MenuItem
 export var Popover = Popover
 export var Dialog = Dialog
+export var Form = Form

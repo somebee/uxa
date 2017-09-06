@@ -13,7 +13,6 @@ export tag Form < form
 			applyFormData(@formData)
 		@commited = yes
 		self
-		
 
 	def formElements
 		var o = []
@@ -45,7 +44,10 @@ export tag Form < form
 			if typ == 'radio' or typ == 'checked'
 				field:checked = field:value == val
 			else
-				field:value = val
+				if field.@tag
+					field.@tag.setValue(val)
+				else
+					field:value = val
 		self
 		
 	def formData
@@ -56,5 +58,5 @@ export tag Form < form
 			elif field:type == 'radio'
 				continue unless field:checked
 			if field:name
-				o[field:name] = (field.@tag ? field.@tag.value : field:value)
+				o[field:name] = (field.@tag and field.@tag:value ? field.@tag.value : field:value)
 		return o

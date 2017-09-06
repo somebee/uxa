@@ -1,5 +1,13 @@
-.menu {
+.Menu {
 	// --mi-hover-bg: var(--mi-hover-bg);
+	& > hr {
+		margin-top: var(--xsu);
+		margin-bottom: var(--xsu);
+	}
+
+	& + .curtain {
+		background: transparent;
+	}
 }
 
 .Menu.floating {
@@ -29,17 +37,20 @@
 
 	--bg: var(--uxa-tint-0);
 	--hover-bg: var(--uxa-tint-50);
-
+	--icon-color: var(--uxa-tint-300);
 	--disabled-color: var(--uxa-tint-300);
 
 	background: var(--bg);
+	padding-right: var(--lgu);
 
 	.Icon:first-child {
 		margin-right: var(--mdu);
+		color: var(--icon-color);
 		// color: var(--mi-icon-color);
 	}
 
 	&:hover {
+		--icon-color: var(--uxa-pri-A400);
 		background: var(--hover-bg);
 	}
 

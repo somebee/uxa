@@ -5,13 +5,15 @@ export tag Button < button
 	prop label
 	prop uxa-anchor
 
-
 	def ontap e
-		e.halt
 		if self[:onmenu]
+			e.halt
 			var menu = onmenu(e)
 			if menu
 				uxa.open(menu)
+		else
+			# Imba hack
+			e.@responder = null
 		self
 
 
