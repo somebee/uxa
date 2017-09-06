@@ -2,6 +2,14 @@ var mdart = require '!raw-loader!../md/article.md'
 
 import Button,TextField,Dialog from 'uxa'
 
+var short = """
+
+# Main heading
+
+This is a short paragraph with a [link](#link) and some text.
+
+"""
+
 tag DialogExample < Button		
 	def ontap
 		if @template
@@ -22,7 +30,7 @@ tag ColorSample
 tag ColorScale
 	prop tint
 	def render
-		<self> for item,i in [0,50,100,200,300,400,500,600,700,800,900]
+		<self> for item,i in [0,50,100,200,300,400,500,600,700,800,900,'A100','A200','A400','A700']
 			<ColorSample weight=item bg="uxa-{tint}-{item}" color="uxa-{tint}-{i > 5 ? 0 : 900}" label="{tint}{item}">
 		
 tag Palette
@@ -54,6 +62,7 @@ tag Palette
 			<section>
 				<h3> "Typography"
 				<p.mute> "Muted paragraph"
+				<div uxa:md=short>
 
 			<section>
 				<h3> "Colors"

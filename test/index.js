@@ -6586,6 +6586,8 @@
 
 	var uxa$ = __webpack_require__(24), Button = uxa$.Button, TextField = uxa$.TextField, Dialog = uxa$.Dialog;
 
+	var short = "\n# Main heading\n\nThis is a short paragraph with a [link](#link) and some text.\n";
+
 	var DialogExample = _T.defineTag('DialogExample', Button, function(tag){
 		tag.prototype.ontap = function (){
 			if (this._template) {
@@ -6621,7 +6623,7 @@
 			var self = this, __ = self.__;
 			return this.setChildren((function() {
 				var _$ = (__.A = __.A || []);
-				for (var i = 0, ary = [0,50,100,200,300,400,500,600,700,800,900], len = ary.length, item, res = []; i < len; i++) {
+				for (var i = 0, ary = [0,50,100,200,300,400,500,600,700,800,900,'A100','A200','A400','A700'], len = ary.length, item, res = []; i < len; i++) {
 					item = ary[i];
 					res.push((_$[i] = _$[i] || ColorSample.build(self)).setWeight(item).setBg(("uxa-" + self.tint() + "-" + item)).setColor(("uxa-" + self.tint() + "-" + ((i > 5) ? 0 : 900))).setLabel(("" + self.tint() + item)).end());
 				};
@@ -6670,7 +6672,8 @@
 				
 				(__.D = __.D || _T.SECTION(self)).setContent([
 					(__.DA = __.DA || _T.H3(self).setText("Typography")).end(),
-					(__.DB = __.DB || _T.P(self).flag('mute').setText("Muted paragraph")).end()
+					(__.DB = __.DB || _T.P(self).flag('mute').setText("Muted paragraph")).end(),
+					(__.DC = __.DC || _T.DIV(self)).setNestedAttr('uxa','md',short).end()
 				],2).end(),
 				
 				(__.E = __.E || _T.SECTION(self)).setContent([
