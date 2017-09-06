@@ -21,7 +21,7 @@
 	--btn-focus-bg: ~'var(--@{name}-btn-focus-bg)';
 }
 
-.button {
+.Button.uxa {
 	--webkit-appearance: none;
 	border: 1px solid transparent;
 	height: var(--btn-height);
@@ -39,7 +39,7 @@
 		font-style: inherit;
 	}
 
-	.Icon {
+	.Icon:not(:only-child) {
 		position: absolute;
 		line-height: var(--btn-height);
 		top: 0px;
@@ -74,9 +74,15 @@
 	// &.primary { .btn-tint-mixin(primary); }
 }
 
-.flat .button {
+.Button:last-child {
+	margin-right: 0px;
+}
+
+
+.flat .Button.uxa {
 	background: transparent;
 	color: var(--uxa-tint-A400);
+	margin-right: 0px;
 
 	&.muted {
 		color: var(--muted-color);
@@ -117,7 +123,7 @@
 	}
 }
 
-.list > .button {
+.list > .Button.uxa {
 	background: transparent;
 	color: var(--primary-color);
 	&.muted {
@@ -125,6 +131,24 @@
 	}
 }
 
-.IconButton {
+.IconButton.uxa {
 	min-width: auto;
+	background: transparent;
+	padding: 0px;
+	min-width: var(--icon-size);
+	text-align: center;
+
+	&:hover {
+		color: var(--uxa-pri-A200);
+		background: transparent;
+	}
+
+	&:focus {
+		background: transparent;
+		color: var(--uxa-pri-A400);
+	}
+
+	.Icon {
+		font-size: var(--icon-font-size);
+	}
 }

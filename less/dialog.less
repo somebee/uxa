@@ -1,12 +1,33 @@
-.dialog,
-.menu {
-	// color: var(--base-color);
-	// background: var(--base-bg);
+.Dialog {
+	& > header:empty, & > footer:empty {
+		display: none;
+	}
+
+	& > .body {
+		padding: var(--lgu);
+	}
+
+	& > footer {
+		text-align: right;
+		padding: var(--mdu);
+	}
+
+
 }
 
-.Dialog {
-	& > header:empty,
-	& > footer:empty {
-		display: none;
+.Dialog.floating {
+	min-width: 300px;
+	transition: opacity 0.2s ease, transform 0.2s ease;
+	transform: translateY(-30px);
+	opacity: 0;
+
+	&.uxa-show {
+		transform: translateY(0px);
+		opacity: 1;
+	}
+
+	&.uxa-hide {
+		transform: translateY(30px);
+		opacity: 0;
 	}
 }

@@ -8,6 +8,11 @@ export tag MenuItem
 	prop label
 	prop subtext
 	attr disabled
+
+	def ontap e
+		e.cancel.halt
+		var res = trigger('activate')
+		trigger('uxa:hide')
 	
 	def render
 		<self>

@@ -1,0 +1,16 @@
+
+.Popover.floating {
+	transition: opacity 0.2s ease, transform 0.2s ease;
+	transform: translateY(0px);
+	opacity: 0;
+
+	&.uxa-show {
+		transform: translateY(0px);
+		opacity: 1;
+	}
+
+	&.uxa-hide {
+		transform: translateY(0px) scale(0.95);
+		opacity: 0;
+	}
+}

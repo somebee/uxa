@@ -14,18 +14,23 @@ export tag Overlay
 			<div.curtain :tap='autohide'>
 
 	def show
-		reflow if @isMenu
 		document:body.appendChild(dom)
+		reflow if @isMenu
 		dom:offsetWidth
 		flag('uxa-show')
+		component.flag('uxa-show')
 		self
 
 	def hide
 		flag('uxa-hide')
+		component.flag('uxa-hide')
 		unflag('uxa-show')
+		component.unflag('uxa-show')
 
 		setTimeout(&,200) do
 			dom:parentNode.removeChild(dom)
+			component.unflag('uxa-hide')
+			# remove css positions as well
 		self
 		
 	def autohide
@@ -47,6 +52,9 @@ export tag Overlay
 			return self
 
 		var box = target.dom.getBoundingClientRect
+
+		var w = component.dom:offsetWidth
+		var h = component.dom:offsetHeight
 
 		var vw = window:innerWidth
 		var vh = window:innerHeight
@@ -75,7 +83,7 @@ export tag Overlay
 			css:top = box:bottom
 			css:maxHeight = vh - css:top
 		else
-			css:bottom = box:top
+			css:bottom = vh - box:top
 			css:maxHeight = vh - css:bottom
 		
 		if ax < 0.5

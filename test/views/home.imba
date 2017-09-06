@@ -1,6 +1,6 @@
 var mdart = require '!raw-loader!../md/article.md'
 
-import Button,TextField,Dialog from 'uxa'
+import Button,TextField,Dialog,Menu,MenuItem from 'uxa'
 
 var short = """
 
@@ -62,6 +62,18 @@ tag ColorScale
 		
 tag Palette
 	prop tint
+
+	def menu
+		<Menu.inset>
+			<MenuItem icon='w' label='Open'>
+			<MenuItem icon='v' label='Paste in place'>
+			<MenuItem icon='v' label='Research'>
+			<MenuItem icon='.' label='Go to site...'>
+			<hr.sm>
+			<MenuItem icon='>' label='Home'>
+			<MenuItem icon='>' label='Back'>
+			<MenuItem icon='>' label='Sign out' disabled=yes>
+
 	
 	def render
 		<self.paper .{tint}>
@@ -85,13 +97,14 @@ tag Palette
 				<Button.secondary label="Secondary">
 				<Button.primary label="Primary">
 				<Button.primary label="Disabled" disabled=yes>
-				<Button.primary icon='v' label="Primary">
+				<Button.primary icon='v' label="Menu" :menu='menu'>
 				
 			<section>
 				<div uxa:md=long>
 				<hr>
 				<TextField label="Title" placeholder="Descriptive title" desc="Some description of this">
 				<TextField label="Secret word" placeholder="What is the secret?" required=yes pattern="uxauxa" desc="Can you guess it?">
+				<TextField label="Alias" desc="This field is disabled" disabled=yes>
 
 			<section>
 				<h3> "Colors"

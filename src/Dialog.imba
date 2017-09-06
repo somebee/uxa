@@ -46,7 +46,7 @@ export tag Dialog < Form
 	def footer
 		<footer@footer.flat>
 			<Button type='button' label=cancelLabel :tap='cancel'>
-			<Button type='submit' label=submitLabel>
+			<Button.primary type='submit' label=submitLabel>
 		
 	def render
 		<self>

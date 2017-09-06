@@ -11,7 +11,7 @@ export tag TextField
 			return this
 	
 	def input
-		<input@input type='text'>
+		<input@input placeholder=" " type='text'>
 	
 	def render
 		<self.textfield>

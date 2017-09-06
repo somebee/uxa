@@ -4899,20 +4899,25 @@
 		};
 		
 		tag.prototype.show = function (){
-			if (this._isMenu) this.reflow();
 			document.body.appendChild(this.dom());
+			if (this._isMenu) this.reflow();
 			this.dom().offsetWidth;
 			this.flag('uxa-show');
+			this.component().flag('uxa-show');
 			return this;
 		};
 		
 		tag.prototype.hide = function (){
 			var self = this;
 			self.flag('uxa-hide');
+			self.component().flag('uxa-hide');
 			self.unflag('uxa-show');
+			self.component().unflag('uxa-show');
 			
 			setTimeout(function() {
-				return self.dom().parentNode.removeChild(self.dom());
+				self.dom().parentNode.removeChild(self.dom());
+				return self.component().unflag('uxa-hide');
+				// remove css positions as well
 			},200);
 			return self;
 		};
@@ -4942,6 +4947,9 @@
 			
 			var box = this.target().dom().getBoundingClientRect();
 			
+			var w = this.component().dom().offsetWidth;
+			var h = this.component().dom().offsetHeight;
+			
 			var vw = window.innerWidth;
 			var vh = window.innerHeight;
 			
@@ -4969,7 +4977,7 @@
 				css.top = box.bottom;
 				css.maxHeight = vh - css.top;
 			} else {
-				css.bottom = box.top;
+				css.bottom = vh - box.top;
 				css.maxHeight = vh - css.bottom;
 			};
 			
@@ -5033,6 +5041,12 @@
 		tag.prototype.setSubtext = function(v){ this._subtext = v; return this; };
 		tag.prototype.disabled = function(v){ return this.getAttribute('disabled'); }
 		tag.prototype.setDisabled = function(v){ this.setAttribute('disabled',v); return this; };
+		
+		tag.prototype.ontap = function (e){
+			e.cancel().halt();
+			var res = this.trigger('activate');
+			return this.trigger('uxa:hide');
+		};
 		
 		tag.prototype.render = function (){
 			var self = this, __ = self.__;
@@ -5111,9 +5125,22 @@
 		tag.prototype.uxaAnchor = function(v){ return this._uxaAnchor; }
 		tag.prototype.setUxaAnchor = function(v){ this._uxaAnchor = v; return this; };
 		
+		
+		tag.prototype.ontap = function (e){
+			e.halt();
+			if (this.onmenu) {
+				var menu = this.onmenu(e);
+				if (menu) {
+					this.uxa().open(menu);
+				};
+			};
+			return this;
+		};
+		
+		
 		tag.prototype.render = function (){
 			var self = this, __ = self.__;
-			return this.flag('button').setChildren([
+			return this.flag('uxa').setChildren([
 				this.icon() ? (
 					(__.A = __.A || Icon.build(this)).setData(this.icon()).end()
 				) : void(0),
@@ -5151,7 +5178,7 @@
 		});
 		
 		tag.prototype.input = function (){
-			return (this._input || _T.INPUT(this).ref_('input',this).setType('text')).end();
+			return (this._input || _T.INPUT(this).ref_('input',this).setPlaceholder(" ").setType('text')).end();
 		};
 		
 		tag.prototype.render = function (){
@@ -5282,7 +5309,7 @@
 			var t0;
 			return (t0 = this._footer || _T.FOOTER(this).ref_('footer',this).flag('flat')).setContent([
 				(t0.__.$A = t0.__.$A || Button.build(this).setType('button').setHandler('tap','cancel',this)).setLabel(this.cancelLabel()).end(),
-				(t0.__.$B = t0.__.$B || Button.build(this).setType('submit')).setLabel(this.submitLabel()).end()
+				(t0.__.$B = t0.__.$B || Button.build(this).flag('primary').setType('submit')).setLabel(this.submitLabel()).end()
 			],2).end();
 		};
 		
@@ -5311,6 +5338,30 @@
 
 	var Form = _T.defineTag('Form', 'form', function(tag){
 		
+		tag.prototype.__formData = {watch: 'formDataDidSet',name: 'formData'};
+		tag.prototype.formData = function(v){ return this._formData; }
+		tag.prototype.setFormData = function(v){
+			var a = this.formData();
+			if(v != a) { this._formData = v; }
+			if(v != a) { this.formDataDidSet && this.formDataDidSet(v,a,this.__formData) }
+			return this;
+		};
+		
+		tag.prototype.formDataDidSet = function (data){
+			console.log('formDataDidSet',data);
+			if (this._commited) { return this.applyFormData(data) };
+		};
+		
+		tag.prototype.commit = function (){
+			tag.__super__.commit.apply(this,arguments);
+			if (!this._commited && this._formData) {
+				this.applyFormData(this._formData);
+			};
+			this._commited = true;
+			return this;
+		};
+		
+		
 		tag.prototype.formElements = function (){
 			var o = [];
 			
@@ -5333,7 +5384,7 @@
 			return o;
 		};
 		
-		tag.prototype.setFormData = function (dict){
+		tag.prototype.applyFormData = function (dict){
 			if(dict === undefined) dict = {};
 			var fields = this.formElements();
 			
@@ -5341,6 +5392,7 @@
 				field = ary[i];
 				var typ = field.type;
 				var val = dict[field.name];
+				console.log("apply",field.name,val,typ);
 				
 				if (val == undefined) { continue; };
 				
@@ -9758,7 +9810,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(1);
-	var uxa$ = __webpack_require__(30), Button = uxa$.Button, IconButton = uxa$.IconButton, TextField = uxa$.TextField, ListItem = uxa$.ListItem, Menu = uxa$.Menu, MenuItem = uxa$.MenuItem, Popover = uxa$.Popover;
+	var uxa$ = __webpack_require__(30), Button = uxa$.Button, IconButton = uxa$.IconButton, TextField = uxa$.TextField, ListItem = uxa$.ListItem, Menu = uxa$.Menu, MenuItem = uxa$.MenuItem, Popover = uxa$.Popover, Dialog = uxa$.Dialog;
 
 	var Head = _T.defineTag('Head', function(tag){
 		tag.prototype.render = function (){
@@ -9819,18 +9871,11 @@
 		};
 		
 		tag.prototype.showCreate = function (e){
-			return e.target().uxa().open(_T.DIV(this).flag('dialog').setContent([
-				_T.SECTION(this).setContent([
-					_T.H2(this).setText("Create new screencast").end(),
-					_T.HR(this).end(),
-					TextField.build(this).setLabel('Title').end(),
-					TextField.build(this).setLabel('Last name').end()
-				],2).end(),
-				
-				_T.FOOTER(this).flag('flat').setContent([
-					Button.build(this).flag('muted').setLabel("dismiss").setIcon('x').end(),
-					Button.build(this).flag('primary').setLabel("archive").setIcon('v').end()
-				],2).end()
+			return e.target().uxa().open(Dialog.build(this).setSubmitLabel('archive').setContent([
+				_T.H2(this).setText("Create new screencast").end(),
+				_T.P(this).setText("Some basic text explaining this dialog right here.").end(),
+				TextField.build(this).setLabel('Title').end(),
+				TextField.build(this).setLabel('Last name').end()
 			],2).end());
 		};
 	})
@@ -9870,7 +9915,7 @@
 	__webpack_require__(1);
 	var mdart = __webpack_require__(33);
 
-	var uxa$ = __webpack_require__(30), Button = uxa$.Button, TextField = uxa$.TextField, Dialog = uxa$.Dialog;
+	var uxa$ = __webpack_require__(30), Button = uxa$.Button, TextField = uxa$.TextField, Dialog = uxa$.Dialog, Menu = uxa$.Menu, MenuItem = uxa$.MenuItem;
 
 	var short = "\n# Main heading\n\nThis is a short paragraph with a [link](#link) and some text.\n";
 
@@ -9924,6 +9969,20 @@
 		tag.prototype.tint = function(v){ return this._tint; }
 		tag.prototype.setTint = function(v){ this._tint = v; return this; };
 		
+		tag.prototype.menu = function (){
+			return Menu.build(this).flag('inset').setContent([
+				MenuItem.build(this).setIcon('w').setLabel('Open').end(),
+				MenuItem.build(this).setIcon('v').setLabel('Paste in place').end(),
+				MenuItem.build(this).setIcon('v').setLabel('Research').end(),
+				MenuItem.build(this).setIcon('.').setLabel('Go to site...').end(),
+				_T.HR(this).flag('sm').end(),
+				MenuItem.build(this).setIcon('>').setLabel('Home').end(),
+				MenuItem.build(this).setIcon('>').setLabel('Back').end(),
+				MenuItem.build(this).setIcon('>').setLabel('Sign out').setDisabled(true).end()
+			],2).end();
+		};
+		
+		
 		tag.prototype.render = function (){
 			var self = this, __ = self.__;
 			return this.flag('paper').setFlag(1,this.tint()).setChildren([
@@ -9956,14 +10015,15 @@
 					(__.CC = __.CC || Button.build(self).flag('secondary').setLabel("Secondary")).end(),
 					(__.CD = __.CD || Button.build(self).flag('primary').setLabel("Primary")).end(),
 					(__.CE = __.CE || Button.build(self).flag('primary').setLabel("Disabled").setDisabled(true)).end(),
-					(__.CF = __.CF || Button.build(self).flag('primary').setIcon('v').setLabel("Primary")).end()
+					(__.CF = __.CF || Button.build(self).flag('primary').setIcon('v').setLabel("Menu").setHandler('menu','menu',self)).end()
 				],2).end(),
 				
 				(__.D = __.D || _T.SECTION(self)).setContent([
 					(__.DA = __.DA || _T.DIV(self)).setNestedAttr('uxa','md',long).end(),
 					(__.DB = __.DB || _T.HR(self)).end(),
 					(__.DC = __.DC || TextField.build(self).setLabel("Title").setPlaceholder("Descriptive title").setDesc("Some description of this")).end(),
-					(__.DD = __.DD || TextField.build(self).setLabel("Secret word").setPlaceholder("What is the secret?").setRequired(true).setPattern("uxauxa").setDesc("Can you guess it?")).end()
+					(__.DD = __.DD || TextField.build(self).setLabel("Secret word").setPlaceholder("What is the secret?").setRequired(true).setPattern("uxauxa").setDesc("Can you guess it?")).end(),
+					(__.DE = __.DE || TextField.build(self).setLabel("Alias").setDesc("This field is disabled").setDisabled(true)).end()
 				],2).end(),
 				
 				(__.E = __.E || _T.SECTION(self)).setContent([

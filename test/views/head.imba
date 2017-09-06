@@ -1,4 +1,4 @@
-import Button,IconButton,TextField,ListItem,Menu,MenuItem,Popover from 'uxa'
+import Button,IconButton,TextField,ListItem,Menu,MenuItem,Popover,Dialog from 'uxa'
 
 export tag Head
 	def render
@@ -51,14 +51,9 @@ export tag Head
 			<MenuItem icon='>' label='Sign out' disabled=yes>
 		
 	def showCreate e
-		e.target.uxa.open <div.dialog>
-			<section>
-				<h2> "Create new screencast"
-				<hr>
-				<TextField label='Title'>
-				<TextField label='Last name'>
-
-			<footer.flat>
-				<Button.muted label="dismiss" icon='x'>
-				<Button.primary label="archive" icon='v'>
-		
+		e.target.uxa.open <Dialog submitLabel='archive'>
+			<h2> "Create new screencast"
+			<p> "Some basic text explaining this dialog right here."
+			<TextField label='Title'>
+			<TextField label='Last name'>
+	

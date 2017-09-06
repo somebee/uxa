@@ -18,23 +18,17 @@
 
 	& > .floating {
 		z-index: 1;
-		// background: white;
 		box-shadow: 0px 3px 15px fade(black,20%);
 		border-radius: 2px;
 		margin: auto;
-		padding: 16px;
+	}
 
-		& > section {
-			padding: 16px;
-		}
+	& > .uxa-show + .curtain {
+		opacity: 1;
+	}
 
-		& > footer {
-			text-align: right;
-		}
-
-		transform: translateY(-30px);
+	& > .uxa-hide + .curtain {
 		opacity: 0;
-		transition: all 0.2s ease;
 	}
 
 	& > .menu {
@@ -53,26 +47,6 @@
 
 	& > .dialog {
 		width: 500px;
-	}
-
-	&.uxa-show {
-		& > .floating {
-			transform: translateY(0px);
-			opacity: 1;
-		}
-		& > .curtain {
-			opacity: 1;
-		}
-	}
-
-	&.uxa-hide {
-		& > .floating {
-			transform: translateY(20px);
-			opacity: 0;
-		}
-		& > .curtain {
-			opacity: 0;
-		}
 	}
 
 	&.below {

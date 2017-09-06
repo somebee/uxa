@@ -1,6 +1,20 @@
 
 export tag Form < form
 
+	prop formData watch: yes
+
+	def formDataDidSet data
+		console.log 'formDataDidSet',data
+		applyFormData(data) if @commited
+
+	def commit
+		super
+		if !@commited and @formData
+			applyFormData(@formData)
+		@commited = yes
+		self
+		
+
 	def formElements
 		var o = []
 
@@ -18,12 +32,13 @@ export tag Form < form
 				o[name] = node
 		return o
 	
-	def setFormData dict = {}
+	def applyFormData dict = {}
 		var fields = formElements
 
 		for field in fields
 			let typ = field:type
 			let val = dict[field:name]
+			console.log "apply",field:name,val,typ
 
 			continue if val == undefined
 

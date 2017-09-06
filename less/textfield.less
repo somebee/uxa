@@ -6,16 +6,15 @@
 	@width: 100%;
 	padding-top: 16px;
 
-	--focus-stroke: var(--uxa-pri-A400);
-	--muted: var(--uxa-tint-300);	
+	
+
 	--color: var(--uxa-tint-900);
-	--stroke: var(--uxa-tint-300);
-	--tinted: var(--uxa-pri-A400);
-	--invalid: var(--uxa-danger-A400);
-	--bar: var(--tinted);
+	--invalid-color: var(--uxa-danger-A400);
+	--disabled-color: var(--uxa-tint-200);
+	--focus-color: var(--uxa-pri-A400);
 
 	--label-color: var(--uxa-tint-300);
-	--muted-color: var(--uxa-danger-A400);
+	--muted-color: var(--uxa-tint-200);
 	--desc-color: var(--label-color);
 	--bar-color: var(--uxa-pri-A400);
 
@@ -27,7 +26,7 @@
 		border:none;
 		background: transparent;
 		border-top: 1px solid transparent;
-		border-bottom: 1px solid var(--stroke);
+		border-bottom: 1px solid var(--muted-color);
 		font-size: inherit;
 		font-family: inherit;
 		color: inherit;
@@ -52,35 +51,41 @@
 		left:0px;
 		top: 16px;
 		padding: @gap 0px;
-		transition:0.2s ease all; 
+		transition:0.2s ease all;
+		cursor: default;
 	}
 
 	.helper {
 		font-size: var(--h6-size);
 		color: var(--desc-color);
+		cursor: default;
 	}
 
 	input:focus ~ * {
-		--label-color: var(--tinted);
+		--label-color: var(--focus-color);
+		--bar-color: var(--focus-color);
 	}
 
 	input:invalid ~ * {
-		--label-color: var(--uxa-danger-A400);
-		--desc-color: var(--uxa-danger-A400);
-		--bar-color: var(--invalid);
+		--label-color: var(--invalid-color);
+		--desc-color: var(--invalid-color);
+		--bar-color: var(--invalid-color);
 	}
 
 	// invalid - but no value
 	input:invalid:not(:placeholder-shown) ~ * {
-		// --stroke: var(--invalid-stroke);
+
 	}
 
 	input:disabled {
 		border-bottom-style: dashed;
+		cursor: not-allowed;
 	}
 
 	input:disabled ~ * {
-		--label-color: var(--muted-color);
+		--label-color: var(--disabled-color);
+		--desc-color:  var(--disabled-color);
+		--bar-color:   var(--disabled-color);
 	}
 
 	// when is the label resting

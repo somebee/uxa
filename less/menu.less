@@ -2,6 +2,23 @@
 	// --mi-hover-bg: var(--mi-hover-bg);
 }
 
+.Menu.floating {
+	padding: 4px 0px;
+	transition: opacity 0.2s ease, transform 0.2s ease;
+	transform: translateY(0px);
+	opacity: 0;
+
+	&.uxa-show {
+		transform: translateY(0px);
+		opacity: 1;
+	}
+
+	&.uxa-hide {
+		transform: translateY(0px) scale(0.95);
+		opacity: 0;
+	}
+}
+
 .MenuItem {
 	padding: var(--mi-padding);
 	display: flex;
@@ -10,17 +27,24 @@
 	// color: var(--mi-color);
 	cursor: default;
 
+	--bg: var(--uxa-tint-0);
+	--hover-bg: var(--uxa-tint-50);
+
+	--disabled-color: var(--uxa-tint-300);
+
+	background: var(--bg);
+
 	.Icon:first-child {
 		margin-right: var(--mdu);
 		// color: var(--mi-icon-color);
 	}
 
 	&:hover {
-		// background: var(--mi-hover-bg);
+		background: var(--hover-bg);
 	}
 
 	&[disabled] {
 		pointer-events: none;
-		// color: var(--disabled-color);
+		color: var(--disabled-color);
 	}
 }

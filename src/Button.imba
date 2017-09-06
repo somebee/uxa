@@ -5,8 +5,18 @@ export tag Button < button
 	prop label
 	prop uxa-anchor
 
+
+	def ontap e
+		e.halt
+		if self[:onmenu]
+			var menu = onmenu(e)
+			if menu
+				uxa.open(menu)
+		self
+
+
 	def render
-		<self.button>
+		<self.uxa>
 			if icon
 				<Icon[icon]>
 			if label
