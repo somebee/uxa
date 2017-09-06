@@ -58,6 +58,7 @@ tag Palette
 				<Button.secondary label="Secondary">
 				<Button.primary label="Primary">
 				<Button.primary label="Disabled" disabled=yes>
+				<Button.primary icon='v' label="Primary">
 				
 			<section>
 				<h3> "Typography"

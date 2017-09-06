@@ -29,7 +29,7 @@
 	min-width: var(--btn-min-width);
 	font-size: var(--btn-font-size);
 	margin-right: var(--gap);
-
+	position: relative;
 	font-weight: 500;
 	border-radius: 2px;
 	text-transform: uppercase;
@@ -37,6 +37,18 @@
 	b,i {
 		font-weight: inherit;
 		font-style: inherit;
+	}
+
+	.Icon {
+		position: absolute;
+		line-height: var(--btn-height);
+		top: 0px;
+		left: 0px;
+		font-size: 20px;
+	}
+
+	.Icon + b {
+		margin-left: 20px;
 	}
 
 	&:focus {
@@ -87,7 +99,7 @@
 		transition: all 0.2s ease;
 		border-bottom: 2px solid;
 		border-color: inherit;
-		opacity: 0.4;
+		opacity: 0;
 	}
 
 	&:hover {

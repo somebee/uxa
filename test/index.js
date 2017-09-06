@@ -6667,7 +6667,8 @@
 					(__.CB = __.CB || Button.build(self).flag('muted').setLabel("Dismiss")).end(),
 					(__.CC = __.CC || Button.build(self).flag('secondary').setLabel("Secondary")).end(),
 					(__.CD = __.CD || Button.build(self).flag('primary').setLabel("Primary")).end(),
-					(__.CE = __.CE || Button.build(self).flag('primary').setLabel("Disabled").setDisabled(true)).end()
+					(__.CE = __.CE || Button.build(self).flag('primary').setLabel("Disabled").setDisabled(true)).end(),
+					(__.CF = __.CF || Button.build(self).flag('primary').setIcon('v').setLabel("Primary")).end()
 				],2).end(),
 				
 				(__.D = __.D || _T.SECTION(self)).setContent([
