@@ -18,8 +18,8 @@ export tag MenuItem < a
 		var action = self.action
 
 		if action isa String
-			action = [action,closest('.Menu').data]
-		if action isa Array
+			trigger(action,closest('.Menu').data)
+		elif action isa Array
 			trigger(action[0],action.slice(1))
 		else
 			trigger('activate')

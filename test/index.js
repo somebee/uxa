@@ -5083,15 +5083,22 @@
 			return this;
 		};
 		
-		tag.prototype.dataDidSet = function (icon){
-			// console.log "Icon#dataDidSet",icon
-			if ((typeof icon=='string'||icon instanceof String) && len$(icon) == 1 && "xwvo*-=+><:.^".indexOf(icon) >= 0) {
-				return (this.setText(icon),icon);
-			};
+		tag.prototype.build = function (){
+			return this.flag('uxa');
 		};
 		
-		// def build
-		//	<self> <i>
+		tag.prototype.dataDidSet = function (icon){
+			// console.log "Icon#dataDidSet",icon
+			if ((typeof icon=='string'||icon instanceof String)) {
+				if (len$(icon) == 1 && "xwvo*-=+><:.^".indexOf(icon) >= 0) {
+					this.setText(icon);
+				} else if (icon.indexOf('<svg') >= 0) {
+					this.flag('svg');
+					this.dom().innerHTML = icon;
+				};
+			};
+			return this;
+		};
 	})
 	exports.Icon = Icon;
 
@@ -5113,12 +5120,27 @@
 	var Icon = __webpack_require__(18).Icon;
 
 	var Button = _T.defineTag('Button', 'button', function(tag){
+		
+		tag.prototype.action = function(v){ return this._action; }
+		tag.prototype.setAction = function(v){ this._action = v; return this; };
 		tag.prototype.icon = function(v){ return this._icon; }
 		tag.prototype.setIcon = function(v){ this._icon = v; return this; };
 		tag.prototype.label = function(v){ return this._label; }
 		tag.prototype.setLabel = function(v){ this._label = v; return this; };
 		tag.prototype.uxaAnchor = function(v){ return this._uxaAnchor; }
 		tag.prototype.setUxaAnchor = function(v){ this._uxaAnchor = v; return this; };
+		
+		tag.prototype.contextData = function (){
+			var data = null;
+			var el = this;
+			while (el){
+				if (data = el.data()) {
+					return data;
+				};
+				el = el.parent();
+			};
+			return null;
+		};
 		
 		tag.prototype.ontap = function (e){
 			if (this.onmenu) {
@@ -5127,13 +5149,23 @@
 				if (menu) {
 					this.uxa().open(menu);
 				};
+				return;
+			};
+			
+			var action = this.action();
+			
+			if ((typeof action=='string'||action instanceof String)) {
+				// find closest data
+				this.trigger(action,this.contextData());
+				e.halt();
+			} else if (action instanceof Array) {
+				this.trigger(action[0],action.slice(1));
+				e.halt();
 			} else {
-				// Imba hack
 				e._responder = null;
 			};
 			return this;
 		};
-		
 		
 		tag.prototype.render = function (){
 			var self = this, __ = self.__;
@@ -10595,9 +10627,8 @@
 			var action = this.action();
 			
 			if ((typeof action=='string'||action instanceof String)) {
-				action = [action,this.closest('.Menu').data()];
-			};
-			if (action instanceof Array) {
+				this.trigger(action,this.closest('.Menu').data());
+			} else if (action instanceof Array) {
 				this.trigger(action[0],action.slice(1));
 			} else {
 				this.trigger('activate');
