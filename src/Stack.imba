@@ -1,9 +1,11 @@
 import Menu from './Menu'
 import Popover from './Popover'
+import Snackbar from './Snackbar'
 
 export tag Overlay
 	prop component
 	prop target
+	prop options
 	
 	prop isModal
 	prop isMenu
@@ -11,7 +13,7 @@ export tag Overlay
 	def render
 		<self>
 			component.flag('floating').flag('paper').end
-			<div.curtain :tap='autohide'>
+			<div.backdrop :tap='autohide'>
 
 	def show
 		document:body.appendChild(dom)
@@ -32,6 +34,13 @@ export tag Overlay
 			component.unflag('uxa-hide')
 			# remove css positions as well
 		self
+
+	def onevent e
+		# very experimental
+		if @eventResponder and !contains(@eventResponder) and e.type.indexOf('uxa') == 0
+			console.log "Overlay redirect event {e.type}"
+			e.redirect(@eventResponder)
+		self
 		
 	def autohide
 		unless @isModal
@@ -44,6 +53,7 @@ export tag Overlay
 	def setup
 		@isMenu = component isa Menu or component isa Popover
 		@isModal = component.hasFlag('modal')
+		@eventResponder = @options and @options:responder
 		console.log 'setup', target
 	
 	def reflow
@@ -92,26 +102,10 @@ export tag Overlay
 			css:right = Math.max((vw - box:right),10)
 
 		console.log x,vw,y,vh,ax,ay
-		
 		component.css(css)
 
-		# css
-		# 	padding-top: Math.round((box:bottom + sx) + 10)
-		# 	bottom: (vh - (box:top - 10 + sy))
-		# 	left: x
-		# 	max-width: Math.min( (xmax - x) * 2, (x - xmin) * 2)
-
-	def calculateLabelPosition
-		var box = dom.getBoundingClientRect
-		var ax = box:left / document:body:offsetWidth
-		var ay = box:top / document:body:offsetHeight
-
-		setFlag('ax',ax > 0.7 ? 'axr' : (ax < 0.3 ? 'axl' : 'axc'))
-		setFlag('ay',ay > 0.7 ? 'ayb' : (ay < 0.3 ? 'ayt' : 'ayc'))
-		self
-		
 
 export class Stack
-	def self.show item, rel
-		var overlay = <Overlay component=item target=rel>
+	def self.show item, rel, o = {}
+		var overlay = <Overlay component=item target=rel options=o>
 		overlay.show

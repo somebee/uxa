@@ -7,6 +7,8 @@ import Popover from './Popover'
 import Dialog from './Dialog'
 import Indicator from './Indicator'
 import Form from './Form'
+import Snackbar from './Snackbar'
+import Queue from './Queue'
 
 var showdown  = require('showdown')
 var mdconverter = showdown.Converter.new(noHeaderId: yes, tables: yes)
@@ -35,22 +37,33 @@ class UXA
 		@options = {}
 		self
 		
-	def open component
-		Stack.show(component, @owner)
-	
+	def open component, options = {}
+		Stack.show(component, @owner, options)
+
 	def menu component
 		self
 
 	def confirm message
 		var dialog = <Dialog markdown=message>
 		open(dialog)
+
+	def flash item, typ
+		if item isa String
+			item = <Snackbar .{typ or 'dark'} uxa:md=item>
+		
+		if item isa Snackbar
+			open(item)
+		self
 		
 	def set key, value
 		self[toSetter(key)](value)
 		
 	def mdDidSet value
 		@owner.html = md2html(md)
-		
+
+	def queue
+		@queue ||= Queue.new(@owner)
+
 
 # hello
 extend tag element
@@ -72,3 +85,4 @@ export var Popover = Popover
 export var Dialog = Dialog
 export var Form = Form
 export var Indicator = Indicator
+export var Snackbar = Snackbar

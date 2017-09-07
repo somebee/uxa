@@ -18,6 +18,9 @@
 		left: 0px;
 		width: 100%;
 		height: 8px;
+		// opacity: 0;
+		// display: none;
+		transition: opacity: 0.1s ease;
 	}
 }
 
@@ -32,8 +35,18 @@
 		opacity: 1;
 	}
 
+	
+
+	&.uxa-busy {
+		transform: scale(0.95);
+		.Indicator.uxa {
+			// display: block;
+			// opacity: 1;
+		}
+	}
+
 	&.uxa-hide {
-		transform: translateY(30px);
+		transform: translateY(0px) scale(0.8);
 		opacity: 0;
 	}
 }

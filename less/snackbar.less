@@ -1,0 +1,31 @@
+.Snackbar {
+	position: absolute;
+	bottom: 20px;
+	left: 20px;
+	font-size: var(--p-size);
+	padding: var(--mdu);
+	background: var(--uxa-tint-50);
+	color:  var(--uxa-tint-700);
+	z-index: 220;
+
+	& + .backdrop {
+		background: transparent;
+		// pointer-events: none;
+	}
+
+	&.floating {
+		transition: opacity 0.2s ease, transform 0.2s ease;
+		transform: translateY(0px);
+		opacity: 0;
+
+		&.uxa-show {
+			transform: translateY(0px);
+			opacity: 1;
+		}
+
+		&.uxa-hide {
+			transform: translateY(0px) scale(0.95);
+			opacity: 0;
+		}
+	}
+}

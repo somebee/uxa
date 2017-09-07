@@ -60,3 +60,12 @@ export tag Form < form
 			if field:name
 				o[field:name] = (field.@tag and field.@tag:value ? field.@tag.value : field:value)
 		return o
+
+	def onuxabusy e
+		e.halt
+		flag('uxa-busy')
+
+	def onuxaidle e
+		e.halt
+		setTimeout(&,200) do unflag('uxa-busy')
+		

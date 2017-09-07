@@ -59,7 +59,7 @@ tag LogForm < Form
 tag DialogExample < Button		
 	def ontap
 		if @template
-			uxa.open template()
+			uxa.open template(), responder: self
 			
 tag ColorSample
 	prop bg
@@ -94,6 +94,21 @@ tag Palette
 			<MenuItem icon='>' label='Sign out' disabled=yes>
 
 	
+	def submitLong e
+		console.log 'submitDialog',e
+		e.target.uxa.queue.add 10000 do |a|
+			Promise.new do |resolve,reject|
+				setTimeout(&,3500) do
+					console.log "resolve promise"
+					resolve()
+		self
+
+	def submitFail e
+		e.target.uxa.queue.add 10000 do |a|
+			Promise.new do |resolve,reject|
+				setTimeout(&,1500) do reject("Something went wrong!!")
+
+
 	def render
 		<self.paper .{tint}>
 			<h2> "{tint} panel"
@@ -109,6 +124,13 @@ tag Palette
 				<DialogExample.raised.primary label='Primary' ->
 					<Dialog.modal submitLabel='Absolutely'>
 						<div uxa:md="# Hello\nThis is a longer dialog explaining something right here?">
+
+				<DialogExample.raised.primary :uxasubmit='submitLong' label='Progress' ->
+					<Dialog.modal submitLabel='Process'>
+						<div uxa:md="This is a longer dialog explaining something right here?">
+
+				<DialogExample.raised.primary :uxasubmit='submitFail' label='Fail' ->
+					<Dialog.modal> <div uxa:md="This will fail on submit!">
 			
 			<section.flat>
 				<h3> "Flat buttons"
@@ -125,7 +147,7 @@ tag Palette
 				
 			<section>
 				<h2> "Indicators"
-				<Indicator type='indeterminate'>
+				# <Indicator type='indeterminate'>
 
 			<section>
 				<h3> "Colors"

@@ -17,6 +17,15 @@ export tag Dialog < Form
 	def onsubmit e
 		e.cancel.halt
 		submit
+		var res = trigger('uxa:submit')
+		console.log "triggered uxa:submit",res
+		var afterQueue = await uxa.queue
+		console.log "returned after queue",afterQueue
+		if uxa.queue.failed
+			console.log "failed?!?!",uxa.queue.error
+			uxa.flash uxa.queue.error
+		else
+			setTimeout(&,200) do hide
 		
 	def hide
 		trigger 'uxa:hide'
@@ -32,7 +41,7 @@ export tag Dialog < Form
 		<header@header>
 		
 	def indicator
-		<Indicator@indicator>
+		<Indicator@indicator[uxa.queue] type='forward'>
 	
 	def body
 		<section@body>
