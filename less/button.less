@@ -34,8 +34,10 @@
 	border-radius: 2px;
 	text-transform: uppercase;
 
-	--icon-color: var(--uxa-pri-A200);
-	--icon-alt-color: var(--uxa-tint-A300);
+	--color: white;
+	color: var(--color);
+
+	--icon-color: inherit;
 
 	b,i {
 		font-weight: inherit;
@@ -75,7 +77,6 @@
 	}
 
 	background: var(--uxa-tint-A400);
-	color: white; // does not work?
 
 	// &.danger { .btn-tint-mixin(danger); }
 	// &.primary { .btn-tint-mixin(primary); }
@@ -88,7 +89,11 @@
 
 .flat .Button.uxa {
 	background: transparent;
-	color: var(--uxa-tint-A400);
+
+	--color: var(--uxa-tint-A400);
+	--icon-color: var(--uxa-tint-A400);
+
+	color: var(--color);
 	margin-right: 0px;
 
 	&.muted {
