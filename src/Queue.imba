@@ -52,6 +52,7 @@ export class Queue
 		if o isa Number
 			o = {duration: o}
 
+		o:duration ||= 1000
 		o:startAt = Date.now
 		o:state = 'pending'
 

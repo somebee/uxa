@@ -159,6 +159,7 @@ tag Palette
 				
 			<section>
 				<div uxa:md=long>
+				<div.hx3 uxa:md=long>
 				<hr>
 				<LogForm>
 				

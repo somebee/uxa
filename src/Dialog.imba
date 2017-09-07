@@ -15,17 +15,25 @@ export tag Dialog < Form
 		self
 		
 	def onsubmit e
-		e.cancel.halt
-		submit
-		var res = trigger('uxa:submit')
-		console.log "triggered uxa:submit",res
-		var afterQueue = await uxa.queue
-		console.log "returned after queue",afterQueue
+		e.cancel.halt # should it do this by default?
+
+		if uxa.queue.busy
+			console.log "cannot submit while busy!"
+			return
+
+		trigger('uxa:submit',formData)
+		await uxa.queue
+
 		if uxa.queue.failed
 			console.log "failed?!?!",uxa.queue.error
 			uxa.flash uxa.queue.error
+			uxa.queue.reset
 		else
-			setTimeout(&,200) do hide
+			setTimeout(&,200) do
+				hide
+
+	def show
+		uxa.open(self)
 		
 	def hide
 		trigger 'uxa:hide'
@@ -33,9 +41,15 @@ export tag Dialog < Form
 	def submit
 		self
 		
-	def cancel
-		hide
-		self
+	def tapDismiss e
+		e.cancel.halt
+		trigger('uxa:dismiss')
+
+		if uxa.queue.idle
+			return hide
+		
+		await uxa.queue
+		setTimeout(&,200) do hide
 
 	def header
 		<header@header>
@@ -54,7 +68,7 @@ export tag Dialog < Form
 		
 	def footer
 		<footer@footer.flat>
-			<Button type='button' label=cancelLabel :tap='cancel'>
+			<Button type='button' label=cancelLabel :tap='tapDismiss'>
 			<Button.primary type='submit' label=submitLabel>
 		
 	def render

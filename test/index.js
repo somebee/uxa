@@ -4813,36 +4813,36 @@
 		return SetterCache[($1 = key)] || (SetterCache[$1] = Imba.toCamelCase('set-' + key));
 	};
 
-	function UXA(owner){
+	function UXAWrapper(owner){
 		this._owner = owner;
 		this._options = {};
 		this;
 	};
 
-	UXA.prototype.__md = {watch: 'mdDidSet',name: 'md'};
-	UXA.prototype.md = function(v){ return this._md; }
-	UXA.prototype.setMd = function(v){
+	UXAWrapper.prototype.__md = {watch: 'mdDidSet',name: 'md'};
+	UXAWrapper.prototype.md = function(v){ return this._md; }
+	UXAWrapper.prototype.setMd = function(v){
 		var a = this.md();
 		if(v != a) { this._md = v; }
 		if(v != a) { this.mdDidSet && this.mdDidSet(v,a,this.__md) }
 		return this;
 	};
 
-	UXA.prototype.open = function (component,options){
+	UXAWrapper.prototype.open = function (component,options){
 		if(options === undefined) options = {};
 		return Stack.show(component,this._owner,options);
 	};
 
-	UXA.prototype.menu = function (component){
+	UXAWrapper.prototype.menu = function (component){
 		return this;
 	};
 
-	UXA.prototype.confirm = function (message){
+	UXAWrapper.prototype.confirm = function (message){
 		var dialog = Dialog.build(this).setMarkdown(message).end();
 		return this.open(dialog);
 	};
 
-	UXA.prototype.flash = function (item,typ){
+	UXAWrapper.prototype.flash = function (item,typ){
 		if (item instanceof Error) {
 			item = item.message;
 			typ = 'dark'; // Error
@@ -4858,16 +4858,16 @@
 		return this;
 	};
 
-	UXA.prototype.set = function (key,value){
+	UXAWrapper.prototype.set = function (key,value){
 		return this[toSetter(key)](value);
 	};
 
-	UXA.prototype.mdDidSet = function (value){
+	UXAWrapper.prototype.mdDidSet = function (value){
 		var v_;
 		return (this._owner.setHtml(v_ = md2html(this.md())),v_);
 	};
 
-	UXA.prototype.queue = function (){
+	UXAWrapper.prototype.queue = function (){
 		return this._queue || (this._queue = new Queue(this._owner));
 	};
 
@@ -4876,7 +4876,7 @@
 	_T.extendTag('element', function(tag){
 		
 		tag.prototype.uxa = function (){
-			return this._uxa || (this._uxa = new UXA(this));
+			return this._uxa || (this._uxa = new UXAWrapper(this));
 		};
 		
 		tag.prototype.uxaSetAttribute = function (key,value){
@@ -4884,6 +4884,7 @@
 		};
 	});
 
+	var UXA = exports.UXA = new UXAWrapper(null);
 	var Button = exports.Button = Button;
 	var IconButton = exports.IconButton = IconButton;
 	var Menu = exports.Menu = Menu;
@@ -4896,6 +4897,10 @@
 	var Form = exports.Form = Form;
 	var Indicator = exports.Indicator = Indicator;
 	var Snackbar = exports.Snackbar = Snackbar;
+
+
+	window.UXA = UXA;
+
 
 
 /***/ },
@@ -4930,6 +4935,7 @@
 		
 		tag.prototype.show = function (){
 			document.body.appendChild(this.dom());
+			this.component().trigger('uxashow');
 			if (this._isMenu) this.reflow();
 			this.dom().offsetWidth;
 			this.flag('uxa-show');
@@ -5227,7 +5233,7 @@
 	var TextAreaProxy = _T.defineTag('TextAreaProxy', 'textarea', function(tag){
 		
 		tag.prototype.onfocus = function (e){
-			console.log('TextAreaProxy.onfocus',e);
+			// console.log 'TextAreaProxy.onfocus',e
 			return this.data().dom().focus();
 		};
 		
@@ -5263,7 +5269,7 @@
 		};
 		
 		tag.prototype.setAttribute = function (key,value){
-			console.log("Editable.setAttribute",key,value);
+			// console.log "Editable.setAttribute",key,value
 			if (this._raw) { this.raw().setAttribute(key,value) };
 			tag.__super__.setAttribute.apply(this,arguments);
 			return this;
@@ -5280,7 +5286,6 @@
 		};
 		
 		tag.prototype.oninput = function (){
-			console.log("Editable.oninput",this.value());
 			this.raw().dom().value = this.value();
 			return this;
 		};
@@ -5381,20 +5386,31 @@
 		
 		tag.prototype.onsubmit = function (e){
 			var self = this;
-			e.cancel().halt();
-			self.submit();
-			var res = self.trigger('uxa:submit');
-			console.log("triggered uxa:submit",res);
-			return Imba.await(self.uxa().queue()).then(function(afterQueue) {
+			e.cancel().halt(); // should it do this by default?
+			
+			if (self.uxa().queue().busy()) {
+				console.log("cannot submit while busy!");
+				return;
+			};
+			
+			self.trigger('uxa:submit',self.formData());
+			return Imba.await(self.uxa().queue()).then(function() {
 				
-				console.log("returned after queue",afterQueue);
+				
 				if (self.uxa().queue().failed()) {
 					console.log("failed?!?!",self.uxa().queue().error());
-					return self.uxa().flash(self.uxa().queue().error());
+					self.uxa().flash(self.uxa().queue().error());
+					return self.uxa().queue().reset();
 				} else {
-					return setTimeout(function() { return self.hide(); },200);
+					return setTimeout(function() {
+						return self.hide();
+					},200);
 				};
 			});
+		};
+		
+		tag.prototype.show = function (){
+			return this.uxa().open(this);
 		};
 		
 		tag.prototype.hide = function (){
@@ -5405,9 +5421,19 @@
 			return this;
 		};
 		
-		tag.prototype.cancel = function (){
-			this.hide();
-			return this;
+		tag.prototype.tapDismiss = function (e){
+			var self = this;
+			e.cancel().halt();
+			self.trigger('uxa:dismiss');
+			
+			if (self.uxa().queue().idle()) {
+				return self.hide();
+			};
+			
+			return Imba.await(self.uxa().queue()).then(function() {
+				
+				return setTimeout(function() { return self.hide(); },200);
+			});
 		};
 		
 		tag.prototype.header = function (){
@@ -5434,7 +5460,7 @@
 		tag.prototype.footer = function (){
 			var t0;
 			return (t0 = this._footer || _T.FOOTER(this).ref_('footer',this).flag('flat')).setContent([
-				(t0.__.$A = t0.__.$A || Button.build(this).setType('button').setHandler('tap','cancel',this)).setLabel(this.cancelLabel()).end(),
+				(t0.__.$A = t0.__.$A || Button.build(this).setType('button').setHandler('tap','tapDismiss',this)).setLabel(this.cancelLabel()).end(),
 				(t0.__.$B = t0.__.$B || Button.build(this).flag('primary').setType('submit')).setLabel(this.submitLabel()).end()
 			],2).end();
 		};
@@ -5474,16 +5500,19 @@
 		};
 		
 		tag.prototype.formDataDidSet = function (data){
-			console.log('formDataDidSet',data);
 			if (this._commited) { return this.applyFormData(data) };
+		};
+		
+		tag.prototype.loadFormData = function (){
+			if (this._formData) { return this.applyFormData(this._formData) };
 		};
 		
 		tag.prototype.commit = function (){
 			tag.__super__.commit.apply(this,arguments);
-			if (!this._commited && this._formData) {
-				this.applyFormData(this._formData);
+			if (!this._commited) {
+				this.loadFormData();
+				this._commited = true;
 			};
-			this._commited = true;
 			return this;
 		};
 		
@@ -10322,8 +10351,9 @@
 				
 				(__.D = __.D || _T.SECTION(self)).setContent([
 					(__.DA = __.DA || _T.DIV(self)).setNestedAttr('uxa','md',long).end(),
-					(__.DB = __.DB || _T.HR(self)).end(),
-					(__.DC = __.DC || LogForm.build(self)).end()
+					(__.DB = __.DB || _T.DIV(self).flag('hx3')).setNestedAttr('uxa','md',long).end(),
+					(__.DC = __.DC || _T.HR(self)).end(),
+					(__.DD = __.DD || LogForm.build(self)).end()
 				],2).end(),
 				
 				(__.E = __.E || _T.SECTION(self)).setContent(
@@ -10475,6 +10505,7 @@
 			o = {duration: o};
 		};
 		
+		o.duration || (o.duration = 1000);
 		o.startAt = Date.now();
 		o.state = 'pending';
 		

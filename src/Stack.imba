@@ -17,6 +17,7 @@ export tag Overlay
 
 	def show
 		document:body.appendChild(dom)
+		component.trigger('uxashow')
 		reflow if @isMenu
 		dom:offsetWidth
 		flag('uxa-show')

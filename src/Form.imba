@@ -4,14 +4,16 @@ export tag Form < form
 	prop formData watch: yes
 
 	def formDataDidSet data
-		console.log 'formDataDidSet',data
 		applyFormData(data) if @commited
+
+	def loadFormData
+		applyFormData(@formData) if @formData
 
 	def commit
 		super
-		if !@commited and @formData
-			applyFormData(@formData)
-		@commited = yes
+		if !@commited
+			loadFormData
+			@commited = yes
 		self
 
 	def formElements

@@ -27,7 +27,7 @@ export tag TextField
 tag TextAreaProxy < textarea
 	
 	def onfocus e
-		console.log 'TextAreaProxy.onfocus',e
+		# console.log 'TextAreaProxy.onfocus',e
 		data.dom.focus
 		
 	def oninput e
@@ -52,7 +52,7 @@ tag Editable
 		@raw
 	
 	def setAttribute key, value
-		console.log "Editable.setAttribute",key,value
+		# console.log "Editable.setAttribute",key,value
 		raw.setAttribute(key,value) if @raw
 		super
 		self
@@ -66,7 +66,6 @@ tag Editable
 		dom:innerText
 		
 	def oninput
-		console.log "Editable.oninput",value
 		raw.dom:value = value
 		self
 

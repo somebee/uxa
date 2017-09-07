@@ -28,7 +28,7 @@ def md2html md
 def toSetter key
 	SetterCache[key] ||= Imba.toCamelCase('set-'+key)
 
-class UXA
+class UXAWrapper
 	
 	prop md watch: yes
 	
@@ -73,11 +73,12 @@ class UXA
 extend tag element
 	
 	def uxa
-		@uxa ||= UXA.new(self)
+		@uxa ||= UXAWrapper.new(self)
 		
 	def uxaSetAttribute key,value
 		uxa.set(key,value)
-		
+
+export var UXA = UXAWrapper.new(null)
 export var Button = Button
 export var IconButton = IconButton
 export var Menu = Menu
@@ -90,3 +91,6 @@ export var Dialog = Dialog
 export var Form = Form
 export var Indicator = Indicator
 export var Snackbar = Snackbar
+
+if $web$
+	window.UXA = UXA
