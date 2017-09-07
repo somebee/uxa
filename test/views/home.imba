@@ -95,18 +95,29 @@ tag Palette
 
 	
 	def submitLong e
-		console.log 'submitDialog',e
 		e.target.uxa.queue.add 10000 do |a|
-			Promise.new do |resolve,reject|
-				setTimeout(&,3500) do
-					console.log "resolve promise"
-					resolve()
+			Promise.new do |resolve,reject| setTimeout(resolve,3500)
 		self
+
+	def submitShort e
+		e.target.uxa.queue.add 1000 do |a|
+			Promise.new do |resolve,reject| resolve() # setTimeout(resolve,4500)
+
+	def submitUnexpectedLong e
+		e.target.uxa.queue.add 2000 do |a|
+			Promise.new do |resolve,reject| setTimeout(resolve,4500)
 
 	def submitFail e
 		e.target.uxa.queue.add 10000 do |a|
 			Promise.new do |resolve,reject|
-				setTimeout(&,1500) do reject("Something went wrong!!")
+		
+				setTimeout(&,1500) do
+					try
+						Math.rendom
+					catch e
+						reject(e)
+					# reject("Something went wrong!!")
+
 
 
 	def render
@@ -131,6 +142,12 @@ tag Palette
 
 				<DialogExample.raised.primary :uxasubmit='submitFail' label='Fail' ->
 					<Dialog.modal> <div uxa:md="This will fail on submit!">
+
+				<DialogExample.raised.primary :uxasubmit='submitUnexpectedLong' label='Longer' ->
+					<Dialog.modal> <div uxa:md="This will take longer than expected">
+
+				<DialogExample.raised.primary :uxasubmit='submitShort' label='Instant' ->
+					<Dialog.modal> <div uxa:md="This will submit instantly">
 			
 			<section.flat>
 				<h3> "Flat buttons"

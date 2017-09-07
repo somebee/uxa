@@ -48,6 +48,10 @@ class UXA
 		open(dialog)
 
 	def flash item, typ
+		if item isa Error
+			item = item:message
+			typ = 'dark' # Error
+
 		if item isa String
 			item = <Snackbar .{typ or 'dark'} uxa:md=item>
 		

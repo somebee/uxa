@@ -4843,6 +4843,11 @@
 	};
 
 	UXA.prototype.flash = function (item,typ){
+		if (item instanceof Error) {
+			item = item.message;
+			typ = 'dark'; // Error
+		};
+		
 		if ((typeof item=='string'||item instanceof String)) {
 			item = Snackbar.build(this).flag(typ || 'dark').setNestedAttr('uxa','md',item).end();
 		};
@@ -5615,7 +5620,7 @@
 			
 			if (this.data() instanceof Queue) {
 				this._queue = this.data();
-				console.log("setting up Indicator for queue");
+				// console.log "setting up Indicator for queue"
 				this._handler = this.refresh.bind(this);
 				this.data().on('incr',this._handler);
 				this.data().on('decr',this._handler);
@@ -5625,7 +5630,7 @@
 		
 		tag.prototype.refresh = function (){
 			var end = this.expectedEndAt();
-			console.log("Indicator.refresh",end - Date.now(),this.state());
+			// console.log "Indicator.refresh",end - Date.now,state
 			
 			if (len$(this._queue)) {
 				this.start();
@@ -5676,7 +5681,11 @@
 			} else if (this.state() == 'start') {
 				return (this.setState(v_ = 'busy'),v_);
 			} else if (this.state() == 'busy') {
-				return (this.setState(v_ = 'finish'),v_);
+				if (this._queue && !this._queue.idle()) {
+					return (this.setState(v_ = 'stalled'),v_);
+				} else {
+					return (this.setState(v_ = 'finish'),v_);
+				};
 			} else if (this.state() == 'finish') {
 				return (this.setState(v_ = 'done'),v_);
 			};
@@ -5685,10 +5694,12 @@
 		tag.prototype.stateDidSet = function (state,prev){
 			var self = this;
 			self.setFlag('state',state);
-			console.log("Indicator.state",state,prev);
+			// console.log "Indicator.state",state,prev
 			clearTimeout(self._stateTimeout);
 			
 			var ms = 2;
+			var ease;
+			var x = 0;
 			
 			if (state == 'prep') {
 				self.unflag('running');
@@ -5696,17 +5707,20 @@
 				self.dom().offsetParent;
 			} else if (state == 'start') {
 				ms = 800;
-				var ease = "cubic-bezier(0.250, 1.190, 0.300, 0.865)";
+				x = 0.15;
+				ease = "cubic-bezier(0.250, 1.190, 0.300, 0.865)";
 				self._ind.css({transition: ("transform " + ms + "ms " + ease),transform: "scaleX(0.15)"});
 				self.flag('running');
 			} else if (state == 'busy') {
-				console.log("state to busy");
 				ms = self.expectedEndAt() - Date.now();
-				self._ind.css({transition: ("transform " + ms + "ms linear"),transform: "scaleX(0.85)"});
+				x = 0.85;
+				ease = "cubic-bezier(0.225, 0.710, 0.565, 0.985)";
+				self._ind.css({transition: ("transform " + ms + "ms " + ease),transform: "scaleX(0.85)"});
 			} else if (state == 'finish') {
 				ms = 200;
-				var ease1 = "cubic-bezier(0.260, 0.025, 0.000, 0.995)";
-				self._ind.css({transition: ("transform " + ms + "ms " + ease1),transform: "scaleX(1)"});
+				ease = "cubic-bezier(0.260, 0.025, 0.000, 0.995)";
+				x = 1;
+				self._ind.css({transition: ("transform " + ms + "ms " + ease),transform: "scaleX(1)"});
 			} else if (state == 'done') {
 				self.unflag('running');
 			};
@@ -10213,25 +10227,40 @@
 		
 		
 		tag.prototype.submitLong = function (e){
-			console.log('submitDialog',e);
 			e.target().uxa().queue().add(10000,function(a) {
-				return new Promise(function(resolve,reject) {
-					return setTimeout(function() {
-						console.log("resolve promise");
-						return resolve();
-					},3500);
-				});
+				return new Promise(function(resolve,reject) { return setTimeout(resolve,3500); });
 			});
 			return this;
+		};
+		
+		tag.prototype.submitShort = function (e){
+			return e.target().uxa().queue().add(1000,function(a) {
+				return new Promise(function(resolve,reject) { return resolve(); }); // setTimeout(resolve,4500)
+			});
+		};
+		
+		tag.prototype.submitUnexpectedLong = function (e){
+			return e.target().uxa().queue().add(2000,function(a) {
+				return new Promise(function(resolve,reject) { return setTimeout(resolve,4500); });
+			});
 		};
 		
 		tag.prototype.submitFail = function (e){
 			return e.target().uxa().queue().add(10000,function(a) {
 				return new Promise(function(resolve,reject) {
-					return setTimeout(function() { return reject("Something went wrong!!"); },1500);
+					
+					return setTimeout(function() {
+						try {
+							return Math.rendom();
+						} catch (e) {
+							return reject(e);
+						};
+						// reject("Something went wrong!!")
+					},1500);
 				});
 			});
 		};
+		
 		
 		
 		tag.prototype.render = function (){
@@ -10269,6 +10298,16 @@
 					(__.BF = __.BF || DialogExample.build(self).flag('raised').flag('primary').setHandler('uxasubmit','submitFail',self).setLabel('Fail')).setTemplate(function() {
 						var __ = this.__;
 						return (__.$A = __.$A || Dialog.build(this).flag('modal')).setContent((__.$AA = __.$AA || _T.DIV(this).setNestedAttr('uxa','md',"This will fail on submit!")).end(),2).end();
+					}).end(),
+					
+					(__.BG = __.BG || DialogExample.build(self).flag('raised').flag('primary').setHandler('uxasubmit','submitUnexpectedLong',self).setLabel('Longer')).setTemplate(function() {
+						var __ = this.__;
+						return (__.$A = __.$A || Dialog.build(this).flag('modal')).setContent((__.$AA = __.$AA || _T.DIV(this).setNestedAttr('uxa','md',"This will take longer than expected")).end(),2).end();
+					}).end(),
+					
+					(__.BH = __.BH || DialogExample.build(self).flag('raised').flag('primary').setHandler('uxasubmit','submitShort',self).setLabel('Instant')).setTemplate(function() {
+						var __ = this.__;
+						return (__.$A = __.$A || Dialog.build(this).flag('modal')).setContent((__.$AA = __.$AA || _T.DIV(this).setNestedAttr('uxa','md',"This will submit instantly")).end(),2).end();
 					}).end()
 				],2).end(),
 				

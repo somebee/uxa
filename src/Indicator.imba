@@ -16,7 +16,7 @@ export tag Indicator
 
 		if data isa Queue
 			@queue = data
-			console.log "setting up Indicator for queue"
+			# console.log "setting up Indicator for queue"
 			@handler = self:refresh.bind(self)
 			data.on('incr',@handler)
 			data.on('decr',@handler)
@@ -24,7 +24,7 @@ export tag Indicator
 
 	def refresh
 		var end = expectedEndAt
-		console.log "Indicator.refresh",end - Date.now,state
+		# console.log "Indicator.refresh",end - Date.now,state
 
 		if @queue.len
 			start
@@ -63,16 +63,21 @@ export tag Indicator
 		elif state == 'start'
 			state = 'busy'
 		elif state == 'busy'
-			state = 'finish'
+			if @queue and !@queue.idle
+				state = 'stalled'
+			else
+				state = 'finish'
 		elif state == 'finish'
 			state = 'done'
 
 	def stateDidSet state, prev
 		setFlag('state',state)
-		console.log "Indicator.state",state,prev
+		# console.log "Indicator.state",state,prev
 		clearTimeout(@stateTimeout)
 
 		let ms = 2
+		let ease
+		let x = 0
 
 		if state == 'prep'
 			unflag('running')
@@ -81,19 +86,23 @@ export tag Indicator
 
 		elif state == 'start'
 			ms = 800
-			let ease = "cubic-bezier(0.250, 1.190, 0.300, 0.865)"
+			x = 0.15
+			ease = "cubic-bezier(0.250, 1.190, 0.300, 0.865)"
 			@ind.css(transition: "transform {ms}ms {ease}", transform: "scaleX(0.15)")
 			flag('running')
 
 		elif state == 'busy'
-			console.log "state to busy"
 			ms = expectedEndAt - Date.now
-			@ind.css(transition: "transform {ms}ms linear", transform: "scaleX(0.85)")
+			x = 0.85
+			ease = "cubic-bezier(0.225, 0.710, 0.565, 0.985)"
+			@ind.css(transition: "transform {ms}ms {ease}", transform: "scaleX(0.85)")
 
 		elif state == 'finish'
 			ms = 200
-			let ease = "cubic-bezier(0.260, 0.025, 0.000, 0.995)"
+			ease = "cubic-bezier(0.260, 0.025, 0.000, 0.995)"
+			x = 1
 			@ind.css(transition: "transform {ms}ms {ease}", transform: "scaleX(1)")
+
 		elif state == 'done'
 			unflag('running')
 
