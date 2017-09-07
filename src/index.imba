@@ -1,5 +1,6 @@
 import Stack from './Stack'
-import Menu,MenuItem from './Menu'
+import Menu from './Menu'
+import MenuItem from './MenuItem'
 import Button,IconButton from './Button'
 import TextField,TextArea from './TextField'
 import ListItem from './ListItem'
@@ -82,6 +83,7 @@ export var UXA = UXAWrapper.new(null)
 export var Button = Button
 export var IconButton = IconButton
 export var Menu = Menu
+export var MenuItem = MenuItem
 export var TextField = TextField
 export var TextArea = TextArea
 export var ListItem = ListItem

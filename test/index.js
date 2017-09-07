@@ -4778,7 +4778,8 @@
 
 	__webpack_require__(1);
 	var Stack = __webpack_require__(16).Stack;
-	var Menu$ = __webpack_require__(17), Menu = Menu$.Menu, MenuItem = Menu$.MenuItem;
+	var Menu = __webpack_require__(17).Menu;
+	var MenuItem = __webpack_require__(36).MenuItem;
 	var Button$ = __webpack_require__(20), Button = Button$.Button, IconButton = Button$.IconButton;
 	var TextField$ = __webpack_require__(21), TextField = TextField$.TextField, TextArea = TextField$.TextArea;
 	var ListItem = __webpack_require__(22).ListItem;
@@ -4888,10 +4889,11 @@
 	var Button = exports.Button = Button;
 	var IconButton = exports.IconButton = IconButton;
 	var Menu = exports.Menu = Menu;
+	var MenuItem = exports.MenuItem = MenuItem;
 	var TextField = exports.TextField = TextField;
 	var TextArea = exports.TextArea = TextArea;
 	var ListItem = exports.ListItem = ListItem;
-	var MenuItem = exports.MenuItem = MenuItem;
+	MenuItem = exports.MenuItem = MenuItem;
 	var Popover = exports.Popover = Popover;
 	var Dialog = exports.Dialog = Dialog;
 	var Form = exports.Form = Form;
@@ -5055,48 +5057,11 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(1);
-	var Icon = __webpack_require__(18).Icon;
+
 
 	var Menu = _T.defineTag('Menu')
 	exports.Menu = Menu;
 
-	var MenuItem = _T.defineTag('MenuItem', function(tag){
-		tag.prototype.icon = function(v){ return this._icon; }
-		tag.prototype.setIcon = function(v){ this._icon = v; return this; };
-		tag.prototype.rightIcon = function(v){ return this._rightIcon; }
-		tag.prototype.setRightIcon = function(v){ this._rightIcon = v; return this; };
-		tag.prototype.label = function(v){ return this._label; }
-		tag.prototype.setLabel = function(v){ this._label = v; return this; };
-		tag.prototype.subtext = function(v){ return this._subtext; }
-		tag.prototype.setSubtext = function(v){ this._subtext = v; return this; };
-		tag.prototype.disabled = function(v){ return this.getAttribute('disabled'); }
-		tag.prototype.setDisabled = function(v){ this.setAttribute('disabled',v); return this; };
-		
-		tag.prototype.ontap = function (e){
-			e.cancel().halt();
-			var res = this.trigger('activate');
-			return this.trigger('uxa:hide');
-		};
-		
-		tag.prototype.render = function (){
-			var self = this, __ = self.__;
-			return this.setChildren([
-				this.icon() ? (
-					(__.A = __.A || Icon.build(this).flag('left')).setData(this.icon()).end()
-				) : void(0),
-				self.label() ? (
-					(__.B = __.B || _T.DIV(self).flag('text')).setNestedAttr('uxa','md',self.label()).end()
-				) : void(0),
-				self.subtext() ? (
-					(__.C = __.C || _T.DIV(self).flag('subtext').flag('muted')).setNestedAttr('uxa','md',self.subtext()).end()
-				) : void(0),
-				self.rightIcon() ? (
-					(__.D = __.D || Icon.build(self).flag('right')).setData(self.rightIcon()).end()
-				) : void(0)
-			],1).synced();
-		};
-	})
-	exports.MenuItem = MenuItem;
 
 
 /***/ },
@@ -10596,6 +10561,70 @@
 
 	var Snackbar = _T.defineTag('Snackbar')
 	exports.Snackbar = Snackbar;
+
+
+/***/ },
+/* 36 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(1);
+	var Icon = __webpack_require__(18).Icon;
+
+	var MenuItem = _T.defineTag('MenuItem', 'a', function(tag){
+		tag.prototype.action = function(v){ return this._action; }
+		tag.prototype.setAction = function(v){ this._action = v; return this; };
+		tag.prototype.icon = function(v){ return this._icon; }
+		tag.prototype.setIcon = function(v){ this._icon = v; return this; };
+		tag.prototype.rightIcon = function(v){ return this._rightIcon; }
+		tag.prototype.setRightIcon = function(v){ this._rightIcon = v; return this; };
+		tag.prototype.label = function(v){ return this._label; }
+		tag.prototype.setLabel = function(v){ this._label = v; return this; };
+		tag.prototype.subtext = function(v){ return this._subtext; }
+		tag.prototype.setSubtext = function(v){ this._subtext = v; return this; };
+		tag.prototype.disabled = function(v){ return this.getAttribute('disabled'); }
+		tag.prototype.setDisabled = function(v){ this.setAttribute('disabled',v); return this; };
+		
+		tag.prototype.ontap = function (e){
+			if (this.href()) {
+				this.trigger('uxa:hide');
+				return tag.__super__.ontap.call(this,e);
+			};
+			
+			e.cancel().halt();
+			
+			var action = this.action();
+			
+			if ((typeof action=='string'||action instanceof String)) {
+				action = [action,this.closest('.Menu').data()];
+			};
+			if (action instanceof Array) {
+				this.trigger(action[0],action.slice(1));
+			} else {
+				this.trigger('activate');
+			};
+			
+			return this.trigger('uxa:hide');
+		};
+		
+		tag.prototype.render = function (){
+			var self = this, __ = self.__;
+			return this.setChildren([
+				this.icon() ? (
+					(__.A = __.A || Icon.build(this).flag('left')).setData(this.icon()).end()
+				) : void(0),
+				self.label() ? (
+					(__.B = __.B || _T.DIV(self).flag('text')).setNestedAttr('uxa','md',self.label()).end()
+				) : void(0),
+				self.subtext() ? (
+					(__.C = __.C || _T.DIV(self).flag('subtext').flag('muted')).setNestedAttr('uxa','md',self.subtext()).end()
+				) : void(0),
+				self.rightIcon() ? (
+					(__.D = __.D || Icon.build(self).flag('right')).setData(self.rightIcon()).end()
+				) : void(0)
+			],1).synced();
+		};
+	})
+	exports.MenuItem = MenuItem;
 
 
 /***/ }

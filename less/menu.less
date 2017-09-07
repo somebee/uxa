@@ -31,8 +31,6 @@
 	padding: var(--mi-padding);
 	display: flex;
 	flex-direction: row;
-	// background: var(--mi-bg);
-	// color: var(--mi-color);
 	cursor: default;
 
 	--bg: var(--uxa-tint-0);
@@ -43,6 +41,8 @@
 
 	background: var(--bg);
 	padding-right: var(--lgu);
+	color: inherit;
+	text-decoration: none;
 
 	.Icon:first-child {
 		margin-right: var(--mdu);
@@ -51,6 +51,7 @@
 	}
 
 	&:hover {
+		text-decoration: none;
 		--icon-color: var(--uxa-pri-A400);
 		--bg: var(--hover-bg);
 	}
