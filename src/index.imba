@@ -59,12 +59,12 @@ class UXAWrapper
 		if item isa Snackbar
 			open(item)
 		self
-		
+
 	def set key, value
 		self[toSetter(key)](value)
 		
 	def mdDidSet value
-		@owner.html = md2html(md)
+		@owner.dom:innerHTML = md2html(md)
 
 	def queue
 		@queue ||= Queue.new(@owner)
@@ -78,6 +78,11 @@ extend tag element
 		
 	def uxaSetAttribute key,value
 		uxa.set(key,value)
+		
+extend class Imba.Event
+
+	def uxa
+		target.uxa
 
 export var UXA = UXAWrapper.new(null)
 export var Button = Button

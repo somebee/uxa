@@ -3,151 +3,10 @@
 
 :root {
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
-	--color: rgb(33, 37, 41);
-	--muted: rgb(134, 142, 150);
 }
 
 @import 'sizing';
 @import 'colors';
-
-.inherits(){
-	--alert-bg: var(--base-bg);
-	--alert-border-color: var(--base-border-color);
-	--ruler-color: var(--stroke);
-	--h1-color: var(--header-color);
-	--h2-color: var(--header-color);
-	--h3-color: var(--header-color);
-	--h4-color: var(--header-color);
-	--h5-color: var(--header-color);
-	--h6-color: var(--header-color);
-	--mi-icon-color: var(--icon-color);
-
-}
-
-.neutralx {
-
-	--base-bg: white;
-	--base-border-color: #ececec;
-	--base-color: #75818E; // #444444;
-
-	--drawer-bg: #f7f7f7;
-
-	--header-color: #3a4652;
-	--muted-color: rgb(134, 142, 150);
-	--muted-bg: #EAEAEA;
-
-	--link-color: #1A739C;
-	--stroke: #eff0f1;
-
-	--primary-color: #62abff;
-
-	--highlight-bg: #f9f9f9;
-	--highlight-bg: #F7F2E3;
-	--highlight-color: #988F73;
-	--alert-bg: #f9f9f9;
-
-	// buttons
-	--btn-bg: whitesmoke; // #737B84;
-	--btn-color: #3a4652;
-
-	--primary-btn-bg: #1E80F0;
-	--primary-btn-color: white;
-	--primary-btn-focus-bg: #1761BD;
-
-	--danger-btn-bg: #FC3841;
-	--danger-btn-color: white;
-
-	// strokes for input
-	--input-stroke: #777777;
-	--inactive-stroke: #777777;
-	--invalid-stroke: #FC0035;
-	--focus-stroke: #205FFF;
-	--disabled-stroke: #ADAEAE;
-	--disabled-color: #ADAEAE;
-
-	--icon-color: #62abff;
-
-	.inherits;
-
-
-	--li-bg: white;
-	--li-hover-bg: #F0F1F1;
-
-	--mi-bg: white;
-	--mi-hover-bg: #F0F1F1;
-}
-
-.primaryx {
-	--base-bg: #C6E4F4;
-	--base-border-color: #A0CDEC;
-	--base-color: #032E72;
-	--stroke: #A0CDEC;
-
-	--muted-color: rgb(103, 124, 160);
-
-	--highlight-bg: #c2ddea;
-	.inherits;
-}
-
-.darkx {
-	--base-bg: #202B31; // #141B1F;
-	--base-color: #bdc2c7;
-	--header-color: white;
-	--highlight-bg: #1f2529;
-	--highlight-color: #929da5;
-
-	--primary-color: #62abff;
-
-	--stroke: #262e35;
-	--link-color: #80c9ea;
-	--link-target-color: white;
-	.inherits;
-
-	--input-stroke: #777777;
-	--input-color: white;
-	--inactive-stroke: #777777;
-	--invalid-stroke: #FC4A5A;
-	--focus-stroke: #478AFF;
-	--disabled-stroke: #6B6B6C;
-
-	--mi-bg: #141B1F;
-	--mi-color: white;
-	--mi-hover-bg: #1E2930;
-}
-
-.successx {
-	--base-bg: #dff0d8;
-	--base-border-color: #d0e9c6;
-	--base-color: #30652F;
-	.inherits;
-}
-
-.warningx {
-	--base-bg: #FCF8DD;
-	--base-border-color: #F9F0C1;
-	--base-color: #765A2D;
-	.inherits;
-}
-
-.dangerx {
-	--base-bg: #EED6D6;
-	--base-border-color: #E6C0C1;
-	--base-color: #973032;
-	.inherits;
-	--raised-bg: #FC3841;
-}
-
-// predefined sizes and colors
-.text { font-size: var(--h4-size); }
-.subtext { font-size: var(--h5-size); }
-
-.paper {
-	background: var(--uxa-paper-bg);
-}
-
-.muted {
-	color: var(--muted-color);
-}
 
 blockquote > :last-child {
 	margin-bottom: 0px;
@@ -175,18 +34,12 @@ hr {
 	align-items: stretch;
 }
 
-.alert {
-	border: 1px solid;
-	border-radius: 2px;
-	background: var(--alert-bg);
-	border-color: var(--alert-border-color);
-	padding: .75rem 1.25rem;
-	margin-bottom: 1rem;
-	color: var(--base-color);
-
-	& > :last-child {
-		margin-bottom: 0;
-	}
+.hbar {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+	margin-bottom: 0px;
 }
 
 @import "icons.less";

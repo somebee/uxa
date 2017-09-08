@@ -45,14 +45,15 @@
 }
 
 :root {
+	--color: rgb(33, 37, 41);
+	--muted: rgb(134, 142, 150);
+
 	// weights       0       50      100     200     300     400     500     600     700     800     900     A100    A200    A400    A700
 	.tint-scale(base,#ffffff,#f5f5f5,#DDE4E8,#CAD0D4,#AEB3B6,#8B8F92,#696B6E,#4B4D4F,#363739,#202022,#000000,#000000,#000000,#000000,#000000);
 	.tint-scale(dark,#141B1F,#272E32,#3B4246,#4F5659,#63696D,#777D80,#8A9194,#9EA4A7,#B2B8BB,#C6CCCE,#DAE0E2,#3379CB,#4887D1,#73A4DD,#B4CFEF);
 	.tint-scale(pri, #B4CFEF,#A2C3EA,#91B8E5,#80ACE0,#6FA1DB,#5E96D7,#4C8AD2,#3B7FCD,#2A73C8,#1968C3,#085DBF,#3379CB,#4887D1,#73A4DD,#B4CFEF);
 	.tint-scale(sec, #DFFBE8,#C8F3D9,#B2EBCB,#9CE3BD,#85DBAF,#6FD4A1,#59CC92,#42C484,#2CBC76,#16B468,#00AD5A,#3379CB,#4887D1,#73A4DD,#B4CFEF);
 	// .tint-scale(dpri,#62ABFF,#5A9CE8,#528ED2,#4A7FBB,#4271A5,#3B638F,#335478,#2B4662,#23374B,#1B2935,#141B1F);
-	.tint-map(base,tint);
-
 	--uxa-paper-bg: var(--uxa-base-0);
 	--uxa-link-color: var(--uxa-pri-A400);
 	--uxa-danger-A400: #ff4e56;
@@ -66,11 +67,30 @@
 	--uxa-h4-color: var(--uxa-header-color);
 	--uxa-h5-color: var(--uxa-header-color);
 	--uxa-h6-color: var(--uxa-header-color);
+	--uxa-muted-color: var(--uxa-tint-400);
 }
 
 .dark {
 	.tint-map(dark,tint);
 	--uxa-paper-bg: var(--uxa-tint-50);
+}
+
+.light,:root{
+	.tint-map(base,tint);
+	--uxa-bg: var(--uxa-tint-0);
+	--uxa-color: var(--uxa-tint-600);
+	--uxa-stroke: var(--uxa-tint-100);
+	--uxa-paper-bg: var(--uxa-tint-50);
+	color: var(--uxa-color);
+	.palette;
+}
+
+.dark {
+	--uxa-bg: var(--uxa-tint-0);
+	--uxa-color: var(--uxa-tint-600);
+	--uxa-stroke: var(--uxa-tint-100);
+	color: var(--uxa-color);
+	.palette;
 }
 
 .primary {
@@ -81,12 +101,12 @@
 	.tint-map(sec,tint);
 }
 
-.dark,.base,:root {
-	--uxa-bg: var(--uxa-tint-0);
-	--uxa-color: var(--uxa-tint-600);
-	--uxa-stroke: var(--uxa-tint-100);
-	color: var(--uxa-color);
-	.palette;
+h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6 {
+	color: var(--uxa-header-color);
+}
+
+.muted {
+	color: var(--uxa-muted-color);
 }
 
 .hl {
@@ -96,11 +116,6 @@
 .paper {
 	background: var(--uxa-bg);
 	color: var(--uxa-color);
-}
-
-
-h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6 {
-	color: var(--uxa-header-color);
 }
 
 hr {

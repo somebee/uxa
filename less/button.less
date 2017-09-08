@@ -1,24 +1,7 @@
 
-// :root {
-// 	--raised-bg: #1E80F0;
-// 	--raised-color: white;
-// }
-
-.raised {
-	// --btn-bg: var(--raised-bg);
-	// --btn-color: var(--raised-color);
-}
 
 .flat {
-	--btn-bg: var(--flat-btn-bg);
-	--btn-color: var(--flat-btn-color);
 	--btn-padding: var(--flat-btn-padding);
-}
-
-.btn-tint-mixin(@name) {
-	--btn-bg: ~'var(--@{name}-btn-bg)';
-	--btn-color: ~'var(--@{name}-btn-color)';
-	--btn-focus-bg: ~'var(--@{name}-btn-focus-bg)';
 }
 
 .Button.uxa {
@@ -70,16 +53,10 @@
 	}
 
 	&:focus {
-		// --btn-bg: var(--btn-focus-bg);
-		// background: var(--btn-focus-bg);
-		// background: var(--btn-)
 		background: var(--uxa-tint-A700);
 	}
 
 	background: var(--uxa-tint-A400);
-
-	// &.danger { .btn-tint-mixin(danger); }
-	// &.primary { .btn-tint-mixin(primary); }
 }
 
 .Button:last-child {
@@ -143,17 +120,32 @@
 	}
 }
 
-.IconButton.uxa {
+.IconButton.uxa.uxa {
 	min-width: auto;
 	background: transparent;
 	padding: 0px;
 	min-width: var(--icon-size);
 	text-align: center;
 
+	--icon-color: var(--uxa-tint-300);
+	// --icon-color: var(--uxa-pri-A200);
+
+	.Icon {
+		opacity: 0.7;
+		transition: all 0.1s ease;
+	}
+
 	&:hover {
-		color: var(--uxa-pri-A200);
+		// --icon-color: var(--uxa-pri-A200);
+		// color: var(--uxa-pri-A200);
 		background: transparent;
 		box-shadow: none;
+		.Icon { opacity: 1; }
+	}
+
+	&:active {
+		--icon-color: var(--uxa-pri-A200);
+		// --icon-color: var(--uxa-pri-A400);
 	}
 
 	&:focus {
@@ -163,5 +155,21 @@
 
 	.Icon {
 		font-size: var(--icon-font-size);
+	}
+
+	&.floating {
+		--size: var(--floating-btn-size);
+		position: absolute;
+		width: var(--size);
+		height: var(--size);
+		top: 50%;
+		margin-top: calc(var(--size) * -0.5);
+		margin-left: calc(var(--size) * -0.5);
+		border-radius: 50%;
+		z-index: 10;
+		background: var(--icon-color);
+		.Icon {
+			color: white;
+		}
 	}
 }
