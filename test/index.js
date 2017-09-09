@@ -6912,10 +6912,11 @@
 				
 				(__.E = __.E || _T.SECTION(self)).setContent([
 					(__.EA = __.EA || _T.H2(self).setText("Typography")).end(),
-					(__.EB = __.EB || _T.DIV(self).flag('sm')).setNestedAttr('uxa','md',short).end(),
-					(__.EC = __.EC || _T.DIV(self).flag('md')).setNestedAttr('uxa','md',short).end(),
-					(__.ED = __.ED || _T.DIV(self).flag('lg')).setNestedAttr('uxa','md',short).end(),
-					(__.EE = __.EE || _T.DIV(self).flag('xl')).setNestedAttr('uxa','md',short).end()
+					(__.EB = __.EB || _T.DIV(self).flag('xs')).setNestedAttr('uxa','md',short).end(),
+					(__.EC = __.EC || _T.DIV(self).flag('sm')).setNestedAttr('uxa','md',short).end(),
+					(__.ED = __.ED || _T.DIV(self).flag('md')).setNestedAttr('uxa','md',short).end(),
+					(__.EE = __.EE || _T.DIV(self).flag('lg')).setNestedAttr('uxa','md',short).end(),
+					(__.EF = __.EF || _T.DIV(self).flag('xl')).setNestedAttr('uxa','md',short).end()
 				// <Indicator type='indeterminate'>
 				],2).end(),
 				

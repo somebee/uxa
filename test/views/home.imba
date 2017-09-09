@@ -175,6 +175,7 @@ tag Palette
 				
 			<section>
 				<h2> "Typography"
+				<div.xs uxa:md=short>
 				<div.sm uxa:md=short>
 				<div.md uxa:md=short>
 				<div.lg uxa:md=short>
