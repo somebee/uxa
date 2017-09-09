@@ -1,0 +1,36 @@
+
+:root {
+	--tile-width: 300px;
+	--tile-height: 240px;
+}
+
+
+.Tile {
+	--bg: var(--uxa-tint-50);
+	--footer-bg: var(--uxa-tint-50);
+	--padding: var(--mdu);
+	--spacing: var(--smu);
+
+	width: var(--tile-width);
+	height: var(--tile-height);
+
+	.vbox;
+	// display: inline-flex;
+	// background: var(--bg);
+
+	padding: var(--spacing);
+
+	& > .main {
+		background: var(--bg);
+		padding: var(--padding);
+		flex: 1 1 auto;
+		overflow: hidden;
+	}
+
+	& > .footer {
+		font-size: var(--h4-size);
+		padding: var(--padding);
+		background: fade(black,10%);
+
+	}
+}

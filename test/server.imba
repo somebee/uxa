@@ -29,7 +29,7 @@ app.get '/:name.css' do |req, res|
 		if req:params[1] == 'less'
 			return res.send data.toString
 
-		less.render(data.toString, paths: dirs) do |err,out| # , plugins: [LessPluginAutoPrefix]
+		less.render(data.toString, paths: dirs, strictMath: 'on') do |err,out| # , plugins: [LessPluginAutoPrefix]
 			if err
 				console.log "error from less",err
 				return res.send ""

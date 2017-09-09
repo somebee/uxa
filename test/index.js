@@ -4788,6 +4788,7 @@
 	var Indicator = __webpack_require__(33).Indicator;
 	var Form = __webpack_require__(31).Form;
 	var Snackbar = __webpack_require__(34).Snackbar;
+	var Tile = __webpack_require__(37).Tile;
 	var Queue = __webpack_require__(36).Queue;
 
 	var showdown = __webpack_require__(32);
@@ -4905,6 +4906,7 @@
 	var Form = exports.Form = Form;
 	var Indicator = exports.Indicator = Indicator;
 	var Snackbar = exports.Snackbar = Snackbar;
+	var Tile = exports.Tile = Tile;
 
 
 	window.UXA = UXA;
@@ -6712,11 +6714,13 @@
 	__webpack_require__(1);
 	var mdart = __webpack_require__(27);
 
-	var uxa$ = __webpack_require__(24), Button = uxa$.Button, TextField = uxa$.TextField, TextArea = uxa$.TextArea, Dialog = uxa$.Dialog, Menu = uxa$.Menu, MenuItem = uxa$.MenuItem, Form = uxa$.Form, Indicator = uxa$.Indicator;
+	var uxa$ = __webpack_require__(24), Button = uxa$.Button, TextField = uxa$.TextField, TextArea = uxa$.TextArea, Dialog = uxa$.Dialog, Menu = uxa$.Menu, MenuItem = uxa$.MenuItem, Form = uxa$.Form, Indicator = uxa$.Indicator, Tile = uxa$.Tile;
 
-	var short = "\n# Main heading\n\nThis is a short paragraph with a [link](#link) and some text.\n";
+	var short = "\n# Main heading\n## Heading 2\n### Heading 3\n#### Heading 4\n##### Heading 5\n###### Heading 6\n\nParagraph\n";
 
 	var long = "# Heading\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec cursus elit at\nodio congue, ac varius massa tincidunt. Nulla blandit odio vel bibendum \ncondimentum. In hac habitasse [platea](#platea) dictumst. Nam eu nisl ut erat \nsollicitudin tincidunt. Nunc nec scelerisque felis. Nulla fringilla \nid nulla vitae pulvinar.\n\n---\n\n## Heading 2\n\nNullam eget urna vitae ex ullamcorper dictum ac ullamcorper nisl. Mauris a\nquam non ante ullamcorper ultrices quis quis libero. Quisque ultrices lorem\nmetus. Duis mi est, elementum nec egestas a, luctus et lacus. Pellentesque\naugue libero, scelerisque sit amet purus ut, tempor sagittis neque.\n\n### Heading 3\n\nNullam eget urna vitae ex ullamcorper dictum ac ullamcorper nisl. Mauris a\nquam non ante ullamcorper ultrices quis quis libero. Quisque ultrices lorem\nmetus. Duis mi est, elementum nec egestas a, luctus et lacus. Pellentesque\naugue libero, scelerisque sit amet purus ut, tempor sagittis neque.\n";
+
+	var tile = "## Intro to the Hacker News API\nIn this tutorial we'll wrap the Hacker News API in a tiny SDK and learn how to use it to fetch data from Hacker News submissions and comments.";
 
 	var LogForm = _T.defineTag('LogForm', Form, function(tag){
 		
@@ -6906,16 +6910,36 @@
 					(__.DD = __.DD || LogForm.build(self)).end()
 				],2).end(),
 				
-				(__.E = __.E || _T.SECTION(self)).setContent(
-					(__.EA = __.EA || _T.H2(self).setText("Indicators")).end()
+				(__.E = __.E || _T.SECTION(self)).setContent([
+					(__.EA = __.EA || _T.H2(self).setText("Typography")).end(),
+					(__.EB = __.EB || _T.DIV(self).flag('sm')).setNestedAttr('uxa','md',short).end(),
+					(__.EC = __.EC || _T.DIV(self).flag('md')).setNestedAttr('uxa','md',short).end(),
+					(__.ED = __.ED || _T.DIV(self).flag('lg')).setNestedAttr('uxa','md',short).end(),
+					(__.EE = __.EE || _T.DIV(self).flag('xl')).setNestedAttr('uxa','md',short).end()
 				// <Indicator type='indeterminate'>
-				,2).end(),
+				],2).end(),
 				
 				(__.F = __.F || _T.SECTION(self)).setContent([
-					(__.FA = __.FA || _T.H3(self).setText("Colors")).end(),
-					(__.FB = __.FB || ColorScale.build(self).setTint('tint')).end(),
-					(__.FC = __.FC || ColorScale.build(self).setTint('pri')).end(),
-					(__.FD = __.FD || ColorScale.build(self).setTint('sec')).end()
+					(__.FA = __.FA || _T.H2(self).setText("Tiles")).end(),
+					(__.FB = __.FB || _T.DIV(self).flag('tiles').flag('hbox').flag('dark')).setContent([
+						(__.FBA = __.FBA || Tile.build(self)).setMd(tile).end(),
+						(__.FBB = __.FBB || Tile.build(self)).end(),
+						(__.FBC = __.FBC || Tile.build(self)).end()
+					],2).end(),
+					
+					(__.FC = __.FC || _T.H2(self).setText("Small")).end(),
+					(__.FD = __.FD || _T.DIV(self).flag('tiles').flag('hbox').flag('dark').flag('sm')).setContent([
+						(__.FDA = __.FDA || Tile.build(self)).setMd(tile).end(),
+						(__.FDB = __.FDB || Tile.build(self)).end(),
+						(__.FDC = __.FDC || Tile.build(self)).end()
+					],2).end()
+				],2).end(),
+				
+				(__.G = __.G || _T.SECTION(self)).setContent([
+					(__.GA = __.GA || _T.H3(self).setText("Colors")).end(),
+					(__.GB = __.GB || ColorScale.build(self).setTint('tint')).end(),
+					(__.GC = __.GC || ColorScale.build(self).setTint('pri')).end(),
+					(__.GD = __.GD || ColorScale.build(self).setTint('sec')).end()
 				// <ColorScale tint='dark'>
 				// <ColorSample bg='bg'>
 				// <ColorSample bg='alt-bg'>
@@ -7020,8 +7044,6 @@
 		
 		tag.prototype.type = function(v){ return this._type; }
 		tag.prototype.setType = function(v){ this._type = v; return this; };
-		tag.prototype.markdown = function(v){ return this._markdown; }
-		tag.prototype.setMarkdown = function(v){ this._markdown = v; return this; };
 		tag.prototype.__submitLabel = {'default': 'confirm',name: 'submitLabel'};
 		tag.prototype.submitLabel = function(v){ return this._submitLabel; }
 		tag.prototype.setSubmitLabel = function(v){ this._submitLabel = v; return this; }
@@ -7100,13 +7122,11 @@
 		tag.prototype.body = function (){
 			var t0;
 			return (t0 = this._body || _T.SECTION(this).ref_('body',this)).setContent([
-				this.markdown() ? (
-					(t0.__.$A = t0.__.$A || _T.SPAN(this)).setNestedAttr('uxa','md',this.markdown()).end()
-				) : (this._content ? (
+				this._content ? (
 					this._content
 				) : (this._template ? (
 					this.renderTemplate()
-				) : void(0)))
+				) : void(0))
 			],1).end();
 		};
 		
@@ -10661,6 +10681,40 @@
 			return Imba.once(this,'idle',cb);
 		};
 	};
+
+
+/***/ },
+/* 37 */
+/***/ function(module, exports, __webpack_require__) {
+
+	__webpack_require__(1);
+
+	var Tile = _T.defineTag('Tile', function(tag){
+		
+		// list of actions [ [action, icon], ... ]
+		tag.prototype.actions = function(v){ return this._actions; }
+		tag.prototype.setActions = function(v){ this._actions = v; return this; };
+		tag.prototype.__md = {'default': "# Hello\n## Subtitle\nSome random text right here",name: 'md'};
+		tag.prototype.md = function(v){ return this._md; }
+		tag.prototype.setMd = function(v){ this._md = v; return this; }
+		tag.prototype._md = "# Hello\n## Subtitle\nSome random text right here";
+		
+		tag.prototype.main = function (){
+			return (this._main || _T.DIV(this).ref_('main',this)).setNestedAttr('uxa','md',this.md()).end();
+		};
+		
+		tag.prototype.footer = function (){
+			return (this._footer || _T.DIV(this).ref_('footer',this).setText("This is the footer")).end();
+		};
+		
+		tag.prototype.render = function (){
+			return this.setChildren([
+				this.main(),
+				this.footer()
+			],1).synced();
+		};
+	})
+	exports.Tile = Tile;
 
 
 /***/ }

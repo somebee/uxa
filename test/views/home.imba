@@ -1,12 +1,17 @@
 var mdart = require '!raw-loader!../md/article.md'
 
-import Button,TextField,TextArea,Dialog,Menu,MenuItem,Form,Indicator from 'uxa'
+import Button,TextField,TextArea,Dialog,Menu,MenuItem,Form,Indicator,Tile from 'uxa'
 
 var short = """
 
 # Main heading
+## Heading 2
+### Heading 3
+#### Heading 4
+##### Heading 5
+###### Heading 6
 
-This is a short paragraph with a [link](#link) and some text.
+Paragraph
 
 """
 
@@ -35,6 +40,11 @@ quam non ante ullamcorper ultrices quis quis libero. Quisque ultrices lorem
 metus. Duis mi est, elementum nec egestas a, luctus et lacus. Pellentesque
 augue libero, scelerisque sit amet purus ut, tempor sagittis neque.
 
+"""
+
+var tile = """
+## Intro to the Hacker News API
+In this tutorial we'll wrap the Hacker News API in a tiny SDK and learn how to use it to fetch data from Hacker News submissions and comments.
 """
 
 tag LogForm < Form
@@ -164,8 +174,25 @@ tag Palette
 				<LogForm>
 				
 			<section>
-				<h2> "Indicators"
+				<h2> "Typography"
+				<div.sm uxa:md=short>
+				<div.md uxa:md=short>
+				<div.lg uxa:md=short>
+				<div.xl uxa:md=short>
 				# <Indicator type='indeterminate'>
+			
+			<section>
+				<h2> "Tiles"
+				<div.tiles.hbox.dark>
+					<Tile md=tile>
+					<Tile>
+					<Tile>
+				
+				<h2> "Small"
+				<div.tiles.hbox.dark.sm>
+					<Tile md=tile>
+					<Tile>
+					<Tile>
 
 			<section>
 				<h3> "Colors"

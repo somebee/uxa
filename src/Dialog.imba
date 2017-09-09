@@ -5,7 +5,6 @@ import Indicator from './Indicator'
 export tag Dialog < Form
 
 	prop type
-	prop markdown
 	prop submitLabel default: 'confirm'
 	prop cancelLabel default: 'dismiss'
 	
@@ -59,9 +58,7 @@ export tag Dialog < Form
 	
 	def body
 		<section@body>
-			if markdown
-				<span uxa:md=markdown>
-			elif @content
+			if @content
 				@content
 			elif @template
 				renderTemplate

@@ -9,6 +9,7 @@ import Dialog from './Dialog'
 import Indicator from './Indicator'
 import Form from './Form'
 import Snackbar from './Snackbar'
+import Tile from './Tile'
 import Queue from './Queue'
 
 var showdown  = require('showdown')
@@ -98,6 +99,7 @@ export var Dialog = Dialog
 export var Form = Form
 export var Indicator = Indicator
 export var Snackbar = Snackbar
+export var Tile = Tile
 
 if $web$
 	window.UXA = UXA

@@ -3,6 +3,55 @@
 	--uxa-masthead-height: 64px;
 }
 
+.unit-mixin(@xs,@sm,@md,@lg,@xl) {
+	--xsu: @xs;
+	--smu: @sm;
+	--mdu: @md;
+	--lgu: @lg;
+	--xlu: @xl;
+}
+
+.def-size(@size,@h1,@h2,@h3,@h4,@h5,@h6,@p) {
+	--uxa-@{size}-h1: @h1;
+	--uxa-@{size}-h2: @h2;
+	--uxa-@{size}-h3: @h3;
+	--uxa-@{size}-h4: @h4;
+	--uxa-@{size}-h5: @h5;
+	--uxa-@{size}-h6: @h6;
+	--uxa-@{size}-p: @p;
+}
+
+.map-size(@from,@to) {
+	--uxa-@{to}-h1: ~'var(--uxa-@{from}-h1)';
+	--uxa-@{to}-h2: ~'var(--uxa-@{from}-h2)';
+	--uxa-@{to}-h3: ~'var(--uxa-@{from}-h3)';
+	--uxa-@{to}-h4: ~'var(--uxa-@{from}-h4)';
+	--uxa-@{to}-h5: ~'var(--uxa-@{from}-h5)';
+	--uxa-@{to}-h6: ~'var(--uxa-@{from}-h6)';
+	--uxa-@{to}-p:  ~'var(--uxa-@{from}-p)';
+}
+
+:root {
+	//           h1   h2   h3   h4   h5   h6  p
+	.def-size(xs,16px,14px,13px,11px,10px, 9px,12px);
+	.def-size(sm,20px,20px,16px,13px,10px,13px,13px);
+	.def-size(md,26px,22px,16px,15px,14px,13px,15px);
+	.def-size(lg,30px,24px,18px,15px,14px,13px,16px);
+	.def-size(xl,36px,28px,22px,18px,16px,14px,18px);
+}
+
+:root,.md {
+	.map-size(md,size);
+}
+
+.xs {
+	.map-size(xs,size);
+}
+
+.lg {
+	.map-size(lg,size);
+}
+
 .xs {
 	--h1-size: 16px;
 	--h2-size: 14px;
@@ -10,11 +59,15 @@
 	--h4-size: 11px;
 	--h5-size: 10px;
 	--h6-size: 9px;
-	--p-size: 11px;
+	--p-size:  11px;
+
 	--li-height: 26px;
 	--btn-height: 26px;
 	--btn-font-size: 12px;
 	--btn-padding: 0px 10px;
+
+	.unit-mixin(2px,4px,8px,16px,24px);
+
 }
 .sm {
 	--h1-size: 32px;
@@ -30,16 +83,18 @@
 	--icon-size: 18px;
 	--btn-font-size: 13px;
 	--btn-padding: 0px 12px;
+
+	.unit-mixin(3px,6px,12px,24px,32px);
 }
 
 // sizing
 .md, :root {
-	--h1-size: 30px;
+	--h1-size: 26px;
 	--h2-size: 22px;
-	--h3-size: 18px;
+	--h3-size: 16px;
 	--h4-size: 15px;
 	--h5-size: 14px;
-	--h6-size: 11px;
+	--h6-size: 13px;
 	--h2-font-weight: 500;
 
 	--p-size: 15px;
@@ -62,6 +117,9 @@
 	--mdu: 16px;
 	--lgu: 32px;
 	--xlu: 48px;
+
+	.unit-mixin(4px,8px,16px,32px,48px);
+
 	--inset: 48px;
 
 	--li-height: 36px;
@@ -98,9 +156,9 @@
 h1,.h1 { font-size: var(--h1-size); }
 h2,.h2 { font-size: var(--h2-size); }
 h3,.h3 { font-size: var(--h3-size); }
-h4,.h4 { font-size: var(--h4-size); }
-h5,.h5 { font-size: var(--h5-size); }
-h6,.h6 { font-size: var(--h6-size); }
+h4,.h4 { font-size: var(--h4-size); font-weight: bolder; }
+h5,.h5 { font-size: var(--h5-size); font-weight: bolder; }
+h6,.h6 { font-size: var(--h6-size); font-weight: bolder; }
 
 .text { font-size: var(--h4-size); }
 .subtext { font-size: var(--h5-size); }
