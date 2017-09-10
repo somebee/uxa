@@ -17,6 +17,7 @@ export tag TextField
 	def render
 		<self.uxa>
 			input
+			<span.after>
 			<hr.static>
 			<hr.anim>
 			<label> label
@@ -78,7 +79,15 @@ export tag TextArea < TextField
 		<self.uxa>
 			input.raw
 			input
+			<span.after>
 			<hr.static>
 			<hr.anim>
 			<label> label
 			<span.helper.desc data-desc=desc> desc
+			
+export tag SelectField < TextField
+	
+	def input
+		<select@input>
+			<option> "First option"
+			<option> "Second option"

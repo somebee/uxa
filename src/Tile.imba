@@ -1,3 +1,4 @@
+import IconButton from './Button'
 
 export tag Tile
 	
@@ -6,10 +7,15 @@ export tag Tile
 	prop md default: "# Hello\n## Subtitle\nSome random text right here"
 
 	def main
-		<@main uxa:md=md>
+		<@main>
+			<.actions> <IconButton icon='*'>
+			<span.p1 uxa:md=md>
+					
 		
 	def footer
-		<@footer> "This is the footer"
+		<@footer>
+			<.p1> "By Some author"
+			<.c1> "This is the footer"
 	
 	def render
 		<self>

@@ -6,7 +6,7 @@
 	@width: 100%;
 	padding-top: 16px;
 
-	
+	--field-height: var(--uxa-button-size);
 
 	--color: var(--uxa-tint-900);
 	--invalid-color: var(--uxa-danger-A400);
@@ -19,6 +19,36 @@
 	--bar-color: var(--uxa-pri-A400);
 
 	color: var(--color);
+
+	select {
+		-webkit-appearance: none;
+	}
+
+	select ~ hr.static {
+		&:after {
+			// content: "O";
+			// display: block;
+			// position: absolute;
+		}
+	}
+
+	select + span.after {
+		position: relative;
+		width: 100%;
+		display: block;
+		color: var(--label-color);
+
+		&:after {
+			content: "d";
+			display: block;
+			position: absolute;
+			right: 0px;
+			line-height: var(--field-height);
+			bottom: 0px;
+			font-family: 'uxa' !important;
+
+		}
+	}
 
 	.input {
 		display: block;
@@ -77,7 +107,7 @@
 	}
 
 	.helper {
-		font-size: var(--h6-size);
+		font: var(--uxa-c1);
 		color: var(--desc-color);
 		cursor: default;
 	}
@@ -121,7 +151,8 @@
 		// }
 		& ~ label {
 			top: 0px;
-			font-size: var(--h6-size);
+			font: var(--uxa-c1);
+			// font-size: var(--h6-size);
 		}
 	}
 

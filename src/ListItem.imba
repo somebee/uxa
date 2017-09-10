@@ -13,9 +13,9 @@ export tag ListItem
 					<Icon[icon].left>
 			<div.main>
 				if label
-					<.text uxa:md=label>
+					<.h3.text uxa:md=label>
 				if subtext
-					<.subtext.muted uxa:md=subtext>
+					<.p1.muted uxa:md=subtext>
 			if right-icon
 				<Icon[right-icon].right>
 			

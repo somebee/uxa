@@ -5176,10 +5176,11 @@
 			var self = this, __ = self.__;
 			return this.flag('uxa').setChildren([
 				this.input(),
-				(__.A = __.A || _T.HR(this).flag('static')).end(),
-				(__.B = __.B || _T.HR(self).flag('anim')).end(),
-				(__.C = __.C || _T.LABEL(self)).setContent(self.label(),3).end(),
-				(__.D = __.D || _T.SPAN(self).flag('helper').flag('desc')).dataset('desc',self.desc()).setContent(self.desc(),3).end()
+				(__.A = __.A || _T.SPAN(this).flag('after')).end(),
+				(__.B = __.B || _T.HR(self).flag('static')).end(),
+				(__.C = __.C || _T.HR(self).flag('anim')).end(),
+				(__.D = __.D || _T.LABEL(self)).setContent(self.label(),3).end(),
+				(__.E = __.E || _T.SPAN(self).flag('helper').flag('desc')).dataset('desc',self.desc()).setContent(self.desc(),3).end()
 			],1).synced();
 		};
 	})
@@ -5259,14 +5260,27 @@
 			return this.flag('uxa').setChildren([
 				this.input().raw(),
 				this.input(),
-				(__.A = __.A || _T.HR(this).flag('static')).end(),
-				(__.B = __.B || _T.HR(self).flag('anim')).end(),
-				(__.C = __.C || _T.LABEL(self)).setContent(self.label(),3).end(),
-				(__.D = __.D || _T.SPAN(self).flag('helper').flag('desc')).dataset('desc',self.desc()).setContent(self.desc(),3).end()
+				(__.A = __.A || _T.SPAN(this).flag('after')).end(),
+				(__.B = __.B || _T.HR(self).flag('static')).end(),
+				(__.C = __.C || _T.HR(self).flag('anim')).end(),
+				(__.D = __.D || _T.LABEL(self)).setContent(self.label(),3).end(),
+				(__.E = __.E || _T.SPAN(self).flag('helper').flag('desc')).dataset('desc',self.desc()).setContent(self.desc(),3).end()
 			],1).synced();
 		};
 	})
 	exports.TextArea = TextArea;
+
+	var SelectField = _T.defineTag('SelectField', TextField, function(tag){
+		
+		tag.prototype.input = function (){
+			var t0;
+			return (t0 = this._input || _T.SELECT(this).ref_('input',this)).setContent([
+				(t0.__.$A = t0.__.$A || _T.OPTION(this).setText("First option")).end(),
+				(t0.__.$B = t0.__.$B || _T.OPTION(this).setText("Second option")).end()
+			],2).end();
+		};
+	})
+	exports.SelectField = SelectField;
 
 
 /***/ },
@@ -5296,10 +5310,10 @@
 				],1).end(),
 				(__.B = __.B || _T.DIV(self).flag('main')).setContent([
 					self.label() ? (
-						(__.BA = __.BA || _T.DIV(self).flag('text')).setNestedAttr('uxa','md',self.label()).end()
+						(__.BA = __.BA || _T.DIV(self).flag('h3').flag('text')).setNestedAttr('uxa','md',self.label()).end()
 					) : void(0),
 					self.subtext() ? (
-						(__.BB = __.BB || _T.DIV(self).flag('subtext').flag('muted')).setNestedAttr('uxa','md',self.subtext()).end()
+						(__.BB = __.BB || _T.DIV(self).flag('p1').flag('muted')).setNestedAttr('uxa','md',self.subtext()).end()
 					) : void(0)
 				],1).end(),
 				self.rightIcon() ? (
@@ -6715,12 +6729,15 @@
 	var mdart = __webpack_require__(27);
 
 	var uxa$ = __webpack_require__(24), Button = uxa$.Button, TextField = uxa$.TextField, TextArea = uxa$.TextArea, Dialog = uxa$.Dialog, Menu = uxa$.Menu, MenuItem = uxa$.MenuItem, Form = uxa$.Form, Indicator = uxa$.Indicator, Tile = uxa$.Tile;
+	var SelectField = __webpack_require__(19).SelectField;
 
-	var short = "\n# Main heading\n## Heading 2\n### Heading 3\n#### Heading 4\n##### Heading 5\n###### Heading 6\n\nParagraph\n";
+	var short = "\n# Main heading\n## Heading 2\n### Heading 3\n\nParagraph text\n";
 
 	var long = "# Heading\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec cursus elit at\nodio congue, ac varius massa tincidunt. Nulla blandit odio vel bibendum \ncondimentum. In hac habitasse [platea](#platea) dictumst. Nam eu nisl ut erat \nsollicitudin tincidunt. Nunc nec scelerisque felis. Nulla fringilla \nid nulla vitae pulvinar.\n\n---\n\n## Heading 2\n\nNullam eget urna vitae ex ullamcorper dictum ac ullamcorper nisl. Mauris a\nquam non ante ullamcorper ultrices quis quis libero. Quisque ultrices lorem\nmetus. Duis mi est, elementum nec egestas a, luctus et lacus. Pellentesque\naugue libero, scelerisque sit amet purus ut, tempor sagittis neque.\n\n### Heading 3\n\nNullam eget urna vitae ex ullamcorper dictum ac ullamcorper nisl. Mauris a\nquam non ante ullamcorper ultrices quis quis libero. Quisque ultrices lorem\nmetus. Duis mi est, elementum nec egestas a, luctus et lacus. Pellentesque\naugue libero, scelerisque sit amet purus ut, tempor sagittis neque.\n";
 
 	var tile = "## Intro to the Hacker News API\nIn this tutorial we'll wrap the Hacker News API in a tiny SDK and learn how to use it to fetch data from Hacker News submissions and comments.";
+
+	var tile2 = "In this [tutorial](#tutorial) we'll wrap the Hacker News API in a tiny SDK and learn how to use it to fetch data from Hacker News submissions and comments.";
 
 	var LogForm = _T.defineTag('LogForm', Form, function(tag){
 		
@@ -6732,11 +6749,12 @@
 			var self = this, __ = self.__;
 			return this.setChildren([
 				(__.A = __.A || TextField.build(this).setLabel("Title").setName('title').setPlaceholder("Descriptive title").setDesc("Some description of this")).end(),
-				(__.B = __.B || TextField.build(self).setLabel("Secret word").setName('secret').setPlaceholder("What is the secret?").setRequired(true).setPattern("uxauxa").setDesc("Can you guess it?")).end(),
-				(__.C = __.C || TextArea.build(self).setLabel("Description").setName('desc').setDesc("Please feel free to describe").setPlaceholder("Some description").setRequired(true)).end(),
-				(__.D = __.D || TextField.build(self).setLabel("Alias").setName('alias').setDesc("This field is disabled").setDisabled(true)).end(),
-				(__.E = __.E || Button.build(self).flag('primary').setLabel("Submit").setType('submit')).end(),
-				(__.F = __.F || Button.build(self).flag('primary').setLabel("Fill").setType('button').setHandler('tap','fill',self)).end()
+				(__.B = __.B || SelectField.build(self).setLabel("Category").setName('category').setDesc("Some description of this")).end(),
+				(__.C = __.C || TextField.build(self).setLabel("Secret word").setName('secret').setPlaceholder("What is the secret?").setRequired(true).setPattern("uxauxa").setDesc("Can you guess it?")).end(),
+				(__.D = __.D || TextArea.build(self).setLabel("Description").setName('desc').setDesc("Please feel free to describe").setPlaceholder("Some description").setRequired(true)).end(),
+				(__.E = __.E || TextField.build(self).setLabel("Alias").setName('alias').setDesc("This field is disabled").setDisabled(true)).end(),
+				(__.F = __.F || Button.build(self).flag('primary').setLabel("Submit").setType('submit')).end(),
+				(__.G = __.G || Button.build(self).flag('primary').setLabel("Fill").setType('button').setHandler('tap','fill',self)).end()
 			],2).synced();
 		};
 		
@@ -6910,28 +6928,28 @@
 					(__.DD = __.DD || LogForm.build(self)).end()
 				],2).end(),
 				
-				(__.E = __.E || _T.SECTION(self)).setContent([
-					(__.EA = __.EA || _T.H2(self).setText("Typography")).end(),
-					(__.EB = __.EB || _T.DIV(self).flag('xs')).setNestedAttr('uxa','md',short).end(),
-					(__.EC = __.EC || _T.DIV(self).flag('sm')).setNestedAttr('uxa','md',short).end(),
-					(__.ED = __.ED || _T.DIV(self).flag('md')).setNestedAttr('uxa','md',short).end(),
-					(__.EE = __.EE || _T.DIV(self).flag('lg')).setNestedAttr('uxa','md',short).end(),
-					(__.EF = __.EF || _T.DIV(self).flag('xl')).setNestedAttr('uxa','md',short).end()
+				(__.E = __.E || _T.SECTION(self)).setContent(
+					// <h2> "Typography"
+					// <div.xs uxa:md=short>
+					// <div.sm uxa:md=short>
+					(__.EA = __.EA || _T.DIV(self).flag('md')).setNestedAttr('uxa','md',short).end()
+				// <div.lg uxa:md=short>
+				// <div.xl uxa:md=short>
 				// <Indicator type='indeterminate'>
-				],2).end(),
+				,2).end(),
 				
 				(__.F = __.F || _T.SECTION(self)).setContent([
 					(__.FA = __.FA || _T.H2(self).setText("Tiles")).end(),
 					(__.FB = __.FB || _T.DIV(self).flag('tiles').flag('hbox').flag('dark')).setContent([
 						(__.FBA = __.FBA || Tile.build(self)).setMd(tile).end(),
-						(__.FBB = __.FBB || Tile.build(self)).end(),
+						(__.FBB = __.FBB || Tile.build(self)).setMd(tile2).end(),
 						(__.FBC = __.FBC || Tile.build(self)).end()
 					],2).end(),
 					
 					(__.FC = __.FC || _T.H2(self).setText("Small")).end(),
 					(__.FD = __.FD || _T.DIV(self).flag('tiles').flag('hbox').flag('dark').flag('sm')).setContent([
 						(__.FDA = __.FDA || Tile.build(self)).setMd(tile).end(),
-						(__.FDB = __.FDB || Tile.build(self)).end(),
+						(__.FDB = __.FDB || Tile.build(self)).setMd(tile2).end(),
 						(__.FDC = __.FDC || Tile.build(self)).end()
 					],2).end()
 				],2).end(),
@@ -6957,22 +6975,8 @@
 			var self = this, __ = self.__;
 			return this.setChildren([
 				(__.A = __.A || Palette.build(this).setTint('neutral')).end(),
-				(__.B = __.B || Palette.build(self).setTint('dark')).end(),
-				
-				(__.C = __.C || _T.DIV(self).flag('section')).setNestedAttr('uxa','md',mdart).end(),
-				(__.D = __.D || TextField.build(self).setLabel("Something").setPlaceholder("Nothing to see")).end(),
-				(__.E = __.E || _T.BUTTON(self).setHandler('tap','conf',self).setText('confirm')).end(),
-				(__.F = __.F || _T.H2(self).setText("Markdown examples")).end(),
-				(__.G = __.G || _T.DIV(self).setNestedAttr('uxa','md',"hello")).end(),
-				(__.H = __.H || _T.DIV(self).setNestedAttr('uxa','md',"# hello\nagain")).end()
+				(__.B = __.B || Palette.build(self).setTint('dark')).end()
 			],2).synced();
-		};
-		
-		tag.prototype.conf = function (){
-			return Imba.await(this.uxa().confirm("Are you sure you want to do this?")).then(function(res) {
-				
-				return console.log("response from confirm",res);
-			});
 		};
 	})
 	exports.Home = Home;
@@ -10689,6 +10693,7 @@
 /***/ function(module, exports, __webpack_require__) {
 
 	__webpack_require__(1);
+	var IconButton = __webpack_require__(18).IconButton;
 
 	var Tile = _T.defineTag('Tile', function(tag){
 		
@@ -10701,11 +10706,20 @@
 		tag.prototype._md = "# Hello\n## Subtitle\nSome random text right here";
 		
 		tag.prototype.main = function (){
-			return (this._main || _T.DIV(this).ref_('main',this)).setNestedAttr('uxa','md',this.md()).end();
+			var t0;
+			return (t0 = this._main || _T.DIV(this).ref_('main',this)).setContent([
+				(t0.__.$A = t0.__.$A || _T.DIV(this).flag('actions')).setContent((t0.__.$AA = t0.__.$AA || IconButton.build(this).setIcon('*')).end(),2).end(),
+				(t0.__.$B = t0.__.$B || _T.SPAN(this).flag('p1')).setNestedAttr('uxa','md',this.md()).end()
+			],2).end();
 		};
 		
+		
 		tag.prototype.footer = function (){
-			return (this._footer || _T.DIV(this).ref_('footer',this).setText("This is the footer")).end();
+			var t0;
+			return (t0 = this._footer || _T.DIV(this).ref_('footer',this)).setContent([
+				(t0.__.$A = t0.__.$A || _T.DIV(this).flag('p1').setText("By Some author")).end(),
+				(t0.__.$B = t0.__.$B || _T.DIV(this).flag('c1').setText("This is the footer")).end()
+			],2).end();
 		};
 		
 		tag.prototype.render = function (){

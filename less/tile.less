@@ -7,9 +7,14 @@
 
 .Tile {
 	--bg: var(--uxa-tint-50);
-	--footer-bg: var(--uxa-tint-50);
+	--footer-bg: var(--uxa-tint-100);
+
 	--padding: var(--mdu);
 	--spacing: var(--smu);
+
+	h1,h2,h3 {
+		color: var(--uxa-tint-1000);
+	}
 
 	width: var(--tile-width);
 	height: var(--tile-height);
@@ -20,18 +25,29 @@
 
 	padding: var(--spacing);
 
+	& > .header {
+		&:extend(.hbar);
+		background: var(--bg);
+		padding: var(--padding);
+	}
+
 	& > .main {
 		background: var(--bg);
 		padding: var(--padding);
 		flex: 1 1 auto;
 		overflow: hidden;
-		&:extend(.xs);
+		&:extend(.sm);
+
+		.actions {
+			float: right;
+		}
 	}
 
 	& > .footer {
 		font-size: var(--h4-size);
-		padding: var(--padding);
-		background: fade(black,10%);
-		
+		padding: var(--smu) var(--padding);
+		background: var(--footer-bg);
+
+		&:extend(.hbar);
 	}
 }

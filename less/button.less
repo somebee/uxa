@@ -7,15 +7,19 @@
 .Button.uxa {
 	--webkit-appearance: none;
 	border: 1px solid transparent;
-	height: var(--btn-height);
+
+	--height: var(--uxa-button-size);
+
+	height: var(--height);
 	padding: var(--btn-padding);
-	min-width: var(--btn-min-width);
-	font-size: var(--btn-font-size);
+	min-width: var(--height);
+	
 	margin-right: var(--gap);
 	position: relative;
-	font-weight: 500;
 	border-radius: 2px;
-	text-transform: uppercase;
+
+	// text-transform: uppercase;
+	// font-size: var(--btn-font-size);
 
 	--color: white;
 	color: var(--color);
@@ -25,6 +29,11 @@
 	b,i {
 		font-weight: inherit;
 		font-style: inherit;
+	}
+
+	b {
+		font: var(--uxa-b1);
+		text-transform: uppercase;
 	}
 
 	.Icon {
@@ -124,27 +133,32 @@
 	min-width: auto;
 	background: transparent;
 	padding: 0px;
-	min-width: var(--icon-size);
+	
 	text-align: center;
 
-	--icon-color: var(--uxa-tint-300);
-	// --icon-color: var(--uxa-pri-A200);
+	--size: var(--uxs-icon);
+	--icon-color: var(--uxa-tint-1000);
+
+	width: var(--size);
+	height: var(--size);
+	flex: 0 0 auto;
 
 	.Icon {
-		opacity: 0.7;
+		opacity: var(--icon-opacity);
 		transition: all 0.1s ease;
+		line-height: 1;
+		vertical-align: top;
 	}
 
 	&:hover {
-		// --icon-color: var(--uxa-pri-A200);
-		// color: var(--uxa-pri-A200);
+		--icon-opacity: var(--icon-hover-opacity);
 		background: transparent;
 		box-shadow: none;
-		.Icon { opacity: 1; }
 	}
 
 	&:active {
-		--icon-color: var(--uxa-pri-A200);
+		--icon-opacity: var(--icon-active-opacity);
+		// --icon-color: var(--uxa-pri-A200);
 		// --icon-color: var(--uxa-pri-A400);
 	}
 

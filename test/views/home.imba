@@ -1,17 +1,15 @@
 var mdart = require '!raw-loader!../md/article.md'
 
 import Button,TextField,TextArea,Dialog,Menu,MenuItem,Form,Indicator,Tile from 'uxa'
+import SelectField from '../../src/TextField'
 
 var short = """
 
 # Main heading
 ## Heading 2
 ### Heading 3
-#### Heading 4
-##### Heading 5
-###### Heading 6
 
-Paragraph
+Paragraph text
 
 """
 
@@ -47,6 +45,10 @@ var tile = """
 In this tutorial we'll wrap the Hacker News API in a tiny SDK and learn how to use it to fetch data from Hacker News submissions and comments.
 """
 
+var tile2 = """
+In this [tutorial](#tutorial) we'll wrap the Hacker News API in a tiny SDK and learn how to use it to fetch data from Hacker News submissions and comments.
+"""
+
 tag LogForm < Form
 	
 	def fill
@@ -55,6 +57,7 @@ tag LogForm < Form
 	def render
 		<self>
 			<TextField label="Title" name='title' placeholder="Descriptive title" desc="Some description of this">
+			<SelectField label="Category" name='category' desc="Some description of this">
 			<TextField label="Secret word" name='secret' placeholder="What is the secret?" required=yes pattern="uxauxa" desc="Can you guess it?">
 			<TextArea label="Description" name='desc' desc="Please feel free to describe" placeholder="Some description" required=yes>
 			<TextField label="Alias" name='alias' desc="This field is disabled" disabled=yes>
@@ -174,25 +177,25 @@ tag Palette
 				<LogForm>
 				
 			<section>
-				<h2> "Typography"
-				<div.xs uxa:md=short>
-				<div.sm uxa:md=short>
+				# <h2> "Typography"
+				# <div.xs uxa:md=short>
+				# <div.sm uxa:md=short>
 				<div.md uxa:md=short>
-				<div.lg uxa:md=short>
-				<div.xl uxa:md=short>
+				# <div.lg uxa:md=short>
+				# <div.xl uxa:md=short>
 				# <Indicator type='indeterminate'>
 			
 			<section>
 				<h2> "Tiles"
 				<div.tiles.hbox.dark>
 					<Tile md=tile>
-					<Tile>
+					<Tile md=tile2>
 					<Tile>
 				
 				<h2> "Small"
 				<div.tiles.hbox.dark.sm>
 					<Tile md=tile>
-					<Tile>
+					<Tile md=tile2>
 					<Tile>
 
 			<section>
@@ -212,14 +215,4 @@ export tag Home
 		<self>
 			<Palette tint='neutral'>
 			<Palette tint='dark'>
-
-			<div.section uxa:md=mdart>
-			<TextField label="Something" placeholder="Nothing to see">
-			<button :tap='conf'> 'confirm'
-			<h2> "Markdown examples"
-			<div uxa:md="hello">
-			<div uxa:md="# hello\nagain">
 			
-	def conf
-		var res = await uxa.confirm("Are you sure you want to do this?")
-		console.log "response from confirm",res

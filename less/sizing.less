@@ -1,3 +1,16 @@
+/*
+
+Text sizes
+
+h1 - Heading
+h2 - Subheading
+h3 - List-headings etc
+body - body text
+h4 - caption - labels
+button
+
+*/
+
 :root {
 	--drawer-width: 240px;
 	--uxa-masthead-height: 64px;
@@ -20,6 +33,15 @@
 	--uxa-@{size}-h6: @h6;
 	--uxa-@{size}-p: @p;
 }
+.def-typo(@size,@typ,@h1,@h2,@h3,@p,@h4,@h5,@h6) {
+	--uxa-@{size}-h1@{typ}: @h1;
+	--uxa-@{size}-h2@{typ}: @h2;
+	--uxa-@{size}-h3@{typ}: @h3;
+	--uxa-@{size}-p@{typ}: @p;
+	--uxa-@{size}-h4@{typ}: @h4;
+	--uxa-@{size}-h5@{typ}: @h5;
+	--uxa-@{size}-h6@{typ}: @h6;
+}
 
 .map-size(@from,@to) {
 	--uxa-@{to}-h1: ~'var(--uxa-@{from}-h1)';
@@ -31,46 +53,83 @@
 	--uxa-@{to}-p:  ~'var(--uxa-@{from}-p)';
 }
 
+.map-type(@from,@to) {
+	--@{to}-h1: ~'var(--@{from}-h1)';
+	--@{to}-h2: ~'var(--@{from}-h2)';
+	--@{to}-h3: ~'var(--@{from}-h3)';
+	--@{to}-c1: ~'var(--@{from}-c1)';
+	--@{to}-c2: ~'var(--@{from}-c2)';
+	--@{to}-p1: ~'var(--@{from}-p1)';
+	--@{to}-b1: ~'var(--@{from}-b1)';
+
+	--@{to}-icon-size: ~'var(--@{from}-icon-size)';
+	--@{to}-button-size: ~'var(--@{from}-button-size)';
+}
+
 :root {
+	@font: system-ui;
 	//           h1   h2   h3   p    h4   h5   h6  
-	// define the sizes
-	.def-size(xs,16px,14px,13px,11px,11px,10px, 9px);
-	.def-size(sm,20px,20px,16px,13px,13px,10px,13px);
-	.def-size(md,26px,22px,16px,15px,15px,14px,13px);
-	.def-size(lg,30px,24px,18px,16px,15px,14px,13px);
-	.def-size(xl,36px,28px,22px,18px,18px,16px,14px);
-}
 
-:root,.md {
-	.map-size(md,size);
-	.unit-mixin(4px,8px,16px,32px,48px);
-}
+	// md - medium
+	--uxa-h1: 500 24px/1.2 @font;
+	--uxa-h2: 500 20px/1.2 @font;
+	--uxa-h3: 500 16px/1.2 @font;
+	--uxa-p1: 400 14px/1.5 @font;
+	--uxa-c1: 400 12px/1.0 @font; // caption
+	--uxa-c2: 300 12px/1.0 @font; // caption
+	--uxa-b1: 500 14px/1.0 @font; // button main
 
-.xs {
-	.map-size(xs,size);
-	.unit-mixin(2px,4px,8px,16px,24px);
+	--uxa-i1: 500 18px/1.0 @font; // icon-main
+
+	// icon size
+	--uxa-field-height: 32px;
+	--uxa-icon-size: 24px;
+	--uxa-button-size: 32px;
+
+	// sm - small
+	--uxa-sm-h1: 500 20px/1.2 @font;
+	--uxa-sm-h2: 500 16px/19px @font;
+	--uxa-sm-h3: 500 13px/1.2 @font;
+	--uxa-sm-p1: 300 12px/1.5 @font;
+	--uxa-sm-c1: 400 12px/1.0 @font; // caption
+	--uxa-sm-c2: 300 12px/1.0 @font; // caption
+	--uxa-sm-b1: 500 12px/1.0 @font; // button main
+
+	--uxa-sm-icon-size: 20px;
+	--uxa-sm-field-height: 26px;
+	--uxa-sm-button-size: 26px;
+
+	// .def-size(xs,16px,14px,13px,11px,11px,10px, 9px);
+	// .def-size(sm,20px,20px,16px,13px,13px,10px,13px);
+	// .def-size(md,24px,20px,16px,14px,12px,12px,12px);
+	// .def-typo(md,'',600 24px/1.2,500 20px/1.2,400 16px/1.2,400 16px/1.2);
+	// .def-size(lg,30px,24px,18px,16px,15px,14px,13px);
+	// .def-size(xl,36px,28px,22px,18px,18px,16px,14px);
+
+	// .def-size(xs,16px,14px,13px,11px,11px,10px, 9px);
+	// .def-size(sm,20px,20px,16px,13px,13px,10px,13px);
+	// .def-size(md,24px,20px,16px,14px,12px,12px,12px);
+	// .def-typo(md,'',600 24px/1.2,500 20px/1.2,400 16px/1.2,400 16px/1.2);
+	// .def-size(lg,30px,24px,18px,16px,15px,14px,13px);
+	// .def-size(xl,36px,28px,22px,18px,18px,16px,14px);
 }
 
 .sm {
-	.map-size(sm,size);
+	.map-type(uxa-sm,uxa);
 	--li-height: 32px;
 	--btn-height: 32px;
-	--icon-font-size: 14px;
-	--icon-size: 18px;
 	--btn-font-size: 13px;
 	--btn-padding: 0px 12px;
 	.unit-mixin(3px,6px,12px,24px,32px);
 }
 
-.lg {
-	.map-size(lg,size);
+:root,.md {
+	// .map-size(md,size);
+	.unit-mixin(4px,8px,16px,32px,48px);
 }
 
 // sizing
 .md, :root {
-
-	--font-size: 15px;
-	--btn-font-size: 14px;
 	--btn-height: 36px;
 	--icon-size: 24px;
 	--icon-font-size: 20px;
@@ -98,31 +157,29 @@
 	--icon-size: 48px;
 }
 
-.hx3 {
-	--h1-size: var(--h3-size);
-	--h2-size: var(--h4-size);
-	--h3-size: var(--h5-size);
-}
-
 .mb-xs { margin-bottom: var(--xsu); }
 .mb-sm { margin-bottom: var(--smu); }
 .mb-md,.mb { margin-bottom: var(--mdu); }
 .mb-lg { margin-bottom: var(--lgu); }
 .mb-xl { margin-bottom: var(--xlu); }
 
+h1,.h1 { font: var(--uxa-h1); }
+h2,.h2 { font: var(--uxa-h2); }
+h3,.h3 { font: var(--uxa-h3); }
+p,.p,.p1 { font: var(--uxa-p1); }
+h4,.h4,.c1,caption,.caption { font: var(--uxa-c1); }
+h5,.h5,.c2,caption,.caption { font: var(--uxa-c2); }
+
 // applied
-h1,.h1 { font-size: var(--uxa-size-h1); }
-h2,.h2 { font-size: var(--uxa-size-h2); }
-h3,.h3 { font-size: var(--uxa-size-h3); }
-h4,.h4 { font-size: var(--uxa-size-h4); font-weight: bolder; }
-h5,.h5 { font-size: var(--uxa-size-h5); font-weight: bolder; }
-h6,.h6 { font-size: var(--uxa-size-h6); font-weight: bolder; }
-
-h1,h2,h3,h4,h5,h6 {
-	line-height: 1.2em;
-}
-
-p,.p { font-size: var(--p-size); line-height: 1.5em; }
+/*
+h1,.h1 { font-size: var(--uxa-size-h1); font-weight: var(--uxa-size-h1w); }
+h2,.h2 { font-size: var(--uxa-size-h2); font-weight: var(--uxa-size-h2w); }
+h3,.h3 { font-size: var(--uxa-size-h3); font-weight: var(--uxa-size-h3w); }
+h4,.h4 { font-size: var(--uxa-size-h4); font-weight: var(--uxa-size-h4w); }
+h5,.h5 { font-size: var(--uxa-size-h5); font-weight: var(--uxa-size-h5w); }
+h6,.h6 { font-size: var(--uxa-size-h6); font-weight: var(--uxa-size-h6w); }
+p,.p { font-size: var(--uxa-size-p); font-weight: var(--uxa-size-pw); line-height: 1.5em; }
+*/
 
 // highlight
 blockquote {
