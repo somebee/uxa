@@ -38,10 +38,7 @@
 		flex: 1 1 auto;
 		overflow: hidden;
 
-		.actions {
-			float: right;
-			order: 100;
-		}
+		.actions { &:extend(.actions-right); }
 	}
 
 	& > .footer {
@@ -53,9 +50,7 @@
 		&:extend(.hbar);
 
 		.actions {
-			margin-left: auto;
-			float: right;
-			order: 100;
+			&:extend(.actions-right);
 		}
 	}
 }

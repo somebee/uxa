@@ -4970,8 +4970,8 @@
 		};
 		
 		tag.prototype.onevent = function (e){
-			// very experimental
-			if (this._eventResponder && !this.contains(this._eventResponder) && e.type().indexOf('uxa') == 0) {
+			// If it is a custom event
+			if (this._eventResponder && e.bubble() && !this.contains(this._eventResponder) && !(e.event() instanceof Event)) {
 				console.log(("Overlay redirect event " + (e.type())));
 				e.redirect(this._eventResponder);
 			};
@@ -4989,10 +4989,14 @@
 			return this.hide();
 		};
 		
+		tag.prototype.onuxashow = function (e){
+			return e.halt();
+		};
+		
 		tag.prototype.setup = function (){
 			this._isMenu = (this.component() instanceof Menu) || (this.component() instanceof Popover);
 			this._isModal = this.component().hasFlag('modal');
-			this._eventResponder = this._options && this._options.responder;
+			this._eventResponder = (this._options && this._options.responder) || (this._isMenu && this.target());
 			return console.log('setup',this.target());
 		};
 		

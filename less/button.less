@@ -140,13 +140,14 @@
 
 	min-width: var(--height);
 	--icon-color: var(--uxa-tint-1000);
-	display: flex;	
+	display: inline-flex;
 
 	.Icon {
 		opacity: var(--icon-opacity);
 		transition: all 0.1s ease;
 		vertical-align: top;
 		margin: auto;
+		will-change: opacity;
 	}
 
 	&:hover {
@@ -172,10 +173,21 @@
 		margin-left: calc(var(--height) * -0.5);
 		border-radius: 50%;
 		z-index: 10;
+
 		background: var(--icon-color);
+		opacity: var(--icon-opacity);
+
+		&:hover {
+			background: var(--icon-color);	
+		}
+
+		&:active {
+			background: var(--icon-color);
+		}
 
 		.Icon {
-			color: white;
+			color: black;
+			opacity: 1;
 		}
 	}
 }

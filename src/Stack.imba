@@ -37,8 +37,8 @@ export tag Overlay
 		self
 
 	def onevent e
-		# very experimental
-		if @eventResponder and !contains(@eventResponder) and e.type.indexOf('uxa') == 0
+		# If it is a custom event
+		if @eventResponder and e.bubble and !contains(@eventResponder) and !(e.event isa Event)
 			console.log "Overlay redirect event {e.type}"
 			e.redirect(@eventResponder)
 		self
@@ -50,11 +50,14 @@ export tag Overlay
 	def onuxahide e
 		e.halt
 		hide
+
+	def onuxashow e
+		e.halt
 	
 	def setup
 		@isMenu = component isa Menu or component isa Popover
 		@isModal = component.hasFlag('modal')
-		@eventResponder = @options and @options:responder
+		@eventResponder = (@options and @options:responder) or (@isMenu and target)
 		console.log 'setup', target
 	
 	def reflow
