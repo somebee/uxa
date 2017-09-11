@@ -2,7 +2,7 @@ import Stack from './Stack'
 import Menu from './Menu'
 import MenuItem from './MenuItem'
 import Button,IconButton from './Button'
-import TextField,TextArea from './TextField'
+import TextField,TextArea,SelectField from './TextField'
 import ListItem from './ListItem'
 import Popover from './Popover'
 import Dialog from './Dialog'
@@ -92,6 +92,7 @@ export var Menu = Menu
 export var MenuItem = MenuItem
 export var TextField = TextField
 export var TextArea = TextArea
+export var SelectField = SelectField
 export var ListItem = ListItem
 export var MenuItem = MenuItem
 export var Popover = Popover

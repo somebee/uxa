@@ -86,8 +86,18 @@ export tag TextArea < TextField
 			<span.helper.desc data-desc=desc> desc
 			
 export tag SelectField < TextField
+
+	def options= val
+		console.log "set options(!)",val
+		var input = self.input
+		# hacky
+		<select@input>
+			for item in val
+				<option value=item[0]> item[1] or item[0]
+				# input.dom.appendChild(opt.dom)
+		self
 	
 	def input
 		<select@input>
-			<option> "First option"
-			<option> "Second option"
+		# 	<option> "First option"
+		# 	<option> "Second option"

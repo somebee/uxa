@@ -30,19 +30,22 @@
 }
 
 .MenuItem {
-	padding: var(--mi-padding);
+	// padding: var(--mi-padding);
 	display: flex;
 	flex-direction: row;
 	cursor: default;
+	align-items: center;
 
+	--size: var(--uxa-ctrl);
 	--bg: var(--uxa-tint-0);
 	--hover-bg: var(--uxa-tint-50);
 	--active-bg: var(--uxa-tint-100);
 	--icon-color: var(--uxa-tint-300);
 	--disabled-color: var(--uxa-tint-300);
 
+	min-height: var(--size);
 	background: var(--bg);
-	padding-right: var(--lgu);
+	padding: 0px calc(var(--uxa-ctrl) * 0.5);
 	color: inherit;
 	text-decoration: none;
 

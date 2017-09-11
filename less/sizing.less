@@ -24,35 +24,6 @@ button
 	--xlu: @xl;
 }
 
-.def-size(@size,@h1,@h2,@h3,@p,@h4,@h5,@h6) {
-	--uxa-@{size}-h1: @h1;
-	--uxa-@{size}-h2: @h2;
-	--uxa-@{size}-h3: @h3;
-	--uxa-@{size}-h4: @h4;
-	--uxa-@{size}-h5: @h5;
-	--uxa-@{size}-h6: @h6;
-	--uxa-@{size}-p: @p;
-}
-.def-typo(@size,@typ,@h1,@h2,@h3,@p,@h4,@h5,@h6) {
-	--uxa-@{size}-h1@{typ}: @h1;
-	--uxa-@{size}-h2@{typ}: @h2;
-	--uxa-@{size}-h3@{typ}: @h3;
-	--uxa-@{size}-p@{typ}: @p;
-	--uxa-@{size}-h4@{typ}: @h4;
-	--uxa-@{size}-h5@{typ}: @h5;
-	--uxa-@{size}-h6@{typ}: @h6;
-}
-
-.map-size(@from,@to) {
-	--uxa-@{to}-h1: ~'var(--uxa-@{from}-h1)';
-	--uxa-@{to}-h2: ~'var(--uxa-@{from}-h2)';
-	--uxa-@{to}-h3: ~'var(--uxa-@{from}-h3)';
-	--uxa-@{to}-h4: ~'var(--uxa-@{from}-h4)';
-	--uxa-@{to}-h5: ~'var(--uxa-@{from}-h5)';
-	--uxa-@{to}-h6: ~'var(--uxa-@{from}-h6)';
-	--uxa-@{to}-p:  ~'var(--uxa-@{from}-p)';
-}
-
 .map-type(@from,@to) {
 	--@{to}-h1: ~'var(--@{from}-h1)';
 	--@{to}-h2: ~'var(--@{from}-h2)';
@@ -61,30 +32,31 @@ button
 	--@{to}-c2: ~'var(--@{from}-c2)';
 	--@{to}-p1: ~'var(--@{from}-p1)';
 	--@{to}-b1: ~'var(--@{from}-b1)';
+	--@{to}-ctrl: ~'var(--@{from}-ctrl)';
+	--@{to}-icon: ~'var(--@{from}-icon)';
+	font: ~'var(--@{to}-p1)';
+}
 
-	--@{to}-icon-size: ~'var(--@{from}-icon-size)';
-	--@{to}-button-size: ~'var(--@{from}-button-size)';
+.size(@name,@xs,@sm,@md,@lg,@xl) {
+	--uxa-xs-@{name}: @xs;
+	--uxa-sm-@{name}: @sm;
+	--uxa-md-@{name}: @md;
+	--uxa-lg-@{name}: @lg;
+	--uxa-xl-@{name}: @xl;
 }
 
 :root {
 	@font: system-ui;
-	//           h1   h2   h3   p    h4   h5   h6  
 
 	// md - medium
-	--uxa-h1: 500 24px/1.2 @font;
-	--uxa-h2: 500 20px/1.2 @font;
-	--uxa-h3: 500 16px/1.2 @font;
-	--uxa-p1: 400 14px/1.5 @font;
-	--uxa-c1: 400 12px/1.0 @font; // caption
-	--uxa-c2: 300 12px/1.0 @font; // caption
-	--uxa-b1: 500 14px/1.0 @font; // button main
-
-	--uxa-i1: 500 18px/1.0 @font; // icon-main
-
-	// icon size
-	--uxa-field-height: 32px;
-	--uxa-icon-size: 24px;
-	--uxa-button-size: 32px;
+	--uxa-md-h1: 500 24px/1.2 @font;
+	--uxa-md-h2: 500 20px/1.2 @font;
+	--uxa-md-h3: 500 16px/1.2 @font;
+	--uxa-md-p1: 400 15px/1.5 @font;
+	--uxa-md-c1: 400 12px/1.0 @font; // caption
+	--uxa-md-c2: 300 12px/1.0 @font; // caption
+	--uxa-md-b1: 500 14px/1.0 @font; // button main
+	--uxa-md-i1: 500 18px/1.0 @font; // icon-main
 
 	// sm - small
 	--uxa-sm-h1: 500 20px/1.2 @font;
@@ -95,68 +67,31 @@ button
 	--uxa-sm-c2: 300 12px/1.0 @font; // caption
 	--uxa-sm-b1: 500 12px/1.0 @font; // button main
 
-	--uxa-sm-icon-size: 20px;
-	--uxa-sm-field-height: 26px;
-	--uxa-sm-button-size: 26px;
+	.size(icon,14px,18px,22px,26px,36px);
+	.size(ctrl,20px,26px,32px,40px,48px);
+}
 
-	// list
-	--uxa-li-height: 56px;
-	--uxa-sm-li-height: 34px;
-
-	// .def-size(xs,16px,14px,13px,11px,11px,10px, 9px);
-	// .def-size(sm,20px,20px,16px,13px,13px,10px,13px);
-	// .def-size(md,24px,20px,16px,14px,12px,12px,12px);
-	// .def-typo(md,'',600 24px/1.2,500 20px/1.2,400 16px/1.2,400 16px/1.2);
-	// .def-size(lg,30px,24px,18px,16px,15px,14px,13px);
-	// .def-size(xl,36px,28px,22px,18px,18px,16px,14px);
-
-	// .def-size(xs,16px,14px,13px,11px,11px,10px, 9px);
-	// .def-size(sm,20px,20px,16px,13px,13px,10px,13px);
-	// .def-size(md,24px,20px,16px,14px,12px,12px,12px);
-	// .def-typo(md,'',600 24px/1.2,500 20px/1.2,400 16px/1.2,400 16px/1.2);
-	// .def-size(lg,30px,24px,18px,16px,15px,14px,13px);
-	// .def-size(xl,36px,28px,22px,18px,18px,16px,14px);
+.xs {
+	.map-type(uxa-xs,uxa);
 }
 
 .sm {
 	.map-type(uxa-sm,uxa);
-	--li-height: 32px;
-	--btn-height: 32px;
-	--btn-font-size: 13px;
-	--btn-padding: 0px 12px;
 	.unit-mixin(3px,6px,12px,24px,32px);
 }
 
-:root,.md {
-	// .map-size(md,size);
+.md {
+	.map-type(uxa-md,uxa);
 	.unit-mixin(4px,8px,16px,32px,48px);
 }
 
-// sizing
-.md, :root {
-	--btn-height: 36px;
-	--icon-size: 24px;
-	--icon-font-size: 20px;
-	--btn-padding: 0px 16px;
-	--btn-min-width: 64px;
-	--flat-btn-padding: 0px 8px;
-	--floating-btn-size: 48px;
-
-	--li-height: 36px;
-	--li-padding: 8px 12px;
-	--li-main-padding: 16px;
-	--mi-padding: 8px 12px;
+:root {
+	&:extend(.md);
 }
 
-.lg {
-	--icon-font-size: 26px;
-	--icon-size: 32px;
-}
+.lg { .map-type(uxa-lg,uxa); }
+.xl { .map-type(uxa-xl,uxa); }
 
-.xl {
-	--icon-font-size: 34px;
-	--icon-size: 48px;
-}
 
 .mb-xs { margin-bottom: var(--xsu); }
 .mb-sm { margin-bottom: var(--smu); }
@@ -170,17 +105,6 @@ h3,.h3 { font: var(--uxa-h3); }
 p,.p,.p1 { font: var(--uxa-p1); }
 h4,.h4,.c1,caption,.caption { font: var(--uxa-c1); }
 h5,.h5,.c2,caption,.caption { font: var(--uxa-c2); }
-
-// applied
-/*
-h1,.h1 { font-size: var(--uxa-size-h1); font-weight: var(--uxa-size-h1w); }
-h2,.h2 { font-size: var(--uxa-size-h2); font-weight: var(--uxa-size-h2w); }
-h3,.h3 { font-size: var(--uxa-size-h3); font-weight: var(--uxa-size-h3w); }
-h4,.h4 { font-size: var(--uxa-size-h4); font-weight: var(--uxa-size-h4w); }
-h5,.h5 { font-size: var(--uxa-size-h5); font-weight: var(--uxa-size-h5w); }
-h6,.h6 { font-size: var(--uxa-size-h6); font-weight: var(--uxa-size-h6w); }
-p,.p { font-size: var(--uxa-size-p); font-weight: var(--uxa-size-pw); line-height: 1.5em; }
-*/
 
 // highlight
 blockquote {

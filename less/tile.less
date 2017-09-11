@@ -24,6 +24,7 @@
 	// background: var(--bg);
 
 	padding: var(--spacing);
+	white-space: initial;
 
 	& > .header {
 		&:extend(.hbar);
@@ -39,6 +40,7 @@
 
 		.actions {
 			float: right;
+			order: 100;
 		}
 	}
 
@@ -46,7 +48,14 @@
 		font-size: var(--h4-size);
 		padding: var(--smu) var(--padding);
 		background: var(--footer-bg);
+		flex: 0 0 auto;
 
 		&:extend(.hbar);
+
+		.actions {
+			margin-left: auto;
+			float: right;
+			order: 100;
+		}
 	}
 }

@@ -1,6 +1,6 @@
 var mdart = require '!raw-loader!../md/article.md'
 
-import Button,TextField,TextArea,Dialog,Menu,MenuItem,Form,Indicator,Tile from 'uxa'
+import IconButton,Button,TextField,TextArea,Dialog,Menu,MenuItem,Form,Indicator,Tile from 'uxa'
 import SelectField from '../../src/TextField'
 
 var short = """
@@ -169,6 +169,21 @@ tag Palette
 				<Button.primary label="Primary">
 				<Button.primary label="Disabled" disabled=yes>
 				<Button.primary icon='v' label="Menu" :menu='menu'>
+				<h3> "Icon buttons"
+				<.hbar>
+					<IconButton.xs icon='*'>
+					<IconButton.sm icon='*'>
+					<IconButton.md icon='*'>
+					<IconButton.lg icon='*'>
+					<IconButton.xl icon='*'>
+
+				<h3> "Floating IconButton"
+				<.hbar css:position='relative'>
+					<IconButton.floating.xs icon='*'>
+					<IconButton.floating.sm icon='*'>
+					<IconButton.floating.md icon='*'>
+					<IconButton.floating.lg icon='*'>
+					<IconButton.floating.xl icon='*'>
 				
 			<section>
 				<div uxa:md=long>
@@ -213,6 +228,12 @@ export tag Home
 
 	def render
 		<self>
+			<section>
+				<h3> "Colors"
+				<ColorScale tint='base'>
+				<ColorScale tint='dark'>
+				<ColorScale tint='pri'>
+				<ColorScale tint='sec'>
 			<Palette tint='neutral'>
 			<Palette tint='dark'>
 			

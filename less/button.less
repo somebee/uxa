@@ -7,11 +7,13 @@
 .Button.uxa {
 	--webkit-appearance: none;
 	border: 1px solid transparent;
+	flex: 0 0 auto;
 
-	--height: var(--uxa-button-size);
+	--height: var(--uxa-ctrl);
+	--pad: calc(var(--height) * 0.5);
 
 	height: var(--height);
-	padding: var(--btn-padding);
+	padding: 0px var(--pad);
 	min-width: var(--height);
 	
 	margin-right: var(--gap);
@@ -72,9 +74,10 @@
 	margin-right: 0px;
 }
 
-
 .flat .Button.uxa {
 	background: transparent;
+
+	--pad: calc(var(--height) * 0.25);
 
 	--color: var(--uxa-tint-A400);
 	--icon-color: var(--uxa-tint-A400);
@@ -130,24 +133,20 @@
 }
 
 .IconButton.uxa.uxa {
-	min-width: auto;
 	background: transparent;
 	padding: 0px;
 	
 	text-align: center;
 
-	--size: var(--uxs-icon);
+	min-width: var(--height);
 	--icon-color: var(--uxa-tint-1000);
-
-	width: var(--size);
-	height: var(--size);
-	flex: 0 0 auto;
+	display: flex;	
 
 	.Icon {
 		opacity: var(--icon-opacity);
 		transition: all 0.1s ease;
-		line-height: 1;
 		vertical-align: top;
+		margin: auto;
 	}
 
 	&:hover {
@@ -158,8 +157,6 @@
 
 	&:active {
 		--icon-opacity: var(--icon-active-opacity);
-		// --icon-color: var(--uxa-pri-A200);
-		// --icon-color: var(--uxa-pri-A400);
 	}
 
 	&:focus {
@@ -167,21 +164,16 @@
 		color: var(--uxa-pri-A400);
 	}
 
-	.Icon {
-		font-size: var(--icon-font-size);
-	}
-
 	&.floating {
-		--size: var(--floating-btn-size);
+		// --size: var(--floating-btn-size);
 		position: absolute;
-		width: var(--size);
-		height: var(--size);
 		top: 50%;
-		margin-top: calc(var(--size) * -0.5);
-		margin-left: calc(var(--size) * -0.5);
+		margin-top: calc(var(--height) * -0.5);
+		margin-left: calc(var(--height) * -0.5);
 		border-radius: 50%;
 		z-index: 10;
 		background: var(--icon-color);
+
 		.Icon {
 			color: white;
 		}
