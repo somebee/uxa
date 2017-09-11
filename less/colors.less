@@ -70,12 +70,6 @@
 	--uxa-muted-color: var(--uxa-tint-400);
 }
 
-.dark {
-	.tint-map(dark,tint);
-	--uxa-paper-bg: var(--uxa-tint-50);
-}
-
-
 .light,:root{
 	.tint-map(base,tint);
 	--uxa-bg: var(--uxa-tint-0);
@@ -93,6 +87,8 @@
 }
 
 .dark {
+	.tint-map(dark,tint);
+	--uxa-paper-bg: var(--uxa-tint-50);
 	--uxa-bg: var(--uxa-tint-0);
 	--uxa-color: var(--uxa-tint-600);
 	--uxa-stroke: var(--uxa-tint-100);

@@ -6647,9 +6647,7 @@
 			this._avatar.uxa().open(Popover.build(this).flag('list').flag('inset').setContent([
 				ListItem.build(this).flag('header').setLabel('Sindre Aarsaether').setSubtext('hello@scrimba.com').end(),
 				ListItem.build(this).setLabel('Profile photo').setSubtext('Change your profile photo').end(),
-				ListItem.build(this).setLabel('Sign out').end(),
 				_T.HR(this).flag('sm').end(),
-				
 				Menu.build(this).flag('inset').setContent([
 					MenuItem.build(this).setIcon('w').setLabel('Open').end(),
 					MenuItem.build(this).setIcon('v').setLabel('Paste in place').end(),

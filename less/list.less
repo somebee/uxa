@@ -7,8 +7,9 @@
 }
 
 .li,.ListItem {
-	min-height: var(--li-height);
-	// padding: var(--li-padding);
+	--height: var(--uxa-li-height);
+
+	min-height: var(--height);
 	font-size: var(--p-size);
 	display: flex;
 	flex-direction: row;
@@ -30,7 +31,7 @@
 	}
 
 	& > .main {
-		padding: var(--li-main-padding);
+		// padding: var(--li-main-padding);
 	}
 
 	&:hover {

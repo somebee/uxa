@@ -18,9 +18,7 @@ export tag Head
 		@avatar.uxa.open <Popover.list.inset>
 			<ListItem.header label='Sindre Aarsaether' subtext='hello@scrimba.com'>
 			<ListItem label='Profile photo' subtext='Change your profile photo'>
-			<ListItem label='Sign out'>
 			<hr.sm>
-
 			<Menu.inset>
 				<MenuItem icon='w' label='Open'>
 				<MenuItem icon='v' label='Paste in place'>
