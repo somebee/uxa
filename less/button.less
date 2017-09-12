@@ -10,15 +10,16 @@
 	flex: 0 0 auto;
 
 	--height: var(--uxa-ctrl);
-	--pad: calc(var(--height) * 0.5);
+	--pad: calc(var(--height) * 0.25);
 
 	height: var(--height);
 	padding: 0px var(--pad);
 	min-width: var(--height);
 	
-	margin-right: var(--gap);
+	margin-right: var(--smu);
 	position: relative;
 	border-radius: 2px;
+	vertical-align: top;
 
 	// text-transform: uppercase;
 	// font-size: var(--btn-font-size);
@@ -27,31 +28,24 @@
 	color: var(--color);
 
 	--icon-color: inherit;
+	font: var(--uxa-b1);
 
-	b,i {
-		font-weight: inherit;
-		font-style: inherit;
+	i {
+		// font-style: inherit;
+		line-height: 1;
+		font-size: inherit;
+		font-weight: bold;
+		padding-right: 2px;
 	}
 
 	b {
-		font: var(--uxa-b1);
+		font-weight: inherit;
 		text-transform: uppercase;
+		vertical-align: top;
 	}
 
 	.Icon {
 		color: var(--icon-color);
-	}
-
-	.Icon:not(:only-child) {
-		position: absolute;
-		line-height: var(--btn-height);
-		top: 0px;
-		left: 0px;
-		font-size: 20px;
-	}
-
-	.Icon + b {
-		margin-left: 20px;
 	}
 
 	&:focus {
@@ -133,7 +127,6 @@
 }
 
 .IconButton.uxa.uxa {
-	background: transparent;
 	padding: 0px;
 	
 	text-align: center;
@@ -141,6 +134,8 @@
 	min-width: var(--height);
 	--icon-color: var(--uxa-tint-1000);
 	display: inline-flex;
+	border-radius: 100px;
+	background: transparent;
 
 	.Icon {
 		opacity: var(--icon-opacity);
@@ -148,11 +143,15 @@
 		vertical-align: top;
 		margin: auto;
 		will-change: opacity;
+		font-size: var(--size);
+		line-height: 1;
+		font-weight: normal;
+		padding: 0;
 	}
 
 	&:hover {
 		--icon-opacity: var(--icon-hover-opacity);
-		background: transparent;
+		background: fade(white,5%);
 		box-shadow: none;
 	}
 
