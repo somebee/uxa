@@ -11,6 +11,7 @@ import Form from './Form'
 import Snackbar from './Snackbar'
 import Tile from './Tile'
 import Queue from './Queue'
+import Actionable from './Actionable'
 
 var showdown  = require('showdown')
 var mdconverter = showdown.Converter.new(noHeaderId: yes, tables: yes)
@@ -104,6 +105,7 @@ export var Form = Form
 export var Indicator = Indicator
 export var Snackbar = Snackbar
 export var Tile = Tile
+export var Actionable = Actionable
 
 if $web$
 	window.UXA = UXA
