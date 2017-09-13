@@ -20,8 +20,10 @@ export tag Overlay
 		component.trigger('uxashow')
 		reflow if @isMenu
 		dom:offsetWidth
+		Imba.TagManager.insert(self,dom:parentNode)
 		flag('uxa-show')
 		component.flag('uxa-show')
+		Imba.TagManager.refresh
 		self
 
 	def hide
@@ -31,9 +33,12 @@ export tag Overlay
 		component.unflag('uxa-show')
 
 		setTimeout(&,200) do
-			dom:parentNode.removeChild(dom)
+			var par = dom:parentNode
+			par.removeChild(dom)
+			Imba.TagManager.remove(self,par)
 			component.unflag('uxa-hide')
 			# remove css positions as well
+			Imba.TagManager.refresh
 		self
 
 	def onevent e
