@@ -46,8 +46,11 @@ class UXAWrapper
 		self
 
 	def confirm message
-		var dialog = <Dialog markdown=message>
-		open(dialog)
+		Promise.new do |resolve,reject|
+			var ok = do resolve(yes)
+			var cancel = do resolve(no)
+			var dialog = <Dialog :uxadismiss=cancel :uxasubmit=ok> <span uxa:md=message>
+			open(dialog)
 
 	def flash item, typ
 		if item isa Error

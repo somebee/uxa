@@ -5,6 +5,7 @@ export tag Button < button
 	prop action
 	prop icon
 	prop label
+	prop href
 	prop uxa-anchor
 
 	def contextData
@@ -43,6 +44,9 @@ export tag Button < button
 			if icon
 				<Icon[icon]>
 			if label
-				<b uxa:md=label>
+				if href
+					<b> <a href=href uxa:md=label>
+				else
+					<b uxa:md=label>
 			
 export tag IconButton < Button

@@ -4840,8 +4840,13 @@
 	};
 
 	UXAWrapper.prototype.confirm = function (message){
-		var dialog = Dialog.build(this).setMarkdown(message).end();
-		return this.open(dialog);
+		var self = this;
+		return new Promise(function(resolve,reject) {
+			var ok = function() { return resolve(true); };
+			var cancel = function() { return resolve(false); };
+			var dialog = Dialog.build(self).setHandler('uxadismiss',cancel,self).setHandler('uxasubmit',ok,self).setContent(_T.SPAN(self).setNestedAttr('uxa','md',message).end(),2).end();
+			return self.open(dialog);
+		});
 	};
 
 	UXAWrapper.prototype.flash = function (item,typ){
@@ -5092,6 +5097,8 @@
 		tag.prototype.setIcon = function(v){ this._icon = v; return this; };
 		tag.prototype.label = function(v){ return this._label; }
 		tag.prototype.setLabel = function(v){ this._label = v; return this; };
+		tag.prototype.href = function(v){ return this._href; }
+		tag.prototype.setHref = function(v){ this._href = v; return this; };
 		tag.prototype.uxaAnchor = function(v){ return this._uxaAnchor; }
 		tag.prototype.setUxaAnchor = function(v){ this._uxaAnchor = v; return this; };
 		
@@ -5139,7 +5146,11 @@
 					(__.A = __.A || Icon.build(this)).setData(this.icon()).end()
 				) : void(0),
 				self.label() ? (
-					(__.B = __.B || _T.B(self)).setNestedAttr('uxa','md',self.label()).end()
+					self.href() ? (
+						(__.B = __.B || _T.B(self)).setContent((__.BA = __.BA || _T.A(self)).setHref(self.href()).setNestedAttr('uxa','md',self.label()).end(),2).end()
+					) : (
+						(__.C = __.C || _T.B(self)).setNestedAttr('uxa','md',self.label()).end()
+					)
 				) : void(0)
 			],1).synced();
 		};
@@ -6678,9 +6689,9 @@
 					MenuItem.build(this).setIcon('v').setLabel('Research').end(),
 					MenuItem.build(this).setIcon('.').setLabel('Go to site...').end(),
 					_T.HR(this).flag('sm').end(),
-					MenuItem.build(this).setIcon('>').setLabel('Home').end(),
-					MenuItem.build(this).setIcon('>').setLabel('Back').end(),
-					MenuItem.build(this).setIcon('>').setLabel('Sign out').setDisabled(true).end()
+					MenuItem.build(this).flag('pos').setIcon('>').setLabel('Home').end(),
+					MenuItem.build(this).flag('pri').setIcon('>').setLabel('Back').end(),
+					MenuItem.build(this).flag('neg').setIcon('>').setLabel('Sign out').setDisabled(true).end()
 				],2).end()
 			
 			// <Button label="My channel">
@@ -6700,9 +6711,9 @@
 				MenuItem.build(this).setIcon('v').setLabel('Research').end(),
 				MenuItem.build(this).setLabel('Go to site...').end(),
 				_T.HR(this).flag('sm').end(),
-				MenuItem.build(this).setIcon('>').setLabel('Home').end(),
-				MenuItem.build(this).setIcon('>').setLabel('Back').end(),
-				MenuItem.build(this).setIcon('>').setLabel('Sign out').setDisabled(true).end()
+				MenuItem.build(this).flag('pos').setIcon('>').setLabel('Home').end(),
+				MenuItem.build(this).flag('pri').setIcon('>').setLabel('Back').end(),
+				MenuItem.build(this).flag('neg').setIcon('>').setLabel('Sign out').setDisabled(true).end()
 			],2).end());
 		};
 		

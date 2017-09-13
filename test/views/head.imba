@@ -25,9 +25,9 @@ export tag Head
 				<MenuItem icon='v' label='Research'>
 				<MenuItem icon='.' label='Go to site...'>
 				<hr.sm>
-				<MenuItem icon='>' label='Home'>
-				<MenuItem icon='>' label='Back'>
-				<MenuItem icon='>' label='Sign out' disabled=yes>
+				<MenuItem.pos icon='>' label='Home'>
+				<MenuItem.pri icon='>' label='Back'>
+				<MenuItem.neg icon='>' label='Sign out' disabled=yes>
 
 			# <Button label="My channel">
 			# <Button label="Sign out">
@@ -44,9 +44,9 @@ export tag Head
 			<MenuItem icon='v' label='Research'>
 			<MenuItem label='Go to site...'>
 			<hr.sm>
-			<MenuItem icon='>' label='Home'>
-			<MenuItem icon='>' label='Back'>
-			<MenuItem icon='>' label='Sign out' disabled=yes>
+			<MenuItem.pos icon='>' label='Home'>
+			<MenuItem.pri icon='>' label='Back'>
+			<MenuItem.neg icon='>' label='Sign out' disabled=yes>
 		
 	def showCreate e
 		e.target.uxa.open <Dialog submitLabel='archive'>
