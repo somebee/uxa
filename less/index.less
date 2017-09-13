@@ -44,6 +44,20 @@ hr {
 	margin-bottom: 0px;
 }
 
+.vpanel {
+	& > .header, & > header, & > .footer, & > footer {
+		.actions {
+			white-space: nowrap;
+			float: right;
+			margin-left: auto;
+			order: 100;
+			display: flex;
+			flex-direction: row;
+			flex: 0 0 auto;
+		}
+	}
+}
+
 .actions-right {
 	white-space: nowrap;
 	float: right;
