@@ -13,7 +13,7 @@ export tag MenuItem < a
 			trigger('uxa:hide')
 			return super(e)
 
-		e.cancel.halt
+		e.cancel.halt.silence
 
 		var action = self.action
 

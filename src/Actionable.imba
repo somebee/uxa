@@ -1,6 +1,8 @@
 
 export tag Actionable
 	
+	@flagName = null
+
 	prop action
 
 	def contextData
@@ -16,12 +18,12 @@ export tag Actionable
 		var action = self.action
 
 		if action isa String
+			e.halt.silence
 			trigger(action,contextData)
-			e.halt
-
+			
 		elif action isa Array
+			e.halt.silence
 			trigger(action[0],action.slice(1))
-			e.halt
 		else
 			e.@responder = null
 		self

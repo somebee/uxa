@@ -10,6 +10,7 @@ import Indicator from './Indicator'
 import Form from './Form'
 import Snackbar from './Snackbar'
 import Tile from './Tile'
+import Icon from './Icon'
 import Queue from './Queue'
 import Actionable from './Actionable'
 
@@ -105,6 +106,7 @@ export var Form = Form
 export var Indicator = Indicator
 export var Snackbar = Snackbar
 export var Tile = Tile
+export var Icon = Icon
 export var Actionable = Actionable
 
 if $web$

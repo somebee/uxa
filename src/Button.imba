@@ -18,23 +18,15 @@ export tag Button < button
 		return null
 
 	def ontap e
-		if self[:onmenu]
-			e.halt
-			var menu = onmenu(e)
-			if menu
-				uxa.open(menu)
-			return
-
 		var action = self.action
 
 		if action isa String
-			# find closest data
+			e.halt.silence
 			trigger(action,contextData)
-			e.halt
-
+			
 		elif action isa Array
+			e.halt.silence
 			trigger(action[0],action.slice(1))
-			e.halt
 		else
 			e.@responder = null
 		self

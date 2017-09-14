@@ -66,21 +66,17 @@ export class Queue
 		if res and res:then
 			res.@uxa = o
 			incr(res)
-			res.then((do |ok| decr(res,ok)), (do |err| fail(res,err)))
-
-		return res
+			return res.then((do |ok| decr(res,ok)), (do |err| fail(res,err)))
+			
+		return self
+		
 
 	def incr promise
 		@pending.push(promise)
 
-		console.log "incr queue",state
-
 		if @pending.len == 1
 			state = 'busy'
-			
-			Imba.emit(self,'incr',[self,promise])
-			@owner?.trigger('uxa:busy')
-
+		Imba.emit(self,'incr',[self,promise])
 		@parent.incr(promise) if @parent
 
 	def decr promise, res
@@ -89,7 +85,6 @@ export class Queue
 		if idx >= 0
 			# should we remove immediately?
 			@pending.splice(idx,1)
-
 			promise.@uxa:endedAt = Date.now
 
 			# how do we deal with errors?
@@ -100,8 +95,6 @@ export class Queue
 			Imba.emit(self,'decr',[self,promise])
 
 			if @pending.len == 0
-				@owner?.trigger('uxa:idle')
-				@owner?.commit
 				state = 'idle'
 
 			@parent.decr(promise,res) if @parent
@@ -111,7 +104,15 @@ export class Queue
 		promise.@uxa:error = err
 		return decr(promise)
 
-	def stateDidSet state
+	def stateDidSet state, prev
+		console.log "Queue {prev} -> {state}"
+		
+		if state == 'busy'
+			@owner?.trigger('uxa:busy')
+		elif state == 'idle'
+			@owner?.trigger('uxa:idle')
+			@owner?.commit # really?
+		
 		Imba.emit(self,state,[])
 
 	def then &cb
