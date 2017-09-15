@@ -9,7 +9,7 @@ export tag Dialog < Form
 	prop cancelLabel default: 'dismiss'
 	
 	def setContent content, type
-		console.log "setting content for dialog"
+		log "setting content for dialog"
 		@content = Imba.static(content,type)
 		self
 		
@@ -17,14 +17,13 @@ export tag Dialog < Form
 		e.cancel.halt # should it do this by default?
 
 		if uxa.queue.busy
-			console.log "cannot submit while busy!"
 			return
 
 		trigger('uxa:submit',formData)
 		await uxa.queue
 
 		if uxa.queue.failed
-			console.log "failed?!?!",uxa.queue.error
+			log "failed?!?!",uxa.queue.error
 			uxa.flash uxa.queue.error
 			uxa.queue.reset
 		else

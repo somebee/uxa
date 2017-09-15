@@ -39,7 +39,6 @@ export tag Form < form
 		for field in fields
 			let typ = field:type
 			let val = dict[field:name]
-			console.log "apply",field:name,val,typ
 
 			continue if val == undefined
 

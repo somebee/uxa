@@ -27,7 +27,7 @@ export tag Indicator
 
 	def refresh
 		var end = expectedEndAt
-		console.log "Indicator.refresh",end - Date.now,state
+		# console.log "Indicator.refresh",end - Date.now,state
 		if @queue.len
 			start
 		else
@@ -56,7 +56,6 @@ export tag Indicator
 		busy = no
 		# still not started -- stop it before
 		if state == 'prep'
-			log "skip playing alltogether", Date.now - @startAt
 			state = 'done'
 			
 		elif state == 'busy'
@@ -119,7 +118,7 @@ export tag Indicator
 		elif state == 'finish'
 			var dur = (Date.now - @startedAt)
 			ms = Math.max(200, 600 - dur)
-			console.log "finish now -- have been animating for {dur}"
+			# console.log "finish now -- have been animating for {dur}"
 			ease = "cubic-bezier(0.260, 0.025, 0.000, 0.995)"
 			ease = "cubic-bezier(0.4, 0.0, 0.2, 1)"
 			x = 1

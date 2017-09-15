@@ -89,7 +89,6 @@ export class Queue
 
 			# how do we deal with errors?
 			if promise.@uxa:error
-				console.log "decr promise with error"
 				@errors.push(promise)
 
 			Imba.emit(self,'decr',[self,promise])
@@ -100,12 +99,12 @@ export class Queue
 			@parent.decr(promise,res) if @parent
 
 	def fail promise, err
-		console.log "promise.fail",WP =promise
+		# console.log "promise.fail",WP =promise
 		promise.@uxa:error = err
 		return decr(promise)
 
 	def stateDidSet state, prev
-		console.log "Queue {prev} -> {state}"
+		# console.log "Queue {prev} -> {state}"
 		
 		if state == 'busy'
 			@owner?.trigger('uxa:busy')
