@@ -62,7 +62,7 @@ export tag Overlay
 	def setup
 		@isMenu = component isa Menu or component isa Popover
 		@isModal = component.hasFlag('modal')
-		@eventResponder = (@options and @options:responder) or (@isMenu and target)
+		@eventResponder = (@options and @options:responder) or (target)
 		console.log 'setup', target
 	
 	def reflow

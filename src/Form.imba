@@ -68,5 +68,7 @@ export tag Form < form
 
 	def onuxaidle e
 		e.halt
-		setTimeout(&,200) do unflag('uxa-busy')
+		setTimeout(&,200) do
+			if uxa.queue.idle
+				unflag('uxa-busy')
 		
