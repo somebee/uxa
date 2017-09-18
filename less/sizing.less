@@ -46,7 +46,7 @@ button
 }
 
 :root {
-	@font: system-ui, uxa-font;
+	@font: -apple-system, system-ui, uxa-font;
 
 	// md - medium
 	--uxa-md-h1: 500 24px/1.2 @font;
@@ -69,6 +69,8 @@ button
 
 	.size(icon,14px,18px,22px,26px,36px);
 	.size(ctrl,20px,26px,32px,40px,48px);
+
+	font: @font;
 }
 
 .xs {
