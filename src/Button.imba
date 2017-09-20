@@ -30,7 +30,17 @@ export tag Button < button
 		else
 			e.@responder = null
 		self
-
+	
+	# by default we want to capture the touch fully
+	def ontouchstart t
+		flag('_touch')
+	
+	def ontouchend
+		unflag('_touch')
+	
+	def ontouchcancel
+		unflag('_touch')
+		
 	def render
 		<self.uxa>
 			if icon
