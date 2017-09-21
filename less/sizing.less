@@ -71,8 +71,6 @@ button
 
 	.size(icon,14px,18px,22px,26px,36px);
 	.size(ctrl,20px,26px,32px,40px,48px);
-
-	font: @font;
 }
 
 .xs {
@@ -91,6 +89,8 @@ button
 
 :root {
 	&:extend(.md);
+	font-family: var(--uxa-font-family);
+	font-size: 12px; // rem
 }
 
 .lg { .map-type(uxa-lg,uxa); }
