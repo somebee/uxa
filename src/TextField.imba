@@ -88,7 +88,7 @@ export tag TextArea < TextField
 export tag SelectField < TextField
 
 	def options= val
-		console.log "set options(!)",val
+		# console.log "set options(!)",val
 		var input = self.input
 		# hacky
 		<select@input>

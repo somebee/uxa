@@ -58,7 +58,7 @@ export tag Indicator
 		if state == 'prep'
 			state = 'done'
 			
-		elif state == 'busy'
+		elif state == 'busy' or state == 'stalled'
 			state = 'finish'
 		self
 
