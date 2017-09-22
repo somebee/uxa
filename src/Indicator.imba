@@ -86,6 +86,9 @@ export tag Indicator
 		elif state == 'finish'
 			state = 'done'
 
+		elif state == 'done'
+			state = 'idle'
+
 	def stateDidSet state, prev
 		setFlag('state',state)
 		# console.log "Indicator.state",state,prev
@@ -97,23 +100,26 @@ export tag Indicator
 
 		if state == 'prep'
 			unflag('running')
-			ms = threshold or ms
+			ms = threshold or 2
 			@ind.css(transition: "none", transform: "scaleX(0)")
 			dom:offsetParent
+			flag('running')
 
 		elif state == 'start'
 			@startedAt = Date.now
-			ms = 200
+			ms = 240
 			x = 0.12
 			ease = "cubic-bezier(0.250, 1.190, 0.300, 0.865)"
-			@ind.css(transition: "transform {ms}ms {ease}", transform: "scaleX(0.15)")
-			flag('running')
+			@ind.css(transition: "transform {ms}ms {ease}", transform: "scaleX(0.1)")
 
 		elif state == 'busy'
 			ms = expectedEndAt - Date.now
 			x = 0.85
 			ease = "cubic-bezier(0.225, 0.710, 0.565, 0.985)"
 			@ind.css(transition: "transform {ms}ms {ease}", transform: "scaleX(0.85)")
+
+		elif state == 'stalled'
+			@ind.css(transition: "transform 3s linear", transform: "scaleX(0.95)")
 
 		elif state == 'finish'
 			var dur = (Date.now - @startedAt)
@@ -126,6 +132,7 @@ export tag Indicator
 
 		elif state == 'done'
 			unflag('running')
+			ms = 200
 
 		@stateTimeout = setTimeout(&,ms) do step
 
