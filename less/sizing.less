@@ -46,6 +46,19 @@ button
 	--uxa-xl-@{name}: @xl;
 }
 
+.sml-var(@name,@sm,@md,@lg) {
+	:root {
+		--sm-@{name}: @sm;
+		--md-@{name}: @md;
+		--lg-@{name}: @lg;
+		--@{name}: @md;
+	}
+
+	.sm { --@{name}: ~'var(--sm-@{name})'; }
+	.md { --@{name}: ~'var(--md-@{name})'; }
+	.lg { --@{name}: ~'var(--lg-@{name})'; }
+}
+
 :root {
 	@font: -apple-system, system-ui, uxa-font;
 
