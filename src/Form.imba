@@ -62,6 +62,26 @@ export tag Form < form
 				o[field:name] = (field.@tag and field.@tag:value ? field.@tag.value : field:value)
 		return o
 
+	def onsubmit e
+		e.cancel.halt # should it do this by default?
+
+		if uxa.queue.busy
+			return
+
+		trigger('uxa:submit',formData)
+
+		await uxa.queue
+
+		if uxa.queue.failed
+			log "failed?!?!",uxa.queue.error
+			uxa.flash uxa.queue.error
+			uxa.queue.reset
+
+		self
+		# else
+		#	setTimeout(&,200) do
+		#		hide
+
 	def onuxabusy e
 		e.halt
 		flag('uxa-busy')
