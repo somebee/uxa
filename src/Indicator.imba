@@ -16,6 +16,7 @@ export tag Indicator
 	def setup
 		@items = []
 		@starter = null
+		@endAt = 0
 
 		if data isa Queue
 			@queue = data
@@ -41,13 +42,14 @@ export tag Indicator
 			var time = Math.max(*times)
 			return Math.max(time,Date.now)
 
-		return Date.now
+		return Math.max(@endAt,Date.now)
 
 	# TODO should allow recalculation when more promises come in?
-	def start
+	def start dur = 1000
 		busy = yes
 		if state == 'done' or state == 'idle'
 			@startAt = Date.now
+			@endAt = @startAt + dur
 			state = 'prep'
 		self
 

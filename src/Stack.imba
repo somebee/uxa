@@ -44,7 +44,6 @@ export tag Overlay
 	def onevent e
 		# If it is a custom event
 		if @eventResponder and e.bubble and !contains(@eventResponder) and !(e.event isa Event)
-			console.log "Overlay redirect event {e.type}"
 			e.redirect(@eventResponder)
 		self
 		
