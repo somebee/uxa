@@ -44,7 +44,11 @@ tag Editable
 
 	def build
 		tabindex = 0
-		dom:contentEditable = "plaintext-only"
+		try
+			dom:contentEditable = "plaintext-only"
+		catch e
+			dom:contentEditable = true
+
 		@raw = <TextAreaProxy[self].input tabindex="-1">
 		@raw:setValue = do |value| setValue(value)
 		self
