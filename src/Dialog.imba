@@ -19,14 +19,14 @@ export tag Dialog < Form
 		if uxa.queue.busy
 			return
 
-		trigger('uxa:submit',formData)
+		var e = trigger('uxa:submit',formData)
 		await uxa.queue
 
 		if uxa.queue.failed
 			log "failed?!?!",uxa.queue.error
 			uxa.flash uxa.queue.error
 			uxa.queue.reset
-		else
+		elif !e.@prevented
 			setTimeout(&,200) do
 				hide
 
