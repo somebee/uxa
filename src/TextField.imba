@@ -4,7 +4,7 @@ export tag TextField
 	prop desc
 	prop multiline
 	
-	['disabled','placeholder','type','name','value','required','pattern','minlength','maxlength'].map do |key|
+	['disabled','placeholder','type','name','value','required','pattern','minlength','maxlength','autocomplete'].map do |key|
 		var setter = Imba.toCamelCase("set-{key}")
 		self:prototype[key] = do |val| this.input[key]()
 		self:prototype[setter] = do |val|
