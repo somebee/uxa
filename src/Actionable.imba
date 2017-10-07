@@ -17,6 +17,9 @@ export tag Actionable
 	def ontap e
 		var action = self.action
 
+		if action
+			trigger("uxa:action",action)
+
 		if action isa String
 			e.halt.silence
 			trigger(action,contextData)
