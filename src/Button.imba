@@ -8,6 +8,10 @@ export tag Button < button
 	prop href
 	prop uxa-anchor
 
+	def build
+		# buttons should be of type button by default
+		dom.setAttribute('type','button')
+
 	def contextData
 		var data = null
 		var el = self
