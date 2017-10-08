@@ -26,7 +26,7 @@ export tag Dialog < Form
 			log "failed?!?!",uxa.queue.error
 			uxa.flash uxa.queue.error
 			uxa.queue.reset
-		elif !e.@prevented
+		elif !e.@prevented and !e.@cancel
 			setTimeout(&,200) do
 				hide
 
