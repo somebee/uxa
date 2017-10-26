@@ -6,7 +6,6 @@
     "css-loader": "^0.28.5",
     "express": "^4.15.4",
     "extract-text-webpack-plugin": "^3.0.0",
-    "imba": "^1.0.0-rc.3",
     "less": "^2.7.2",
     "less-loader": "^4.0.5",
     "less-plugin-autoprefix": "^1.5.1",
@@ -21,8 +20,9 @@
   "scripts": {
     "build": "imbapack --watch --colors --display-modules"
   },
+
   "dependencies": {
-    "showdown": "^1.7.3",
-    "snarkdown": "^1.2.2"
+    "marked": "^0.3.6",
+    "imba": "^1.0.0"
   }
 }

@@ -14,20 +14,20 @@ import Icon from './Icon'
 import Queue from './Queue'
 import Actionable from './Actionable'
 
-var showdown  = require('showdown')
-var mdconverter = showdown.Converter.new(noHeaderId: yes, tables: yes)
+var marked  = require('marked')
+# var mdconverter = showdown.Converter.new(noHeaderId: yes, tables: yes)
 
 var MarkdownCache = {}
 var SetterCache = {}
 
 def mdclean md, out
 	if md.indexOf('\n') == -1 and out.indexOf('<p>') == 0
-		return out.slice(3,-4)
+		return out.slice(3,out.lastIndexOf('</p>'))
 	else
 		out
 
 def md2html md
-	MarkdownCache[md] ||= mdclean(md,mdconverter.makeHtml(md))
+	MarkdownCache[md] ||= mdclean(md,marked(md))
 	
 def toSetter key
 	SetterCache[key] ||= Imba.toCamelCase('set-'+key)
@@ -70,7 +70,7 @@ class UXAWrapper
 		self[toSetter(key)](value)
 		
 	def mdDidSet value
-		@owner.dom:innerHTML = md2html(md)
+		@owner.dom:innerHTML = md2html(value)
 
 	def queue
 		@queue ||= Queue.new(@owner)
