@@ -24,6 +24,8 @@ export tag Overlay
 		flag('uxa-show')
 		component.flag('uxa-show')
 		Imba.TagManager.refresh
+		if target
+			target?.flag('uxa-overlay-active')
 		self
 
 	def hide
@@ -31,6 +33,9 @@ export tag Overlay
 		component.flag('uxa-hide')
 		unflag('uxa-show')
 		component.unflag('uxa-show')
+
+		if target
+			target?.unflag('uxa-overlay-active')
 
 		setTimeout(&,200) do
 			var par = dom:parentNode
