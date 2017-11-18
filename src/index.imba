@@ -14,7 +14,7 @@ import Icon from './Icon'
 import Queue from './Queue'
 import Actionable from './Actionable'
 
-var marked  = require('marked')
+var marked = require('marked')
 # var mdconverter = showdown.Converter.new(noHeaderId: yes, tables: yes)
 
 var MarkdownCache = {}
@@ -32,9 +32,29 @@ def md2html md
 def toSetter key
 	SetterCache[key] ||= Imba.toCamelCase('set-'+key)
 
+var ActionHandler = do |e|
+	let target = this
+	let action = target.uxa.action
+	
+	if action
+		target.trigger("uxa:action",action)
+
+	if action isa String
+		e.halt.silence
+		target.trigger(action,target.uxa.contextData)
+	elif action isa Array
+		e.halt.silence
+		target.trigger(action[0],action.slice(1))
+	elif action isa Function
+		e.halt.silence
+		action.call(target,e)
+	else
+		e.@responder = null
+
 class UXAWrapper
 	
 	prop md watch: yes
+	prop action watch: yes
 	
 	def initialize owner
 		@owner = owner
@@ -71,6 +91,19 @@ class UXAWrapper
 		
 	def mdDidSet value
 		@owner.dom:innerHTML = md2html(value)
+		
+	def actionDidSet action, prev
+		@owner:ontap = ActionHandler
+		self
+		
+	def contextData
+		var data = null
+		var el = @owner
+		while el
+			if data = el.data
+				return data
+			el = el.parent
+		return null
 
 	def queue
 		@queue ||= Queue.new(@owner)
