@@ -8,6 +8,15 @@ export tag MenuItem < a
 	prop subtext
 	attr disabled
 
+	def contextData
+		var data = null
+		var el = self
+		while el
+			if data = el.data
+				return data
+			el = el.parent
+		return null
+
 	def ontap e
 		if href
 			trigger('uxa:hide')
@@ -18,7 +27,7 @@ export tag MenuItem < a
 		var action = self.action
 
 		if action isa String
-			trigger(action,closest('.Menu').data)
+			trigger(action,contextData)
 		elif action isa Array
 			trigger(action[0],action.slice(1))
 		else
