@@ -53,9 +53,17 @@ export tag Button < button
 			if icon
 				<Icon[icon]>
 			if label
-				if href
-					<b> <a href=href uxa:md=label>
-				else
-					<b uxa:md=label>
+				<b uxa:md=label>
 			
 export tag IconButton < Button
+
+export tag LinkButton < a
+	prop icon
+	prop label
+
+	def render
+		<self.uxa.Button>
+			if icon
+				<Icon[icon]>
+			if label
+				<b uxa:md=label>

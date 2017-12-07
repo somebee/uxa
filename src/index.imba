@@ -1,7 +1,7 @@
 import Stack from './Stack'
 import Menu from './Menu'
 import MenuItem from './MenuItem'
-import Button,IconButton from './Button'
+import Button,IconButton,LinkButton from './Button'
 import TextField,TextArea,SelectField from './TextField'
 import ListItem from './ListItem'
 import Popover from './Popover'
@@ -126,6 +126,7 @@ extend class Imba.Event
 export var UXA = UXAWrapper.new(null)
 export var Button = Button
 export var IconButton = IconButton
+export var LinkButton = LinkButton
 export var Menu = Menu
 export var MenuItem = MenuItem
 export var TextField = TextField
