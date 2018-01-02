@@ -29,6 +29,9 @@ export tag Overlay
 		self
 
 	def hide
+		return if @isHidden
+		@isHidden = yes
+
 		flag('uxa-hide')
 		component.flag('uxa-hide')
 		unflag('uxa-show')
