@@ -15,6 +15,8 @@ export tag Overlay
 			component.flag('floating').flag('paper').end
 			<div.backdrop :tap='autohide'>
 
+	# TODO improve state transitioning to allow reusing overlays
+
 	def show
 		document:body.appendChild(dom)
 		component.trigger('uxashow')
@@ -54,7 +56,7 @@ export tag Overlay
 		
 	def autohide
 		unless @isModal
-			hide
+			component.trigger('uxa:hide')
 			
 	def onuxahide e
 		e.halt
