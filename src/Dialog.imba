@@ -19,16 +19,15 @@ export tag Dialog < Form
 		if uxa.queue.busy
 			return
 
-		var e = trigger('uxa:submit',formData)
+		var uxaev = trigger('uxa:submit',formData)
 		await uxa.queue
 
 		if uxa.queue.failed
 			log "failed?!?!",uxa.queue.error
 			uxa.flash uxa.queue.error
 			uxa.queue.reset
-		elif !e.@prevented and !e.@cancel
-			setTimeout(&,200) do
-				hide
+		elif !uxaev.isPrevented
+			setTimeout(&,200) do hide
 
 	def show
 		uxa.open(self)
@@ -40,7 +39,7 @@ export tag Dialog < Form
 		self
 		
 	def tapDismiss e
-		e.cancel.halt
+		e.prevent.stop
 		trigger('uxa:dismiss')
 
 		if uxa.queue.idle
