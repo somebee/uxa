@@ -26,14 +26,15 @@ export tag TextField
 
 
 tag TextAreaProxy < textarea
-	
+	prop owner
+
 	def onfocus e
 		# console.log 'TextAreaProxy.onfocus',e
-		data.dom.focus
+		owner.dom.focus
 		
 	def oninput e
-		data.dom:innerText = dom:value
-		data.dom.focus
+		owner.dom:innerText = dom:value
+		owner.dom.focus
 
 tag Editable
 	attr placeholder
@@ -49,7 +50,7 @@ tag Editable
 		catch e
 			dom:contentEditable = true
 
-		@raw = <TextAreaProxy[self].input tabindex="-1">
+		@raw = <TextAreaProxy.input owner=self tabindex="-1">
 		@raw:setValue = do |value| setValue(value)
 		self
 		
@@ -92,16 +93,11 @@ export tag TextArea < TextField
 export tag SelectField < TextField
 
 	def options= val
-		# console.log "set options(!)",val
 		var input = self.input
-		# hacky
 		<select@input>
 			for item in val
 				<option value=item[0]> item[1] or item[0]
-				# input.dom.appendChild(opt.dom)
 		self
 	
 	def input
 		<select@input>
-		# 	<option> "First option"
-		# 	<option> "Second option"
