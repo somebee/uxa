@@ -31,6 +31,7 @@ export tag Overlay
 		self
 
 	def hide
+		return if hasFlag('uxa-hide')
 		flag('uxa-hide')
 		component.flag('uxa-hide')
 		unflag('uxa-show')
@@ -59,11 +60,11 @@ export tag Overlay
 			component.trigger('uxa:hide')
 			
 	def onuxahide e
-		e.halt
+		e.stop
 		hide
 
 	def onuxashow e
-		e.halt
+		e.stop
 	
 	def setup
 		@isMenu = component isa Menu or component isa Popover
