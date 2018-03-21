@@ -20,16 +20,16 @@ var marked = require('marked')
 var MarkdownCache = {}
 var SetterCache = {}
 
-def mdclean md, out
+var mdclean = do |md, out|
 	if md.indexOf('\n') == -1 and out.indexOf('<p>') == 0
 		return out.slice(3,out.lastIndexOf('</p>'))
 	else
 		out
 
-def md2html md
+var md2html = do |md|
 	MarkdownCache[md] ||= mdclean(md,marked(md))
 	
-def toSetter key
+var toSetter = do |key|
 	SetterCache[key] ||= Imba.toCamelCase('set-'+key)
 
 var ActionHandler = do |e|
