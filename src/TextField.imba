@@ -10,6 +10,10 @@ export tag TextField
 		self:prototype[setter] = do |val|
 			this.input[setter](val)
 			return this
+			
+	def bindData target, path, args
+		input.bindData(target,path,args)
+		return self
 
 	def input
 		<input@input placeholder=" " type='text'>
@@ -29,11 +33,6 @@ tag TextAreaProxy < textarea
 	prop owner
 
 	def onfocus e
-		# console.log 'TextAreaProxy.onfocus',e
-		owner.dom.focus
-		
-	def oninput e
-		owner.dom:innerText = dom:value
 		owner.dom.focus
 
 tag Editable
@@ -64,21 +63,29 @@ tag Editable
 		self
 		
 	def setValue value
-		dom:innerText = value
+		if !@syncing and dom:innerText != value
+			dom:innerText = value
 		raw.dom:value = value
 		self
 		
 	def value
 		dom:innerText
 		
-	def oninput
+	def oninput e
 		raw.dom:value = value
+		@syncing = yes
+		raw.oninput(e)
+		@syncing = no
 		self
 
 export tag TextArea < TextField
 
 	def input
 		<Editable@input>
+		
+	def bindData target, path, args
+		input.raw.bindData(target,path,args)
+		return self
 		
 	def render
 		<self.uxa>
