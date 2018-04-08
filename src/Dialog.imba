@@ -38,6 +38,12 @@ export tag Dialog < Form
 	def submit
 		self
 		
+	def mount
+		schedule(events: yes)
+	
+	def unmount
+		unschedule
+		
 	def tapDismiss e
 		e.prevent.stop
 		trigger('uxa:dismiss')
