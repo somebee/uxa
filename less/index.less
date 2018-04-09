@@ -4,12 +4,11 @@
 :root {
 	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
 	--uxa-overlay-z: 3000;
-
+	--icon-font: 'scrimbacon';
 	--tile-gap: 4px;
 }
 
 .--size(@name,@sm,@md,@lg) {
-
 	:root { --@{name}: @md; }
 	.sm { --@{name}: @sm; }
 	.md { --@{name}: @md; }
@@ -32,8 +31,11 @@
 	--red: hsl(0, 60%, 55%);
 	--green: hsl(123, 60%, 55%);
 	--blue: hsl(214, 77%, 57%);
+	--yellow: hsl(48, 91%, 54%);
 	--muted: hsl(231, 5%, 27%);
-	--sky: white; 
+	--sky: white;
+	--fog: #whitesmoke;
+
 
 	--h-color: hsl(218, 33%, 42%);
 	--link-color: hsl(214, 77%, 57%);
@@ -44,8 +46,10 @@
 	--bullet-color: hsla(211, 13%, 66%,60%);
 	--bg-color: hsl(0, 0%, 100%);
 
-	--masthead-bg: hsl(0, 0%, 100%);;
-	--modal-bg: hsl(0, 0%, 100%);;
+	--masthead-bg: hsl(0, 0%, 100%);
+	--dialog-bg: hsl(0, 0%, 100%);
+	--menu-bg: hsl(0, 0%, 100%);
+	--menu-hover-bg: hsl(0, 0%, 97%);
 	
 	--tile-bg-color: white;
 	--tile-border: 1px solid var(--border-color);
@@ -60,10 +64,12 @@
 	--blue: hsl(212, 100%, 68%);
 	--muted: hsl(231, 5%, 27%);
 	--sky: hsl(223, 14%, 28%);
+	--yellow: hsl(48, 80%, 69%);
 
 	--h-color: white;
 	--link-color: hsl(212, 100%, 68%);
 	--bg-color: hsl(223, 14%, 28%);
+	--border-color: hsl(223, 16%, 32%);
 	
 	--legend-color: hsl(200, 4%, 60%);
 	--title-color: hsl(218, 0%, 100%);
@@ -71,7 +77,9 @@
 	--tile-border: none;
 
 	--masthead-bg: var(--sky);
-	--modal-bg: var(--sky);
+	--dialog-bg: var(--sky);
+	--menu-bg: var(--sky);
+	--menu-hover-bg: hsl(225, 14%, 36%);
 
 	color: var(--neutral);
 }
@@ -80,12 +88,15 @@
 	--legend-color: var(--dim);
 }
 
+.nocolor {color: inherit; }
 .dim { color: var(--dim); }
 .neutral { color: var(--neutral); }
 .red { color: var(--red); }
 .blue { color: var(--blue); }
 .green { color: var(--green); }
 .muted { color: var(--muted); }
+.yellow { color: var(--yellow); }
+// .ayellow { color: var(--ayellow); }
 
 .title {
 	color: var(--title-color);
@@ -116,9 +127,10 @@ h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6 {
 
 
 // legend
-.--size(legend-size,12px,12px,12px);
+.--size(legend-size,11px,12px,13px);
 
 .legend {
+	font-size: var(--legend-size);
 	line-height: 1em;
 }
 
@@ -174,6 +186,9 @@ h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6 {
 // button
 .button {
 	// background: currentColor;
+	appearance: none;
+	--webkit-appearance: none;
+
 	display: inline-flex;
 	vertical-align: top;
 	// default flex
@@ -198,12 +213,16 @@ h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6 {
 
 .button:after,.button:before {  }
 
-.modal {
-	background: var(--modal-bg);
+.Dialog,.modal {
+	background: var(--dialog-bg);
+}
+
+.Menu,.menu {
+	background: var(--menu-bg);
 }
 
 [data-icon]:before,[data-icon-after]:after,i.icon {
-	font-family: 'scrimbacon';
+	font-family: var(--icon-font);
 	speak: none;
 	font-style: normal;
 	font-weight: normal;
@@ -246,7 +265,15 @@ hr {
 	margin-bottom: var(--mdu);
 	border: 0;
 	border-top: 1px solid;
+	color: var(--border-color);
 	clear: both;
+}
+
+.bar {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
 }
 
 .vbox {
@@ -271,6 +298,8 @@ hr {
 	margin-bottom: 0px;
 }
 
+
+
 .vpanel {
 	& > .header, & > header, & > .footer, & > footer {
 		.actions {
@@ -293,12 +322,11 @@ hr {
 	line-height: 1em;
 }
 
-@import "icons.less";
-@import "panel.less";
-@import "button.less";
+// @import "panel.less";
+// @import "icons.less";
+// @import "button.less";
 @import "textfield.less";
 @import "indicator.less";
-
 @import "dialog.less";
 @import "overlay.less";
 @import "list.less";

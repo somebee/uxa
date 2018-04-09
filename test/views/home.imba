@@ -236,7 +236,6 @@ export tag Home
 		<self>
 			<div.light>
 				<article>
-					<div uxa:md=long>
 					# <h1> "H1 Heading"
 					# <h2> "H2 Heading"
 					# <h3> "H3 Heading"
@@ -244,23 +243,33 @@ export tag Home
 					# <p.dim> "Dimmed paragraph"
 					<section>
 						for item in ['light','dark']
-							<.grid.tiles>
-								<.tile .{item}>
+							<.grid.tiles .{item}>
+								<.tile>
 									<p> "Default color"
 									<p.red> "Red"
 									<p.green> "Green"
 									<p.blue> "Blue"
+									<p.yellow> "Yellow"
+									<p.ayellow> "Yellow"
 									<p.dim> "Dim"
 									<p.muted> "Muted"
 									<.spaced>
 										<a.button> "Cancel"
 										<a.button.primary> "Submit"
-								<.tile .{item}>
+								<.tile>
 									<.spaced>
 										<a.button data-icon='mclose'> "Archive"
 										<a.button data-icon-after='mclose'> "Undo"
 										<a.sm.button data-icon='mclose'> "Archive"
 										<a.sm.button data-icon-after='mclose'> "Undo"
+								<.tile>
+									<.menu>
+										<.item data-icon='mright'> "Edit item"
+										<.item data-icon='mright'> "Remove item"
+										<hr>
+										<.item data-icon='mright'> "Edit item"
+										<.item data-icon='mclose'> "Close menu"
+
 
 					<section>
 						<header> <.title> "Title"
@@ -270,6 +279,8 @@ export tag Home
 					<section>
 						<.grid.tiles> for item in items
 							<TileTest[item].dark>
+					<div uxa:md=long>
+
 
 
 			# <section>
