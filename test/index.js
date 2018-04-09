@@ -701,9 +701,17 @@ if (true) {
 var Imba = __webpack_require__(0);
 
 
-var Menu = Imba.defineTag('Menu')
+var Menu = Imba.defineTag('Menu', function(tag){
+	
+	tag.prototype.build = function (){
+		return this.flag('menu');
+	};
+	
+	tag.prototype.ontap = function (e){
+		return this.trigger('uxahide');
+	};
+})
 exports.Menu = Menu;
-
 
 
 /***/ }),
@@ -6863,7 +6871,7 @@ var Dialog = Imba.defineTag('Dialog', Form, function(tag){
 	};
 	
 	tag.prototype.render = function (){
-		return this.$open(0).flag('uxa').setChildren([
+		return this.$open(0).flag('dialog').setChildren([
 			this.header(),
 			this.body(),
 			this.footer(),
@@ -7475,28 +7483,41 @@ var Home = Imba.defineTag('Home', function(tag){
 	tag.prototype.render = function (){
 		var $ = this.$;
 		return this.$open(0).setChildren($.$ = $.$ || [
-			_1('div',$,0,this).flag('light').setContent(
-				$[1] || _1('article',$,1,0).setContent([
-					// <h1> "H1 Heading"
-					// <h2> "H2 Heading"
-					// <h3> "H3 Heading"
-					// <p> "Paragraph"
-					// <p.dim> "Dimmed paragraph"
-					_1('section',$,2,1),
-					
-					
-					_1('section',$,4,1).setContent(
-						$[5] || _1('header',$,5,4).setContent($[6] || _1('div',$,6,5).flag('title').setText("Title"),2)
-					,2),
-					_1('section',$,7,1).setContent(
-						$[8] || _1('div',$,8,7).flag('grid').flag('tiles')
-					,2),
-					_1('section',$,10,1).setContent(
-						$[11] || _1('div',$,11,10).flag('grid').flag('tiles')
-					,2),
-					_1('div',$,13,1)
-				],2)
-			,2),
+			// <div.light>
+			
+			_1('article',$,0,this).flag('light').setContent([
+				
+				_1('div',$,1,0).flag('masthead').setContent([
+					_1('a',$,2,1).flag('logo').setText("Scrimba"),
+					_1('a',$,3,1).flag('item').setText("tes")
+				],2),
+				
+				_1('div',$,4,0).flag('masthead').flag('dark').setText("Masthead"),
+				
+				_1('div',$,5,0).flag('breadcrumb').setContent(
+					$[6] || _1('ul',$,6,5).setContent([
+						_1('li',$,7,6).setText("Home"),
+						_1('li',$,8,6).setText("Next"),
+						_1('li',$,9,6).setText("Other")
+					],2)
+				,2),
+				
+				_1('section',$,10,0),
+				_1('section',$,12,0).flag('section').setContent(
+					$[13] || _1('header',$,13,12).setContent([
+						_1('div',$,14,13).flag('title').setText("Title"),
+						_1('div',$,15,13).flag('subtitle').setText("Subitle for section")
+					],2)
+				,2),
+				
+				_1('section',$,16,0).setContent(
+					$[17] || _1('div',$,17,16).flag('grid').flag('tiles')
+				,2),
+				_1('section',$,19,0).setContent(
+					$[20] || _1('div',$,20,19).flag('grid').flag('tiles')
+				,2),
+				_1('div',$,22,0)
+			],2),
 			
 			
 			
@@ -7507,10 +7528,10 @@ var Home = Imba.defineTag('Home', function(tag){
 			
 			
 			
-			_1(Palette,$,14,this).setTint('light'),
-			_1(Palette,$,15,this).setTint('dark')
+			_1(Palette,$,23,this).setTint('light'),
+			_1(Palette,$,24,this).setTint('dark')
 		],2).synced((
-			$[2].setContent(
+			$[10].setContent(
 				(function tagLoop($0) {
 					var t0;
 					for (let i = 0, ary = ['light','dark'], len = $0.taglen = ary.length; i < len; i++) {
@@ -7521,57 +7542,73 @@ var Home = Imba.defineTag('Home', function(tag){
 								_1('p',t0.$,'D','A').flag('green').setText("Green"),
 								_1('p',t0.$,'E','A').flag('blue').setText("Blue"),
 								_1('p',t0.$,'F','A').flag('yellow').setText("Yellow"),
-								_1('p',t0.$,'G','A').flag('ayellow').setText("Yellow"),
-								_1('p',t0.$,'H','A').flag('dim').setText("Dim"),
-								_1('p',t0.$,'I','A').flag('muted').setText("Muted"),
-								_1('div',t0.$,'J','A').flag('spaced').setContent([
-									_1('a',t0.$,'K','J').flag('button').setText("Cancel"),
-									_1('a',t0.$,'L','J').flag('button').flag('primary').setText("Submit")
+								_1('p',t0.$,'G','A').flag('dim').setText("Dim"),
+								_1('p',t0.$,'H','A').flag('muted').setText("Muted"),
+								_1('div',t0.$,'I','A').flag('spaced').setContent([
+									_1('a',t0.$,'J','I').flag('button').setText("Cancel"),
+									_1('a',t0.$,'K','I').flag('button').flag('primary').setText("Submit")
 								],2)
 							],2),
-							_1('div',t0.$,'M',t0).flag('tile').setContent(
-								t0.$.N || _1('div',t0.$,'N','M').flag('spaced').setContent([
-									_1('a',t0.$,'O','N').flag('button').dataset('icon','mclose').setText("Archive"),
-									_1('a',t0.$,'P','N').flag('button').dataset('icon-after','mclose').setText("Undo"),
-									_1('a',t0.$,'Q','N').flag('sm').flag('button').dataset('icon','mclose').setText("Archive"),
-									_1('a',t0.$,'R','N').flag('sm').flag('button').dataset('icon-after','mclose').setText("Undo")
+							_1('div',t0.$,'L',t0).flag('tile').setContent([
+								_1('div',t0.$,'M','L').flag('spaced').flag('bar').setContent([
+									_1('a',t0.$,'N','M').flag('button').dataset('icon','mclose').setText("Archive"),
+									_1('a',t0.$,'O','M').flag('button').dataset('icon-after','mclose').setText("Undo"),
+									_1('a',t0.$,'P','M').flag('sm').flag('button').dataset('icon','mclose').setText("Archive"),
+									_1('a',t0.$,'Q','M').flag('sm').flag('button').dataset('icon-after','mclose').setText("Undo")
+								],2),
+								_1('hr',t0.$,'R','L'),
+								_1('p',t0.$,'S','L').setText("Some text right here"),
+								_1('div',t0.$,'T','L').flag('bar').flag('spaced').setContent([
+									_1('div',t0.$,'U','T').flag('green').setText("Green"),
+									_1('div',t0.$,'V','T').flag('blue').setText("Blue"),
+									_1('div',t0.$,'W','T').flag('yellow').setText("Yellow")
+								],2),
+								_1('hr',t0.$,'X','L'),
+								_1('div',t0.$,'Y','L').flag('bar').flag('spaced').setContent([
+									_1('a',t0.$,'Z','Y').flag('button').flag('solid').flag('primary').dataset('icon','mclose').setText("Archive"),
+									_1('a',t0.$,'AA','Y').flag('button').flag('solid').dataset('icon','mclose').setText("Undo"),
+									_1('a',t0.$,'AB','Y').flag('button').flag('solid').dataset('icon','mclose').setText("Archive"),
+									_1('a',t0.$,'AC','Y').flag('button').flag('solid').setText("Undo")
 								],2)
-							,2),
-							_1('div',t0.$,'S',t0).flag('tile').setContent(
-								t0.$.T || _1('div',t0.$,'T','S').flag('menu').setContent([
-									_1('div',t0.$,'U','T').flag('item').dataset('icon','mright').setText("Edit item"),
-									_1('div',t0.$,'V','T').flag('item').dataset('icon','mright').setText("Remove item"),
-									_1('hr',t0.$,'W','T'),
-									_1('div',t0.$,'X','T').flag('item').dataset('icon','mright').setText("Edit item"),
-									_1('div',t0.$,'Y','T').flag('item').dataset('icon','mclose').setText("Close menu")
+							],2),
+							
+							_1('div',t0.$,'AD',t0).flag('tile').setContent(
+								t0.$.AE || _1('div',t0.$,'AE','AD').flag('menu').setContent([
+									_1('div',t0.$,'AF','AE').flag('item').setText("Edit item"),
+									_1('div',t0.$,'AG','AE').flag('item').dataset('icon','mright').setText("Remove item"),
+									_1('hr',t0.$,'AH','AE'),
+									_1('div',t0.$,'AI','AE').flag('item').dataset('icon','mright').setText("Edit item"),
+									_1('div',t0.$,'AJ','AE').flag('item').dataset('icon','mclose').setText("Close menu")
 								],2)
 							,2)
 						],2)).setFlag(0,ary[i]).end((
+							t0.$.N.end(),
 							t0.$.O.end(),
 							t0.$.P.end(),
 							t0.$.Q.end(),
-							t0.$.R.end(),
-							t0.$.U.end(),
-							t0.$.V.end(),
-							t0.$.X.end(),
-							t0.$.Y.end()
+							t0.$.Z.end(),
+							t0.$.AA.end(),
+							t0.$.AB.end(),
+							t0.$.AG.end(),
+							t0.$.AI.end(),
+							t0.$.AJ.end()
 						,true));
 					};return $0;
-				})($[3] || _2($,3,$[2]))
+				})($[11] || _2($,11,$[10]))
 			,4),
-			$[8].setContent((function tagLoop($0) {
+			$[17].setContent((function tagLoop($0) {
 				for (let i = 0, len = $0.taglen = items.length; i < len; i++) {
 					($0[i] || _1(TileTest,$0,i)).setData(items[i]).end();
 				};return $0;
-			})($[9] || _2($,9,$[8])),4),
-			$[11].setContent((function tagLoop($0) {
+			})($[18] || _2($,18,$[17])),4),
+			$[20].setContent((function tagLoop($0) {
 				for (let i = 0, len = $0.taglen = items.length; i < len; i++) {
 					($0[i] || _1(TileTest,$0,i).flag('dark')).setData(items[i]).end();
 				};return $0;
-			})($[12] || _2($,12,$[11])),4),
-			$[13].setNestedAttr('uxa','md',long).end(),
-			$[14].end(),
-			$[15].end()
+			})($[21] || _2($,21,$[20])),4),
+			$[22].setNestedAttr('uxa','md',long).end(),
+			$[23].end(),
+			$[24].end()
 		,true));
 	};
 })

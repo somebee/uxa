@@ -1,0 +1,27 @@
+
+
+.breadcrumb, .breadcrumb ul {
+	margin: 0;
+	padding: 0;
+	list-style: none outside none;
+}
+
+.breadcrumb {
+	color: var(--breadcrumb-color);
+
+	li {
+		display: inline-block;
+		list-style: none outside none;
+		cursor: default;
+	}
+
+	li + li:before {
+		color: #4a4a4a;
+		content: "/\00a0";
+		padding: 0px 6px;
+	}
+
+	.active {
+		color: var(--breadcrumb-active-color);
+	}
+}

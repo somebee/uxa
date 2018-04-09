@@ -11,14 +11,14 @@
 
 .--size(menu-font-size,12px,13px,14px);
 .--size(menu-item-height,20px,26px,30px);
-.--size(menu-hr-size,5px,8px,12px);
+.--size(menu-hr-size,2px,4px,6px);
 
 .menu {
 	background: var(--menu-bg);
 	font-size: var(--menu-font-size);
 
 	hr {
-		margin: var(--menu-size) 0px;
+		margin: var(--menu-hr-size) 0px;
 	}
 
 	.item {
@@ -27,7 +27,10 @@
 		flex-direction: row;
 		justify-content: flex-start;
 		align-items: center;
+		text-decoration: none;
 		cursor: default;
+		color: inherit;
+		&:not([data-icon]):before { content: " "; width: 1em; height: 1em; }
 	}
 
 	.item:before {
@@ -36,6 +39,7 @@
 	}
 
 	.item:hover {
+		text-decoration: none;
 		&:before { opacity: 1; }
 	}
 }

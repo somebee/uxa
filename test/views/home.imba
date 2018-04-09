@@ -234,52 +234,75 @@ export tag Home
 
 	def render
 		<self>
-			<div.light>
-				<article>
-					# <h1> "H1 Heading"
-					# <h2> "H2 Heading"
-					# <h3> "H3 Heading"
-					# <p> "Paragraph"
-					# <p.dim> "Dimmed paragraph"
-					<section>
-						for item in ['light','dark']
-							<.grid.tiles .{item}>
-								<.tile>
-									<p> "Default color"
-									<p.red> "Red"
-									<p.green> "Green"
-									<p.blue> "Blue"
-									<p.yellow> "Yellow"
-									<p.ayellow> "Yellow"
-									<p.dim> "Dim"
-									<p.muted> "Muted"
-									<.spaced>
-										<a.button> "Cancel"
-										<a.button.primary> "Submit"
-								<.tile>
-									<.spaced>
-										<a.button data-icon='mclose'> "Archive"
-										<a.button data-icon-after='mclose'> "Undo"
-										<a.sm.button data-icon='mclose'> "Archive"
-										<a.sm.button data-icon-after='mclose'> "Undo"
-								<.tile>
-									<.menu>
-										<.item data-icon='mright'> "Edit item"
-										<.item data-icon='mright'> "Remove item"
-										<hr>
-										<.item data-icon='mright'> "Edit item"
-										<.item data-icon='mclose'> "Close menu"
+			# <div.light>
 
+			<article.light>
+				
+				<.masthead>
+					<a.logo> "Scrimba"
+					<a.item> "tes"
 
-					<section>
-						<header> <.title> "Title"
-					<section>
-						<.grid.tiles> for item in items
-							<TileTest[item]>
-					<section>
-						<.grid.tiles> for item in items
-							<TileTest[item].dark>
-					<div uxa:md=long>
+				<.masthead.dark>
+					"Masthead"
+
+				<.breadcrumb>
+					<ul>
+						<li> "Home"
+						<li> "Next"
+						<li> "Other"
+
+				<section>
+					for item in ['light','dark']
+						<.grid.tiles .{item}>
+							<.tile>
+								<p> "Default color"
+								<p.red> "Red"
+								<p.green> "Green"
+								<p.blue> "Blue"
+								<p.yellow> "Yellow"
+								<p.dim> "Dim"
+								<p.muted> "Muted"
+								<.spaced>
+									<a.button> "Cancel"
+									<a.button.primary> "Submit"
+							<.tile>
+								<.spaced.bar>
+									<a.button data-icon='mclose'> "Archive"
+									<a.button data-icon-after='mclose'> "Undo"
+									<a.sm.button data-icon='mclose'> "Archive"
+									<a.sm.button data-icon-after='mclose'> "Undo"
+								<hr>
+								<p> "Some text right here"
+								<.bar.spaced>
+									<.green> "Green"
+									<.blue> "Blue"
+									<.yellow> "Yellow"
+								<hr>
+								<.bar.spaced>
+									<a.button.solid.primary data-icon='mclose'> "Archive"
+									<a.button.solid data-icon='mclose'> "Undo"
+									<a.button.solid data-icon='mclose'> "Archive"
+									<a.button.solid> "Undo"
+
+							<.tile>
+								<.menu>
+									<.item> "Edit item"
+									<.item data-icon='mright'> "Remove item"
+									<hr>
+									<.item data-icon='mright'> "Edit item"
+									<.item data-icon='mclose'> "Close menu"
+				<section.section>
+					<header>
+						<.title> "Title"
+						<.subtitle> "Subitle for section"
+
+				<section>
+					<.grid.tiles> for item in items
+						<TileTest[item]>
+				<section>
+					<.grid.tiles> for item in items
+						<TileTest[item].dark>
+				<div uxa:md=long>
 
 
 

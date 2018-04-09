@@ -1,4 +1,7 @@
-.Dialog.uxa {
+
+.dialog {
+	width: 680px;
+
 	& > header:empty, & > footer:empty {
 		display: none;
 	}
@@ -22,11 +25,16 @@
 	}
 }
 
-.Dialog.uxa.floating {
+.dialog.floating {
 	min-width: 300px;
 	transition: opacity 0.2s ease, transform 0.2s ease;
 	transform: translateY(-30px);
+	border-radius: 2px;
+	background: var(--dialog-bg);
 	opacity: 0;
+
+	box-shadow: 0px 3px 15px fade(black,20%);
+	
 
 	&.uxa-show {
 		transform: translateY(0px);
