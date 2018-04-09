@@ -6,17 +6,12 @@
 	@width: 100%;
 	padding-top: 16px;
 
-	--field-height: var(--uxa-button-size);
-
-	--color: var(--uxa-tint-900);
-	--invalid-color: var(--uxa-danger-A400);
-	--disabled-color: var(--uxa-tint-200);
-	--focus-color: var(--uxa-pri-A400);
-
-	--label-color: var(--uxa-tint-300);
-	--muted-color: var(--uxa-tint-200);
-	--desc-color: var(--label-color);
-	--bar-color: var(--uxa-pri-A400);
+	--color: var(--neutral);
+	--invalid-color: var(--red);
+	--disabled-color: var(--dim);
+	--focus-color: var(--blue);
+	--desc-color: var(--dim);
+	--bar-color: var(--blue);
 
 	color: var(--color);
 
@@ -94,7 +89,7 @@
 	}
 
 	hr.static {
-		border-bottom: 1px solid var(--muted-color);
+		border-bottom: 1px solid var(--border-color);
 	}
 
 	hr.anim {

@@ -14,29 +14,24 @@ Paragraph text
 """
 
 var long = """
-# Heading
+# Heading 1
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec cursus elit at
 odio congue, ac varius massa tincidunt. Nulla blandit odio vel bibendum 
 condimentum. In hac habitasse [platea](#platea) dictumst. Nam eu nisl ut erat 
-sollicitudin tincidunt. Nunc nec scelerisque felis. Nulla fringilla 
-id nulla vitae pulvinar.
-
----
+sollicitudin tincidunt.
 
 ## Heading 2
 
 Nullam eget urna vitae ex ullamcorper dictum ac ullamcorper nisl. Mauris a
 quam non ante ullamcorper ultrices quis quis libero. Quisque ultrices lorem
-metus. Duis mi est, elementum nec egestas a, luctus et lacus. Pellentesque
-augue libero, scelerisque sit amet purus ut, tempor sagittis neque.
+metus. Duis mi est, elementum nec egestas a, luctus et lacus.
 
 ### Heading 3
 
 Nullam eget urna vitae ex ullamcorper dictum ac ullamcorper nisl. Mauris a
 quam non ante ullamcorper ultrices quis quis libero. Quisque ultrices lorem
-metus. Duis mi est, elementum nec egestas a, luctus et lacus. Pellentesque
-augue libero, scelerisque sit amet purus ut, tempor sagittis neque.
+metus.
 
 """
 
@@ -48,6 +43,14 @@ In this tutorial we'll wrap the Hacker News API in a tiny SDK and learn how to u
 var tile2 = """
 In this [tutorial](#tutorial) we'll wrap the Hacker News API in a tiny SDK and learn how to use it to fetch data from Hacker News submissions and comments.
 """
+
+var items = [{
+	title: "Introduction to HTML"
+},{
+	title: "Learn about Variables"
+},{
+	title: "Creating a website"
+}]
 
 tag LogForm < Form
 	
@@ -163,13 +166,13 @@ tag Palette
 					<Dialog.modal> <div uxa:md="This will submit instantly">
 			
 			<section.flat>
-				<h3> "Flat buttons"
+				# <h3> "Flat buttons"
 				<Button.muted label="Dismiss">
 				<Button.secondary label="Secondary">
 				<Button.primary label="Primary">
 				<Button.primary label="Disabled" disabled=yes>
 				<Button.primary icon='v' label="Menu" :menu='menu'>
-				<h3> "Icon buttons"
+				# <h3> "Icon buttons"
 				<.hbar>
 					<IconButton.xs icon='*'>
 					<IconButton.sm icon='*'>
@@ -177,28 +180,21 @@ tag Palette
 					<IconButton.lg icon='*'>
 					<IconButton.xl icon='*'>
 
-				<h3> "Floating IconButton"
-				<.hbar css:position='relative'>
-					<IconButton.floating.xs icon='*'>
-					<IconButton.floating.sm icon='*'>
-					<IconButton.floating.md icon='*'>
-					<IconButton.floating.lg icon='*'>
-					<IconButton.floating.xl icon='*'>
+				# <h3> "Floating IconButton"
+				# <.hbar css:position='relative'>
+				# 	<IconButton.floating.xs icon='*'>
+				# 	<IconButton.floating.sm icon='*'>
+				# 	<IconButton.floating.md icon='*'>
+				# 	<IconButton.floating.lg icon='*'>
+				# 	<IconButton.floating.xl icon='*'>
 				
 			<section>
 				<div uxa:md=long>
-				<div.hx3 uxa:md=long>
 				<hr>
 				<LogForm>
 				
 			<section>
-				# <h2> "Typography"
-				# <div.xs uxa:md=short>
-				# <div.sm uxa:md=short>
 				<div.md uxa:md=short>
-				# <div.lg uxa:md=short>
-				# <div.xl uxa:md=short>
-				# <Indicator type='indeterminate'>
 			
 			<section>
 				<h2> "Tiles"
@@ -223,17 +219,67 @@ tag Palette
 				# <ColorSample bg='alt-bg'>
 				# <ColorSample bg='pri'>
 				# <ColorSample bg='sec'>
-	
+
+tag TileTest
+	def render
+		<self.tile>
+			<.body>
+				<.title>
+					<span> data:title
+					<span.dim> " (example.uxa.io)"
+				<.legend.bullets.dim>
+					<span> "by John Doe"
+					<span> "20 minutes ago"
 export tag Home
 
 	def render
 		<self>
-			<section>
-				<h3> "Colors"
-				<ColorScale tint='base'>
-				<ColorScale tint='dark'>
-				<ColorScale tint='pri'>
-				<ColorScale tint='sec'>
-			<Palette tint='neutral'>
+			<div.light>
+				<article>
+					<div uxa:md=long>
+					# <h1> "H1 Heading"
+					# <h2> "H2 Heading"
+					# <h3> "H3 Heading"
+					# <p> "Paragraph"
+					# <p.dim> "Dimmed paragraph"
+					<section>
+						for item in ['light','dark']
+							<.grid.tiles>
+								<.tile .{item}>
+									<p> "Default color"
+									<p.red> "Red"
+									<p.green> "Green"
+									<p.blue> "Blue"
+									<p.dim> "Dim"
+									<p.muted> "Muted"
+									<.spaced>
+										<a.button> "Cancel"
+										<a.button.primary> "Submit"
+								<.tile .{item}>
+									<.spaced>
+										<a.button data-icon='mclose'> "Archive"
+										<a.button data-icon-after='mclose'> "Undo"
+										<a.sm.button data-icon='mclose'> "Archive"
+										<a.sm.button data-icon-after='mclose'> "Undo"
+
+					<section>
+						<header> <.title> "Title"
+					<section>
+						<.grid.tiles> for item in items
+							<TileTest[item]>
+					<section>
+						<.grid.tiles> for item in items
+							<TileTest[item].dark>
+
+
+			# <section>
+			# 	<h3> "Colors"
+			# 	# <ColorScale tint='base'>
+			# 	# <ColorScale tint='dark'>
+			# 	# <ColorScale tint='pri'>
+			# 	# <ColorScale tint='sec'>
+			# <Palette tint='neutral'>
+			<Palette tint='light'>
 			<Palette tint='dark'>
+
 			

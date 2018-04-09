@@ -1,5 +1,11 @@
 @import '../less/index.less';
 
+:root {
+	--masthead-height: 50px;
+}
+
+
+
 #head {
 	// background: red;
 	position: fixed;
@@ -33,6 +39,13 @@
 	// background: blue;
 	padding-top: var(--masthead-height);
 	left: 0px;
+
+	article {
+		max-width: 1000px;
+		margin: 0 auto;
+		padding: 20px;
+
+	}
 }
 
 .section {
@@ -58,3 +71,5 @@
 		border-bottom: 1px solid var(--stroke);
 	}
 }
+
+

@@ -76,7 +76,8 @@ watch(path.resolve(__dirname + '/../less'), { recursive: true }) do |evt,name|
 	connections.forEach do |conn|
 		conn.send("!!")
 
-server.listen(process:env.PORT) do |err,res|
-	console.log "server connected here?!"
+let port = process:env.PORT or 8003
+server.listen(port) do |err,res|
+	console.log "server connected at :{port}"
 	self
 
