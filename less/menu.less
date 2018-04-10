@@ -40,7 +40,29 @@
 
 	.item:hover {
 		text-decoration: none;
+		background: var(--menu-hover-bg);
 		&:before { opacity: 1; }
+	}
+	
+	--p-font-size: var(--menu-font-size);
+	--caption-font-size: var(--menu-font-size);
+	--field-height: var(--menu-item-height);
+
+	.field {
+		margin-bottom: 0px;
+		// should use variables for this
+		// breaks down with different sizes
+		[type=radio] ~ label {
+			margin-left: 6px;
+		}
+
+		[type=checkbox] ~ label {
+			margin-left: 6px;
+		}
+	}
+
+	.field:hover {
+		background: var(--menu-hover-bg);
 	}
 }
 
@@ -62,12 +84,6 @@
 	&.uxa-hide {
 		transform: translateY(0px) scale(0.95);
 		opacity: 0;
-	}
-}
-
-.menu .item {
-	&:hover {
-		background: var(--menu-hover-bg);
 	}
 }
 

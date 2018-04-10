@@ -7164,6 +7164,7 @@ var state = {
 	title: "Something",
 	category: 'Imba',
 	categories: ['Imba','React','Vue.js','Angular'],
+	enabled: true,
 	rating: 8
 };
 
@@ -7649,13 +7650,7 @@ var Home = Imba.defineTag('Home', function(tag){
 							],2),
 							
 							_1('div',t0.$,'AD',t0).flag('tile').setContent(
-								t0.$.AE || _1('div',t0.$,'AE','AD').flag('menu').setContent([
-									_1('div',t0.$,'AF','AE').flag('item').setText("Edit item"),
-									_1('div',t0.$,'AG','AE').flag('item').dataset('icon','mright').setText("Remove item"),
-									_1('hr',t0.$,'AH','AE'),
-									_1('div',t0.$,'AI','AE').flag('item').dataset('icon','mright').setText("Edit item"),
-									_1('div',t0.$,'AJ','AE').flag('item').dataset('icon','mclose').setText("Close menu")
-								],2)
+								t0.$.AE || _1('div',t0.$,'AE','AD').flag('menu')
 							,2)
 						],2)).setFlag(0,ary[i]).end((
 							t0.$.N.end(),
@@ -7665,9 +7660,84 @@ var Home = Imba.defineTag('Home', function(tag){
 							t0.$.Z.end(),
 							t0.$.AA.end(),
 							t0.$.AB.end(),
-							t0.$.AG.end(),
-							t0.$.AI.end(),
-							t0.$.AJ.end()
+							t0.$.AE.setContent([
+								t0.$.AF || _1('div',t0.$,'AF','AE').flag('item').setText("Edit item"),
+								t0.$.AG || _1('div',t0.$,'AG','AE').flag('item').dataset('icon','mright').setText("Remove item"),
+								t0.$.AH || _1('hr',t0.$,'AH','AE'),
+								t0.$.AI || _1('div',t0.$,'AI','AE').flag('item').dataset('icon','mright').setText("Edit item"),
+								t0.$.AJ || _1('div',t0.$,'AJ','AE').flag('item').dataset('icon','mclose').setText("Close menu"),
+								t0.$.AK || _1('hr',t0.$,'AK','AE'),
+								(function tagLoop($0) {
+									var t1;
+									for (let j = 0, array = iter$(state.categories), len = $0.taglen = array.length, item; j < len; j++) {
+										item = array[j];
+										(t1 = $0[j] || (t1=_1('div',$0,j)).flag('field').flag('radio').setContent([
+											_1('input',t1.$,'A',t1).setType('radio'),
+											_1('label',t1.$,'B',t1)
+										
+										
+										],2)).end((
+											t1.$.A.bindData(state,'category').setValue(item,1).end(),
+											t1.$.B.setContent(item,3)
+										,true));
+									};return $0;
+								})(t0.$['AL'] || _2(t0.$,'AL',t0.$.AE)),
+								t0.$.AM || _1('hr',t0.$,'AM','AE'),
+								t0.$.AN || _1('div',t0.$,'AN','AE').flag('field').flag('checkbox').setContent([
+									_1('input',t0.$,'AO','AN').setType('checkbox'),
+									_1('label',t0.$,'AP','AN').setText("Show invisibles")
+								],2),
+								
+								t0.$.AQ || _1('div',t0.$,'AQ','AE').flag('field').setContent([
+									_1('input',t0.$,'AR','AQ').setType('range').setMin(0.4).setStep(0.1).setMax(2).setNumber(true),
+									_1('label',t0.$,'AS','AQ').setText("Speed"),
+									_1('span',t0.$,'AT','AQ').flag('value').setText('2x')
+								
+								],2),
+								
+								
+								
+								
+								
+								
+								
+								t0.$.AU || _1('div',t0.$,'AU','AE').flag('field').setContent([
+									_1('label',t0.$,'AV','AU').setText("Viewport"),
+									_1('div',t0.$,'AW','AU').flag('optgroup')
+								],2),
+								t0.$.AY || _1('div',t0.$,'AY','AE').flag('item').setContent([
+									_1('label',t0.$,'AZ','AY').setText("Shortcuts"),
+									_1('div',t0.$,'BA','AY').flag('shortcut').dataset('shortcut','space').setText("pause / resume"),
+									_1('div',t0.$,'BB','AY').flag('shortcut').dataset('shortcut','shift ←').setText("slower playback"),
+									_1('div',t0.$,'BC','AY').flag('shortcut').dataset('shortcut','shift →').setText("faster playback"),
+									_1('div',t0.$,'BD','AY').flag('shortcut').dataset('shortcut','→').setText("go forward 10s"),
+									_1('div',t0.$,'BE','AY').flag('shortcut').dataset('shortcut','←').setText("go back 10s")
+								],2)
+							],1).end((
+								t0.$.AG.end(),
+								t0.$.AI.end(),
+								t0.$.AJ.end(),
+								t0.$.AO.bindData(state,'enabled').end(),
+								t0.$.AR.end(),
+								t0.$.AW.setContent((function tagLoop($0) {
+									var t1;
+									for (let j = 0, array = ['auto','desktop','tablet','mobile'], len = $0.taglen = array.length, kind; j < len; j++) {
+										kind = array[j];
+										(t1 = $0[j] || (t1=_1('label',$0,j)).flag('action').flag('radio').setContent([
+											_1('input',t1.$,'A',t1).setType('radio'),
+											_1('span',t1.$,'B',t1)
+										],2)).end((
+											t1.$.A.setValue(kind,1).end(),
+											t1.$.B.setContent(kind,3)
+										,true));
+									};return $0;
+								})(t0.$['AX'] || _2(t0.$,'AX',t0.$.AW)),4),
+								t0.$.BA.end(),
+								t0.$.BB.end(),
+								t0.$.BC.end(),
+								t0.$.BD.end(),
+								t0.$.BE.end()
+							,true))
 						,true));
 					};return $0;
 				})($[18] || _2($,18,$[17]))

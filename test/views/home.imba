@@ -56,6 +56,7 @@ var state = {
 	title: "Something"
 	category: 'Imba'
 	categories: ['Imba','React','Vue.js','Angular']
+	enabled: yes
 	rating: 8
 }
 
@@ -340,6 +341,43 @@ export tag Home
 									<hr>
 									<.item data-icon='mright'> "Edit item"
 									<.item data-icon='mclose'> "Close menu"
+									<hr>
+									for item in state:categories
+										<.field.radio>
+											<input[state:category] type='radio' value=item>
+											<label> item
+											# for item in state:categories
+											#	<option> item
+									<hr>
+									<.field.checkbox>
+										<input[state:enabled] type='checkbox'>
+										<label> "Show invisibles"
+
+									<.field>
+										<input type='range' min=0.4 step=0.1 max=2 number=yes>
+										<label> "Speed"
+										<span.value> '2x'
+										# <input[data.playbackRate] type='range' min=0.4 step=0.1 max=2 number=yes>
+									# <.item>
+									# 	<label>
+									# 		<span> "Font Size"
+									# 		<span.value> api.fontSize + 'px'
+									# 	
+									# 	<input[api.fontSize] type='range' min=8 step=1 max=24 number=yes>
+									# if space.trunk.canRecord or space.trunk.canAnnotate
+									<.field>
+										<label> "Viewport"
+										<.optgroup> for kind in ['auto','desktop','tablet','mobile']
+											<label.action.radio>
+												<input type='radio' value=kind>
+												<span> kind
+									<.item>
+										<label> "Shortcuts"
+										<.shortcut data-shortcut='space'> "pause / resume"
+										<.shortcut data-shortcut='shift ←'> "slower playback"
+										<.shortcut data-shortcut='shift →'> "faster playback"
+										<.shortcut data-shortcut='→'> "go forward 10s"
+										<.shortcut data-shortcut='←'> "go back 10s"
 				<section.section>
 					<header>
 						<.title> "Title"
