@@ -68,6 +68,16 @@ tag LogForm < Form
 				<input type='text' placeholder='Title of project'>
 				<label data-label="Title"> "Title"
 				<hr>
+				
+			# <label.field>
+			# 	<input type='checkbox'>
+			# 	<span> "This is my checkbox right here"
+				
+			<.field>
+				<input type='checkbox'>
+				<label> "Another checkbox yes"
+				# <p> "this is my checkbox"
+				# <hr>
 
 			<TextField label="Title" name='title' placeholder="Descriptive title" desc="Some description of this">
 			<SelectField label="Category" name='category' desc="Some description of this">

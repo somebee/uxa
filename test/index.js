@@ -7182,24 +7182,36 @@ var LogForm = Imba.defineTag('LogForm', Form, function(tag){
 				_1('hr',$,7,4)
 			],2),
 			
-			_1(TextField,$,8,this).setLabel("Title").setName('title').setPlaceholder("Descriptive title").setDesc("Some description of this"),
-			_1(SelectField,$,9,this).setLabel("Category").setName('category').setDesc("Some description of this"),
-			_1(TextField,$,10,this).setLabel("Secret word").setName('secret').setPlaceholder("What is the secret?").setRequired(true).setPattern("uxauxa").setDesc("Can you guess it?"),
-			_1(TextArea,$,11,this).setLabel("Description").setName('desc').setDesc("Please feel free to describe").setPlaceholder("Some description").setRequired(true),
-			_1(TextField,$,12,this).setLabel("Alias").setName('alias').setDesc("This field is disabled").setDisabled(true),
-			_1(Button,$,13,this).flag('primary').setLabel("Submit").setType('submit'),
-			_1(Button,$,14,this).flag('primary').setLabel("Fill").setType('button').on$(0,['tap','fill'],this)
+			
+			
+			
+			
+			_1('div',$,8,this).flag('field').setContent([
+				_1('input',$,9,8).setType('checkbox'),
+				_1('label',$,10,8).setText("Another checkbox yes")
+			
+			
+			],2),
+			
+			_1(TextField,$,11,this).setLabel("Title").setName('title').setPlaceholder("Descriptive title").setDesc("Some description of this"),
+			_1(SelectField,$,12,this).setLabel("Category").setName('category').setDesc("Some description of this"),
+			_1(TextField,$,13,this).setLabel("Secret word").setName('secret').setPlaceholder("What is the secret?").setRequired(true).setPattern("uxauxa").setDesc("Can you guess it?"),
+			_1(TextArea,$,14,this).setLabel("Description").setName('desc').setDesc("Please feel free to describe").setPlaceholder("Some description").setRequired(true),
+			_1(TextField,$,15,this).setLabel("Alias").setName('alias').setDesc("This field is disabled").setDisabled(true),
+			_1(Button,$,16,this).flag('primary').setLabel("Submit").setType('submit'),
+			_1(Button,$,17,this).flag('primary').setLabel("Fill").setType('button').on$(0,['tap','fill'],this)
 		],2).synced((
 			$[1].end(),
 			$[5].end(),
 			$[6].end(),
-			$[8].end(),
 			$[9].end(),
-			$[10].end(),
 			$[11].end(),
 			$[12].end(),
 			$[13].end(),
-			$[14].end()
+			$[14].end(),
+			$[15].end(),
+			$[16].end(),
+			$[17].end()
 		,true));
 	};
 	

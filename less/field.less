@@ -13,10 +13,11 @@
 .field {
 	position: relative;
 	font-size: var(--p-font-size);
+	min-height: var(--field-height);
 
-	--control-height: var(--p-line-height);
+	--radio-size: calc(var(--field-height) * 0.5);
+
 	--placeholder-color: #c4ced8;
-
 	--neutral-color: var(--neutral);
 	--label-color: var(--neutral);
 	--focus-color: var(--blue);
@@ -26,18 +27,18 @@
 	--input-font-size: var(--p-font-size);
 	--label-font-size: var(--caption-font-size);
 	--label-height: var(--caption-line-height);
+	--ui-color: #c4ced8;
 
 	::-webkit-input-placeholder { color: var(--placeholder-color); }
 	::-moz-placeholder { color: var(--placeholder-color); }
 	::-ms-input-placeholder { color: var(--placeholder-color); }
 
-	padding-top: var(--label-height);
 	display: flex;
 	flex-direction: column;
 	align-items: flex-start;
 	justify-content: flex-start;
 
-	input {
+	input:not([type=checkbox]):not([type=radio]) {
 		-webkit-appearance: none;
 		display: block;
 		position: relative;
@@ -47,7 +48,6 @@
 		border: 1px solid var(--border-color);
 		border-width: 0px 0px 1px;
 		width: 100%;
-		// placeholder-color
 	}
 
 	label {
@@ -81,11 +81,75 @@
 		outline: none;
 	}
 
-	input:focus ~ * {
+	:focus ~ * {
+		--ui-color: var(--focus-color);
+	}
+
+	input:focus:not([type=checkbox]):not([type=radio]) ~ * {
 		--label-color: var(--focus-color);
 		--bar-color: var(--focus-color);
 		--bar-scale: 1;
 	}
+}
+
+// checkbox
+.field {
+	input[type=checkbox]{
+		position: absolute;
+		top: 0px;
+		left: 0px;
+		height: 100%;
+		width: 100%;
+		-webkit-appearance: none;
+		opacity: 0;
+	}
+
+	input[type=checkbox] ~ label {
+		padding-left: calc(var(--radio-size) + 6px);
+		font-size: inherit;
+		line-height: var(--field-height);
+		height: auto;
+
+		&:before,&:after {
+			width: var(--radio-size);
+			height: var(--radio-size);
+			line-height: var(--radio-size);
+			font-size: calc(var(--radio-size) - 4px);
+
+			content: " ";
+			left: 0px;
+			position: absolute;
+			top: calc((var(--field-height) - var(--radio-size)) * 0.5 );
+			display: block;
+			text-align: center;
+			// box-shadow: 0px 0px 1px 1px var(--border-color);
+			// font-size: 12px;
+		}
+
+		&:before {
+			background: white;
+			border: 1px solid var(--border-color);
+			border-radius: 2px;
+		}
+
+		&:after {
+			content: "✔";
+			opacity: 0.2;
+
+		}
+	}
+
+	input[type=checkbox]:focus ~ label {
+		&:before {
+			// border-color: var(--blue);
+			box-shadow: 0px 0px 3px 0px var(--blue);
+		}
+	}
+
+	input:checked ~ label {
+		&:after { opacity: 1; color: var(--blue); }
+	}
+
 }
 
 // smart label that rests on top of input
@@ -102,11 +166,5 @@
 		line-height: var(--field-height);
 		top: var(--label-height);
 		font-size: var(--input-font-size);
-	}
-
-	input:focussd ~ label {
-		line-height: var(--control-height);
-		top: var(--label-height);
-		font-size: inherit;
 	}
 }
