@@ -410,7 +410,7 @@ export tag Home
 			# 	# <ColorScale tint='pri'>
 			# 	# <ColorScale tint='sec'>
 			# <Palette tint='neutral'>
-			# <Palette tint='light'>
+			<Palette tint='light'>
 			# <Palette tint='dark'>
 
 			

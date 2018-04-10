@@ -7441,17 +7441,17 @@ var Home = Imba.defineTag('Home', function(tag){
 				$[34] || _1('div',$,34,33).flag('tile').flag('dark').setContent(
 					$[35] || _1('h2',$,35,34).setText("This is a tile!")
 				,2)
-			,2)
-		
-		
-		
-		
-		
-		
-		
-		
-		
-		
+			,2),
+			
+			
+			
+			
+			
+			
+			
+			
+			
+			_1(Palette,$,36,this).setTint('light')
 		
 		],2).synced((
 			$[17].setContent(
@@ -7585,7 +7585,8 @@ var Home = Imba.defineTag('Home', function(tag){
 				};return $0;
 			})($[30] || _2($,30,$[29])),4),
 			$[31].setNestedAttr('uxa','md',long).end(),
-			$[32].setNestedAttr('uxa','md',long).end()
+			$[32].setNestedAttr('uxa','md',long).end(),
+			$[36].end()
 		,true));
 	};
 })

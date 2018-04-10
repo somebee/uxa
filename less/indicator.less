@@ -1,3 +1,4 @@
+
 /* Progress Bar */
 .Indicator.uxa {
 	position: relative;
@@ -5,30 +6,25 @@
 	display: block;
 	width: 100%;
 
-	--indicator-color: var(--uxa-pri-A200);
-	--indicator-bg: var(--uxa-tint-50);
-	// background-color: #acece6;
-	// background-color: var(--indicator-bg);
-	// border-radius: 2px;
-	// background-clip: padding-box;
+	// --indicator-bg: var(--uxa-tint-50);
+
 	margin: 0 0 1rem;
 	overflow: hidden;
-	background: var(--indicator-bg);
+	background: var(--indicator-track-color);
 	transform-origin: 0% 0%;
+	color: var(--indicator-color);
 
 	.determinate {
 		position: absolute;
 		background-color: inherit;
 		top: 0;
 		bottom: 0;
-		background-color: #75aaff;
-		background-color: var(--indicator-color);
+		background-color: currentColor; // var(--indicator-color);
 		transition: width .3s linear;
 	}
 
 	.indeterminate {
-		background-color: #75aaff;
-		background-color: var(--indicator-color);
+		background-color: currentColor;
 	}
 
 	.indeterminate:before {
@@ -39,9 +35,7 @@
 		left: 0;
 		bottom: 0;
 		will-change: left, right;
-		// -webkit-animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
 		animation: indeterminate 2.1s cubic-bezier(0.65, 0.815, 0.735, 0.395) infinite;
-		// transition: animation-play-state 0.5s step-start;
 	}
 
 	.indeterminate:after {
@@ -52,11 +46,8 @@
 		left: 0;
 		bottom: 0;
 		will-change: left, right;
-		// -webkit-animation: indeterminate-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
-		// -webkit-animation-delay: 1.15s;
 		animation: indeterminate-short 2.1s cubic-bezier(0.165, 0.84, 0.44, 1) infinite;
 		animation-delay: 1.15s;
-		// transition: animation-play-state 0.5s step-start;
 	}
 
 	&.abs {
@@ -71,8 +62,6 @@
 		.indeterminate:before,
 		.indeterminate:after {
 			animation-play-state: paused;
-			// transition: animation-play-state 0.5s step-start;
-			// animation-play-state: paused;
 		}
 	}
 
@@ -80,8 +69,6 @@
 		.indeterminate:before,
 		.indeterminate:after {
 			animation-play-state: running;
-			// transition: animation-play-state 0.5s step-start;
-			// animation-play-state: paused;
 		}
 	}
 
@@ -90,7 +77,7 @@
 			position: absolute;
 			top: 0;
 			bottom: 0;
-			background-color: var(--indicator-color);
+			background-color: currentColor;
 			left: 0px;
 			width: 100%;
 			transform: scaleX(0);
@@ -98,10 +85,6 @@
 			will-change: transform,opacity;
 			opacity: 1;
 		}
-		// opacity: 0;
-		// .ind {
-		// 	transition: transform 0.1s cubic-bezier(0.250, 1.190, 0.300, 0.865);
-		// }
 		transform: scaleY(0);
 		transition: transform 0.2s ease-in-out;
 		will-change: transform,opacity;
