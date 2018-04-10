@@ -76,25 +76,31 @@ tag LogForm < Form
 				<input[state:title] type='text' placeholder='Subtitle of project' pattern="Stuff">
 				<label> "Subtitle"
 				<hr>
+				
+			<.field>
+				<input[state:title] type='text' required placeholder='Required title'>
+				<label> "Slug"
+				<hr>
 			
-			<.field.radio>
+			<.field.range>
 				<input[state:rating] type='range' min=0 max=10 step=1 name='slide'>
 				<label> "Font-size"
+				# <.control>
 
-			<.field>
+			<.field.checkbox>
 				<input type='checkbox'>
 				<label> "Another checkbox yes"
 			
 			<.field>
-				<.field>
+				<.field.radio>
 					<input type='radio' name='group' value='red'>
 					<label> "Red"
 				
-				<.field>
+				<.field.radio>
 					<input type='radio' name='group' value='green'>
 					<label> "Green"
 					
-				<.field>
+				<.field.radio>
 					<input type='radio' name='group' value='blue'>
 					<label> "Blue"
 				
@@ -104,10 +110,10 @@ tag LogForm < Form
 						<option> item
 				<label> "Blue"
 			<TextField label="Title" name='title' placeholder="Descriptive title" desc="Some description of this">
-			<SelectField label="Category" name='category' desc="Some description of this">
+			# <SelectField label="Category" name='category' desc="Some description of this">
 			<TextField label="Secret word" name='secret' placeholder="What is the secret?" required=yes pattern="uxauxa" desc="Can you guess it?">
 			<TextArea label="Description" name='desc' desc="Please feel free to describe" placeholder="Some description" required=yes>
-			<TextField label="Alias" name='alias' desc="This field is disabled" disabled=yes>
+			# <TextField label="Alias" name='alias' desc="This field is disabled" disabled=yes>
 			# <Button.primary label="Submit" type='submit'>
 			# <Button.primary label="Fill" type='button' :tap='fill'>
 
@@ -360,32 +366,10 @@ export tag Home
 										<label> "Show invisibles"
 									<hr>
 									# <.item>
-									<.field>
+									<.field.range>
 										<input type='range' min=0.4 step=0.1 max=2 number=yes>
 										<label> "Speed"
-										# <span.value> '2x'
-									
-										# <input[data.playbackRate] type='range' min=0.4 step=0.1 max=2 number=yes>
-									# <.item>
-									# 	<label>
-									# 		<span> "Font Size"
-									# 		<span.value> api.fontSize + 'px'
-									# 	
-									# 	<input[api.fontSize] type='range' min=8 step=1 max=24 number=yes>
-									# if space.trunk.canRecord or space.trunk.canAnnotate
-									# <.field>
-									# 	<label> "Viewport"
-									# 	<.optgroup> for kind in ['auto','desktop','tablet','mobile']
-									# 		<label.action.radio>
-									# 			<input type='radio' value=kind>
-									# 			<span> kind
-									# <.item>
-									# 	<label> "Shortcuts"
-									# 	<.shortcut data-shortcut='space'> "pause / resume"
-									# 	<.shortcut data-shortcut='shift ←'> "slower playback"
-									# 	<.shortcut data-shortcut='shift →'> "faster playback"
-									# 	<.shortcut data-shortcut='→'> "go forward 10s"
-									# 	<.shortcut data-shortcut='←'> "go back 10s"
+
 				<section.section>
 					<header>
 						<.title> "Title"

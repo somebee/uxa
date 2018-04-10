@@ -48,6 +48,11 @@ label {
 		color: var(--help-color);
 	}
 
+	.help:not(:empty) {
+		margin-bottom: var(--smu);
+
+	}
+
 	--radio-size: calc(var(--field-height) * 0.5);
 
 	--placeholder-color: #c4ced8;
@@ -76,6 +81,12 @@ label {
 	align-items: flex-start;
 	justify-content: flex-start;
 
+	&.radio,&.checkbox {
+		--label-color: var(--input-color);
+		label { font-weight: inherit; color: inherit; }
+		// --label-color: var(--input-color);
+	}
+
 	input:not([type=checkbox]):not([type=radio]):not([type=range]),.input {
 		-webkit-appearance: none;
 		display: block;
@@ -90,11 +101,11 @@ label {
 	}
 
 	label {
-		color: var(--label-color);
+		color: var(--field-label-color);
 		font-size: var(--label-font-size);
 		height: var(--label-line-height);
 		line-height: var(--label-height);
-		font-weight: normal;
+		font-weight: 500;
 		pointer-events:none;
 		order: -1;
 		transition:0.2s ease all;
@@ -114,6 +125,8 @@ label {
 		.field-bar;
 		height: 2px;
 		margin-top: -2px;
+		border: none;
+		vertical-align: top;
 	}
 
 	input:focus {
@@ -182,6 +195,11 @@ label {
 		}
 	}
 
+	[required] ~ label:after {
+		content: " *";
+		color: var(--red);
+	}
+
 
 	[type=radio] ~ label:before {
 		border-radius: 20px;
@@ -203,6 +221,11 @@ label {
 	:checked ~ label {
 		&:before { border-color: var(--blue); }
 		&:after { opacity: 1; color: var(--blue); }
+	}
+
+	[type=checkbox]:checked ~ label {
+		&:before { border-color: var(--blue); background: var(--blue); }
+		&:after { opacity: 1; color: white; }
 	}
 
 	[type=radio]:checked ~ label:after {
