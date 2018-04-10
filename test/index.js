@@ -7193,25 +7193,43 @@ var LogForm = Imba.defineTag('LogForm', Form, function(tag){
 			
 			],2),
 			
-			_1(TextField,$,11,this).setLabel("Title").setName('title').setPlaceholder("Descriptive title").setDesc("Some description of this"),
-			_1(SelectField,$,12,this).setLabel("Category").setName('category').setDesc("Some description of this"),
-			_1(TextField,$,13,this).setLabel("Secret word").setName('secret').setPlaceholder("What is the secret?").setRequired(true).setPattern("uxauxa").setDesc("Can you guess it?"),
-			_1(TextArea,$,14,this).setLabel("Description").setName('desc').setDesc("Please feel free to describe").setPlaceholder("Some description").setRequired(true),
-			_1(TextField,$,15,this).setLabel("Alias").setName('alias').setDesc("This field is disabled").setDisabled(true),
-			_1(Button,$,16,this).flag('primary').setLabel("Submit").setType('submit'),
-			_1(Button,$,17,this).flag('primary').setLabel("Fill").setType('button').on$(0,['tap','fill'],this)
+			_1('div',$,11,this).flag('field').setContent([
+				_1('input',$,12,11).setType('radio').setName('group').setValue('red',1),
+				_1('label',$,13,11).setText("Red")
+			],2),
+			
+			_1('div',$,14,this).flag('field').setContent([
+				_1('input',$,15,14).setType('radio').setName('group').setValue('green',1),
+				_1('label',$,16,14).setText("Green")
+			],2),
+			
+			_1('div',$,17,this).flag('field').setContent([
+				_1('input',$,18,17).setType('radio').setName('group').setValue('blue',1),
+				_1('label',$,19,17).setText("Blue")
+			],2),
+			
+			_1(TextField,$,20,this).setLabel("Title").setName('title').setPlaceholder("Descriptive title").setDesc("Some description of this"),
+			_1(SelectField,$,21,this).setLabel("Category").setName('category').setDesc("Some description of this"),
+			_1(TextField,$,22,this).setLabel("Secret word").setName('secret').setPlaceholder("What is the secret?").setRequired(true).setPattern("uxauxa").setDesc("Can you guess it?"),
+			_1(TextArea,$,23,this).setLabel("Description").setName('desc').setDesc("Please feel free to describe").setPlaceholder("Some description").setRequired(true),
+			_1(TextField,$,24,this).setLabel("Alias").setName('alias').setDesc("This field is disabled").setDisabled(true),
+			_1(Button,$,25,this).flag('primary').setLabel("Submit").setType('submit'),
+			_1(Button,$,26,this).flag('primary').setLabel("Fill").setType('button').on$(0,['tap','fill'],this)
 		],2).synced((
 			$[1].end(),
 			$[5].end(),
 			$[6].end(),
 			$[9].end(),
-			$[11].end(),
 			$[12].end(),
-			$[13].end(),
-			$[14].end(),
 			$[15].end(),
-			$[16].end(),
-			$[17].end()
+			$[18].end(),
+			$[20].end(),
+			$[21].end(),
+			$[22].end(),
+			$[23].end(),
+			$[24].end(),
+			$[25].end(),
+			$[26].end()
 		,true));
 	};
 	

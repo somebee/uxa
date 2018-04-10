@@ -27,7 +27,7 @@
 	--input-font-size: var(--p-font-size);
 	--label-font-size: var(--caption-font-size);
 	--label-height: var(--caption-line-height);
-	--ui-color: #c4ced8;
+	--ui-color: var(--blue);
 
 	::-webkit-input-placeholder { color: var(--placeholder-color); }
 	::-moz-placeholder { color: var(--placeholder-color); }
@@ -94,17 +94,17 @@
 
 // checkbox
 .field {
-	input[type=checkbox]{
+	[type=checkbox],[type=radio]{
 		position: absolute;
 		top: 0px;
 		left: 0px;
 		height: 100%;
 		width: 100%;
 		-webkit-appearance: none;
-		opacity: 0;
+		opacity: 0.2;
 	}
 
-	input[type=checkbox] ~ label {
+	[type=checkbox] ~ label,[type=radio] ~ label {
 		padding-left: calc(var(--radio-size) + 6px);
 		font-size: inherit;
 		line-height: var(--field-height);
@@ -112,7 +112,7 @@
 
 		&:before,&:after {
 			width: var(--radio-size);
-			height: var(--radio-size);
+			height: var(--radio-size); 
 			line-height: var(--radio-size);
 			font-size: calc(var(--radio-size) - 4px);
 
@@ -122,8 +122,6 @@
 			top: calc((var(--field-height) - var(--radio-size)) * 0.5 );
 			display: block;
 			text-align: center;
-			// box-shadow: 0px 0px 1px 1px var(--border-color);
-			// font-size: 12px;
 		}
 
 		&:before {
@@ -135,19 +133,35 @@
 		&:after {
 			content: "✔";
 			opacity: 0.2;
-
+			transition: all 0.1s ease-out;
 		}
 	}
 
-	input[type=checkbox]:focus ~ label {
+
+	[type=radio] ~ label:before {
+		border-radius: 20px;
+	}
+
+	[type=radio] ~ label:after {
+		border-radius: 20px;
+		content: " ";
+		background: currentColor;
+		transform: scale(0.5);
+	}
+
+	[type=checkbox]:focus ~ label {
 		&:before {
-			// border-color: var(--blue);
 			box-shadow: 0px 0px 3px 0px var(--blue);
 		}
 	}
 
-	input:checked ~ label {
+	:checked ~ label {
+		&:before { border-color: var(--blue); }
 		&:after { opacity: 1; color: var(--blue); }
+	}
+
+	[type=radio]:checked ~ label:after {
+		transform: scale(0.6);
 	}
 
 }

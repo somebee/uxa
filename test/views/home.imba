@@ -78,6 +78,18 @@ tag LogForm < Form
 				<label> "Another checkbox yes"
 				# <p> "this is my checkbox"
 				# <hr>
+			
+			<.field>
+				<input type='radio' name='group' value='red'>
+				<label> "Red"
+			
+			<.field>
+				<input type='radio' name='group' value='green'>
+				<label> "Green"
+				
+			<.field>
+				<input type='radio' name='group' value='blue'>
+				<label> "Blue"
 
 			<TextField label="Title" name='title' placeholder="Descriptive title" desc="Some description of this">
 			<SelectField label="Category" name='category' desc="Some description of this">
