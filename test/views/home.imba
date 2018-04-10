@@ -59,15 +59,19 @@ tag LogForm < Form
 	
 	def render
 		<self>
-			<.field>
-				<input type='text' placeholder='Title of project'>
-				<label> "Title"
-				<hr>
-			
-			<.field.resting>
+			<.field.resting.lg>
 				<input type='text' placeholder='Title of project'>
 				<label data-label="Title"> "Title"
 				<hr>
+				
+			<.field>
+				<input type='text' placeholder='Subtitle of project'>
+				<label> "Subtitle"
+				<hr>
+			
+			<.field>
+				<input type='range' min=0 max=10 step=1 name='slide'>
+				<label> "Font-size"
 				
 			# <label.field>
 			# 	<input type='checkbox'>

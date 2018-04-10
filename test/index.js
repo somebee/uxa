@@ -7170,66 +7170,72 @@ var LogForm = Imba.defineTag('LogForm', Form, function(tag){
 	tag.prototype.render = function (){
 		var $ = this.$;
 		return this.$open(0).setChildren($.$ = $.$ || [
-			_1('div',$,0,this).flag('field').setContent([
+			_1('div',$,0,this).flag('field').flag('resting').flag('lg').setContent([
 				_1('input',$,1,0).setType('text').setPlaceholder('Title of project'),
-				_1('label',$,2,0).setText("Title"),
+				_1('label',$,2,0).dataset('label',"Title").setText("Title"),
 				_1('hr',$,3,0)
 			],2),
 			
-			_1('div',$,4,this).flag('field').flag('resting').setContent([
-				_1('input',$,5,4).setType('text').setPlaceholder('Title of project'),
-				_1('label',$,6,4).dataset('label',"Title").setText("Title"),
+			_1('div',$,4,this).flag('field').setContent([
+				_1('input',$,5,4).setType('text').setPlaceholder('Subtitle of project'),
+				_1('label',$,6,4).setText("Subtitle"),
 				_1('hr',$,7,4)
 			],2),
 			
-			
-			
-			
-			
 			_1('div',$,8,this).flag('field').setContent([
-				_1('input',$,9,8).setType('checkbox'),
-				_1('label',$,10,8).setText("Another checkbox yes")
-			
-			
+				_1('input',$,9,8).setType('range').setMin(0).setMax(10).setStep(1).setName('slide'),
+				_1('label',$,10,8).setText("Font-size")
 			],2),
 			
+			
+			
+			
+			
 			_1('div',$,11,this).flag('field').setContent([
-				_1('input',$,12,11).setType('radio').setName('group').setValue('red',1),
-				_1('label',$,13,11).setText("Red")
+				_1('input',$,12,11).setType('checkbox'),
+				_1('label',$,13,11).setText("Another checkbox yes")
+			
+			
 			],2),
 			
 			_1('div',$,14,this).flag('field').setContent([
-				_1('input',$,15,14).setType('radio').setName('group').setValue('green',1),
-				_1('label',$,16,14).setText("Green")
+				_1('input',$,15,14).setType('radio').setName('group').setValue('red',1),
+				_1('label',$,16,14).setText("Red")
 			],2),
 			
 			_1('div',$,17,this).flag('field').setContent([
-				_1('input',$,18,17).setType('radio').setName('group').setValue('blue',1),
-				_1('label',$,19,17).setText("Blue")
+				_1('input',$,18,17).setType('radio').setName('group').setValue('green',1),
+				_1('label',$,19,17).setText("Green")
 			],2),
 			
-			_1(TextField,$,20,this).setLabel("Title").setName('title').setPlaceholder("Descriptive title").setDesc("Some description of this"),
-			_1(SelectField,$,21,this).setLabel("Category").setName('category').setDesc("Some description of this"),
-			_1(TextField,$,22,this).setLabel("Secret word").setName('secret').setPlaceholder("What is the secret?").setRequired(true).setPattern("uxauxa").setDesc("Can you guess it?"),
-			_1(TextArea,$,23,this).setLabel("Description").setName('desc').setDesc("Please feel free to describe").setPlaceholder("Some description").setRequired(true),
-			_1(TextField,$,24,this).setLabel("Alias").setName('alias').setDesc("This field is disabled").setDisabled(true),
-			_1(Button,$,25,this).flag('primary').setLabel("Submit").setType('submit'),
-			_1(Button,$,26,this).flag('primary').setLabel("Fill").setType('button').on$(0,['tap','fill'],this)
+			_1('div',$,20,this).flag('field').setContent([
+				_1('input',$,21,20).setType('radio').setName('group').setValue('blue',1),
+				_1('label',$,22,20).setText("Blue")
+			],2),
+			
+			_1(TextField,$,23,this).setLabel("Title").setName('title').setPlaceholder("Descriptive title").setDesc("Some description of this"),
+			_1(SelectField,$,24,this).setLabel("Category").setName('category').setDesc("Some description of this"),
+			_1(TextField,$,25,this).setLabel("Secret word").setName('secret').setPlaceholder("What is the secret?").setRequired(true).setPattern("uxauxa").setDesc("Can you guess it?"),
+			_1(TextArea,$,26,this).setLabel("Description").setName('desc').setDesc("Please feel free to describe").setPlaceholder("Some description").setRequired(true),
+			_1(TextField,$,27,this).setLabel("Alias").setName('alias').setDesc("This field is disabled").setDisabled(true),
+			_1(Button,$,28,this).flag('primary').setLabel("Submit").setType('submit'),
+			_1(Button,$,29,this).flag('primary').setLabel("Fill").setType('button').on$(0,['tap','fill'],this)
 		],2).synced((
 			$[1].end(),
+			$[2].end(),
 			$[5].end(),
-			$[6].end(),
 			$[9].end(),
 			$[12].end(),
 			$[15].end(),
 			$[18].end(),
-			$[20].end(),
 			$[21].end(),
-			$[22].end(),
 			$[23].end(),
 			$[24].end(),
 			$[25].end(),
-			$[26].end()
+			$[26].end(),
+			$[27].end(),
+			$[28].end(),
+			$[29].end()
 		,true));
 	};
 	
