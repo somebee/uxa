@@ -7139,6 +7139,7 @@ exports.Nav = Nav;
 /* 35 */
 /***/ (function(module, exports, __webpack_require__) {
 
+function iter$(a){ return a ? (a.toArray ? a.toArray() : a) : []; };
 var Imba = __webpack_require__(0), _2 = Imba.createTagList, _1 = Imba.createElement;
 var mdart = __webpack_require__(36);
 
@@ -7161,6 +7162,13 @@ var items = [{
 	title: "Creating a website"
 }];
 
+var state = {
+	title: "Something",
+	category: 'Imba',
+	categories: ['Imba','React','Vue.js','Angular'],
+	rating: 8
+};
+
 var LogForm = Imba.defineTag('LogForm', Form, function(tag){
 	
 	tag.prototype.fill = function (){
@@ -7177,12 +7185,12 @@ var LogForm = Imba.defineTag('LogForm', Form, function(tag){
 			],2),
 			
 			_1('div',$,4,this).flag('field').setContent([
-				_1('input',$,5,4).setType('text').setPlaceholder('Subtitle of project'),
+				_1('input',$,5,4).setType('text').setPlaceholder('Subtitle of project').setPattern("Stuff"),
 				_1('label',$,6,4).setText("Subtitle"),
 				_1('hr',$,7,4)
 			],2),
 			
-			_1('div',$,8,this).flag('field').setContent([
+			_1('div',$,8,this).flag('field').flag('radio').setContent([
 				_1('input',$,9,8).setType('range').setMin(0).setMax(10).setStep(1).setName('slide'),
 				_1('label',$,10,8).setText("Font-size")
 			],2),
@@ -7213,29 +7221,41 @@ var LogForm = Imba.defineTag('LogForm', Form, function(tag){
 				_1('label',$,22,20).setText("Blue")
 			],2),
 			
-			_1(TextField,$,23,this).setLabel("Title").setName('title').setPlaceholder("Descriptive title").setDesc("Some description of this"),
-			_1(SelectField,$,24,this).setLabel("Category").setName('category').setDesc("Some description of this"),
-			_1(TextField,$,25,this).setLabel("Secret word").setName('secret').setPlaceholder("What is the secret?").setRequired(true).setPattern("uxauxa").setDesc("Can you guess it?"),
-			_1(TextArea,$,26,this).setLabel("Description").setName('desc').setDesc("Please feel free to describe").setPlaceholder("Some description").setRequired(true),
-			_1(TextField,$,27,this).setLabel("Alias").setName('alias').setDesc("This field is disabled").setDisabled(true),
-			_1(Button,$,28,this).flag('primary').setLabel("Submit").setType('submit'),
-			_1(Button,$,29,this).flag('primary').setLabel("Fill").setType('button').on$(0,['tap','fill'],this)
+			_1('div',$,23,this).flag('field').flag('select').setContent([
+				_1('select',$,24,23),
+				_1('label',$,26,23).setText("Blue")
+			],2),
+			
+			_1(TextField,$,27,this).setLabel("Title").setName('title').setPlaceholder("Descriptive title").setDesc("Some description of this"),
+			_1(SelectField,$,28,this).setLabel("Category").setName('category').setDesc("Some description of this"),
+			_1(TextField,$,29,this).setLabel("Secret word").setName('secret').setPlaceholder("What is the secret?").setRequired(true).setPattern("uxauxa").setDesc("Can you guess it?"),
+			_1(TextArea,$,30,this).setLabel("Description").setName('desc').setDesc("Please feel free to describe").setPlaceholder("Some description").setRequired(true),
+			_1(TextField,$,31,this).setLabel("Alias").setName('alias').setDesc("This field is disabled").setDisabled(true),
+			_1(Button,$,32,this).flag('primary').setLabel("Submit").setType('submit'),
+			_1(Button,$,33,this).flag('primary').setLabel("Fill").setType('button').on$(0,['tap','fill'],this)
 		],2).synced((
-			$[1].end(),
+			$[1].bindData(state,'title').end(),
 			$[2].end(),
 			$[5].end(),
-			$[9].end(),
+			$[9].bindData(state,'rating').end(),
 			$[12].end(),
 			$[15].end(),
 			$[18].end(),
 			$[21].end(),
-			$[23].end(),
-			$[24].end(),
-			$[25].end(),
-			$[26].end(),
+			$[24].bindData(state,'category').setContent(
+				(function tagLoop($0) {
+					for (let i = 0, ary = iter$(state.categories), len = $0.taglen = ary.length; i < len; i++) {
+						($0[i] || _1('option',$0,i)).setContent(ary[i],3);
+					};return $0;
+				})($[25] || _2($,25,$[24]))
+			,4).end(),
 			$[27].end(),
 			$[28].end(),
-			$[29].end()
+			$[29].end(),
+			$[30].end(),
+			$[31].end(),
+			$[32].end(),
+			$[33].end()
 		,true));
 	};
 	

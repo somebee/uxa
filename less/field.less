@@ -19,7 +19,7 @@ label {
 	position: relative;
 	font-size: var(--p-font-size);
 	min-height: var(--field-height);
-	margin-bottom: var(--mdu);
+	margin-bottom: var(--smu);
 
 	--radio-size: calc(var(--field-height) * 0.5);
 
@@ -27,6 +27,7 @@ label {
 	--neutral-color: var(--neutral);
 	--label-color: var(--neutral);
 	--focus-color: var(--blue);
+	--invalid-color: var(--red);
 	--bar-color: var(--focus-color);
 	--bar-scale: 0.2;
 
@@ -34,6 +35,7 @@ label {
 	--label-font-size: var(--caption-font-size);
 	--label-height: var(--caption-line-height);
 	--ui-color: var(--blue);
+	--desc-color: var(--dim);
 
 	::-webkit-input-placeholder { color: var(--placeholder-color); }
 	::-moz-placeholder { color: var(--placeholder-color); }
@@ -94,6 +96,11 @@ label {
 		--label-color: var(--focus-color);
 		--bar-color: var(--focus-color);
 		--bar-scale: 1;
+	}
+
+	:invalid ~ * {
+		--label-color: var(--invalid-color);
+		--bar-color: var(--invalid-color);
 	}
 }
 
@@ -271,8 +278,39 @@ label {
 	}
 }
 
+// select
+.field {
+	select {
+		-webkit-appearance: none;
+		width: 100%;
+		display: block;
+		height: var(--field-height);
+		padding: 0px 1ex;
+		border-radius: 2px;
+		border-color: var(--border-color);
+	}
 
+	select ~ label {
+		&:after {
+			position: absolute;
+			right: 1ex;
+			content: "▼";
+			height: var(--field-height);
+			top: 100%;
+			color: var(--border-color);
+			text-align: center;
+			line-height: var(--field-height);
+		}
+	}
 
+	select:focus {
+		box-shadow: 0px 0px 3px var(--ui-color);
+	}
+
+	select:focus ~ label:after {
+		color: var(--ui-color);
+	}
+}
 
 
 

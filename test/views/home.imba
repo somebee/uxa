@@ -52,6 +52,13 @@ var items = [{
 	title: "Creating a website"
 }]
 
+var state = {
+	title: "Something"
+	category: 'Imba'
+	categories: ['Imba','React','Vue.js','Angular']
+	rating: 8
+}
+
 tag LogForm < Form
 	
 	def fill
@@ -60,17 +67,17 @@ tag LogForm < Form
 	def render
 		<self>
 			<.field.resting.lg>
-				<input type='text' placeholder='Title of project'>
+				<input[state:title] type='text' placeholder='Title of project'>
 				<label data-label="Title"> "Title"
 				<hr>
 				
 			<.field>
-				<input type='text' placeholder='Subtitle of project'>
+				<input type='text' placeholder='Subtitle of project' pattern="Stuff">
 				<label> "Subtitle"
 				<hr>
 			
-			<.field>
-				<input type='range' min=0 max=10 step=1 name='slide'>
+			<.field.radio>
+				<input[state:rating] type='range' min=0 max=10 step=1 name='slide'>
 				<label> "Font-size"
 				
 			# <label.field>
@@ -93,6 +100,12 @@ tag LogForm < Form
 				
 			<.field>
 				<input type='radio' name='group' value='blue'>
+				<label> "Blue"
+				
+			<.field.select>
+				<select[state:category]>
+					for item in state:categories
+						<option> item
 				<label> "Blue"
 
 			<TextField label="Title" name='title' placeholder="Descriptive title" desc="Some description of this">
