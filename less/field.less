@@ -54,10 +54,13 @@ label {
 	--neutral-color: var(--neutral);
 	--label-color: var(--neutral);
 	--focus-color: var(--blue);
+	--label-focus-color: var(--blue);
+
 	--invalid-color: var(--red);
 	--bar-color: var(--focus-color);
 	--bar-scale: 0;
 
+	
 	--input-font-size: var(--p-font-size);
 	--label-font-size: var(--caption-font-size);
 	--label-height: var(--caption-line-height);
@@ -118,18 +121,18 @@ label {
 	}
 
 	:focus ~ * {
+		--label-color: var(--label-focus-color);
 		--ui-color: var(--focus-color);
-	}
-
-	input:focus:not([type=checkbox]):not([type=radio]) ~ * {
-		--label-color: var(--focus-color);
-		--bar-color: var(--focus-color);
-		--bar-scale: 1;
 	}
 
 	:invalid ~ * {
 		--label-color: var(--invalid-color);
 		--bar-color: var(--invalid-color);
+	}
+
+	input:focus:not([type=checkbox]):not([type=radio]) ~ * {
+		--bar-color: var(--focus-color);
+		--bar-scale: 1;
 	}
 }
 

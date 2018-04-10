@@ -342,6 +342,12 @@ export tag Home
 									<.item data-icon='mright'> "Edit item"
 									<.item data-icon='mclose'> "Close menu"
 									<hr>
+									<.item data-shortcut='space'> "pause / resume"
+									<.item data-shortcut='shift ←'> "slower playback"
+									<.item data-shortcut='shift →'> "faster playback"
+									<.item data-shortcut='→'> "go forward 10s"
+									<.item data-shortcut='←'> "go back 10s"
+									<hr>
 									for item in state:categories
 										<.field.radio>
 											<input[state:category] type='radio' value=item>
@@ -352,11 +358,13 @@ export tag Home
 									<.field.checkbox>
 										<input[state:enabled] type='checkbox'>
 										<label> "Show invisibles"
-
+									<hr>
+									# <.item>
 									<.field>
 										<input type='range' min=0.4 step=0.1 max=2 number=yes>
 										<label> "Speed"
-										<span.value> '2x'
+										# <span.value> '2x'
+									
 										# <input[data.playbackRate] type='range' min=0.4 step=0.1 max=2 number=yes>
 									# <.item>
 									# 	<label>
@@ -365,19 +373,19 @@ export tag Home
 									# 	
 									# 	<input[api.fontSize] type='range' min=8 step=1 max=24 number=yes>
 									# if space.trunk.canRecord or space.trunk.canAnnotate
-									<.field>
-										<label> "Viewport"
-										<.optgroup> for kind in ['auto','desktop','tablet','mobile']
-											<label.action.radio>
-												<input type='radio' value=kind>
-												<span> kind
-									<.item>
-										<label> "Shortcuts"
-										<.shortcut data-shortcut='space'> "pause / resume"
-										<.shortcut data-shortcut='shift ←'> "slower playback"
-										<.shortcut data-shortcut='shift →'> "faster playback"
-										<.shortcut data-shortcut='→'> "go forward 10s"
-										<.shortcut data-shortcut='←'> "go back 10s"
+									# <.field>
+									# 	<label> "Viewport"
+									# 	<.optgroup> for kind in ['auto','desktop','tablet','mobile']
+									# 		<label.action.radio>
+									# 			<input type='radio' value=kind>
+									# 			<span> kind
+									# <.item>
+									# 	<label> "Shortcuts"
+									# 	<.shortcut data-shortcut='space'> "pause / resume"
+									# 	<.shortcut data-shortcut='shift ←'> "slower playback"
+									# 	<.shortcut data-shortcut='shift →'> "faster playback"
+									# 	<.shortcut data-shortcut='→'> "go forward 10s"
+									# 	<.shortcut data-shortcut='←'> "go back 10s"
 				<section.section>
 					<header>
 						<.title> "Title"

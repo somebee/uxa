@@ -8,6 +8,8 @@ export tag TextField
 		var setter = Imba.toCamelCase("set-{key}")
 		self:prototype[key] = do |val| this.input[key]()
 		self:prototype[setter] = do |val|
+			if key == 'type'
+				this.setFlag('type',val)
 			this.input[setter](val)
 			return this
 			

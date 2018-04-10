@@ -752,6 +752,9 @@ var TextField = Imba.defineTag('TextField', function(tag){
 		var setter = Imba.toCamelCase(("set-" + key));
 		tag.prototype[key] = function(val) { return this.input()[key](); };
 		return tag.prototype[setter] = function(val) {
+			if (key == 'type') {
+				this.setFlag('type',val);
+			};
 			this.input()[setter](val);
 			return this;
 		};
@@ -7667,6 +7670,12 @@ var Home = Imba.defineTag('Home', function(tag){
 								t0.$.AI || _1('div',t0.$,'AI','AE').flag('item').dataset('icon','mright').setText("Edit item"),
 								t0.$.AJ || _1('div',t0.$,'AJ','AE').flag('item').dataset('icon','mclose').setText("Close menu"),
 								t0.$.AK || _1('hr',t0.$,'AK','AE'),
+								t0.$.AL || _1('div',t0.$,'AL','AE').flag('item').dataset('shortcut','space').setText("pause / resume"),
+								t0.$.AM || _1('div',t0.$,'AM','AE').flag('item').dataset('shortcut','shift ←').setText("slower playback"),
+								t0.$.AN || _1('div',t0.$,'AN','AE').flag('item').dataset('shortcut','shift →').setText("faster playback"),
+								t0.$.AO || _1('div',t0.$,'AO','AE').flag('item').dataset('shortcut','→').setText("go forward 10s"),
+								t0.$.AP || _1('div',t0.$,'AP','AE').flag('item').dataset('shortcut','←').setText("go back 10s"),
+								t0.$.AQ || _1('hr',t0.$,'AQ','AE'),
 								(function tagLoop($0) {
 									var t1;
 									for (let j = 0, array = iter$(state.categories), len = $0.taglen = array.length, item; j < len; j++) {
@@ -7681,62 +7690,52 @@ var Home = Imba.defineTag('Home', function(tag){
 											t1.$.B.setContent(item,3)
 										,true));
 									};return $0;
-								})(t0.$['AL'] || _2(t0.$,'AL',t0.$.AE)),
-								t0.$.AM || _1('hr',t0.$,'AM','AE'),
-								t0.$.AN || _1('div',t0.$,'AN','AE').flag('field').flag('checkbox').setContent([
-									_1('input',t0.$,'AO','AN').setType('checkbox'),
-									_1('label',t0.$,'AP','AN').setText("Show invisibles")
+								})(t0.$['AR'] || _2(t0.$,'AR',t0.$.AE)),
+								t0.$.AS || _1('hr',t0.$,'AS','AE'),
+								t0.$.AT || _1('div',t0.$,'AT','AE').flag('field').flag('checkbox').setContent([
+									_1('input',t0.$,'AU','AT').setType('checkbox'),
+									_1('label',t0.$,'AV','AT').setText("Show invisibles")
 								],2),
+								t0.$.AW || _1('hr',t0.$,'AW','AE'),
 								
-								t0.$.AQ || _1('div',t0.$,'AQ','AE').flag('field').setContent([
-									_1('input',t0.$,'AR','AQ').setType('range').setMin(0.4).setStep(0.1).setMax(2).setNumber(true),
-									_1('label',t0.$,'AS','AQ').setText("Speed"),
-									_1('span',t0.$,'AT','AQ').flag('value').setText('2x')
-								
-								],2),
+								t0.$.AX || _1('div',t0.$,'AX','AE').flag('field').setContent([
+									_1('input',t0.$,'AY','AX').setType('range').setMin(0.4).setStep(0.1).setMax(2).setNumber(true),
+									_1('label',t0.$,'AZ','AX').setText("Speed")
 								
 								
 								
-								
-								
-								
-								
-								t0.$.AU || _1('div',t0.$,'AU','AE').flag('field').setContent([
-									_1('label',t0.$,'AV','AU').setText("Viewport"),
-									_1('div',t0.$,'AW','AU').flag('optgroup')
-								],2),
-								t0.$.AY || _1('div',t0.$,'AY','AE').flag('item').setContent([
-									_1('label',t0.$,'AZ','AY').setText("Shortcuts"),
-									_1('div',t0.$,'BA','AY').flag('shortcut').dataset('shortcut','space').setText("pause / resume"),
-									_1('div',t0.$,'BB','AY').flag('shortcut').dataset('shortcut','shift ←').setText("slower playback"),
-									_1('div',t0.$,'BC','AY').flag('shortcut').dataset('shortcut','shift →').setText("faster playback"),
-									_1('div',t0.$,'BD','AY').flag('shortcut').dataset('shortcut','→').setText("go forward 10s"),
-									_1('div',t0.$,'BE','AY').flag('shortcut').dataset('shortcut','←').setText("go back 10s")
 								],2)
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
+							
 							],1).end((
 								t0.$.AG.end(),
 								t0.$.AI.end(),
 								t0.$.AJ.end(),
-								t0.$.AO.bindData(state,'enabled').end(),
-								t0.$.AR.end(),
-								t0.$.AW.setContent((function tagLoop($0) {
-									var t1;
-									for (let j = 0, array = ['auto','desktop','tablet','mobile'], len = $0.taglen = array.length, kind; j < len; j++) {
-										kind = array[j];
-										(t1 = $0[j] || (t1=_1('label',$0,j)).flag('action').flag('radio').setContent([
-											_1('input',t1.$,'A',t1).setType('radio'),
-											_1('span',t1.$,'B',t1)
-										],2)).end((
-											t1.$.A.setValue(kind,1).end(),
-											t1.$.B.setContent(kind,3)
-										,true));
-									};return $0;
-								})(t0.$['AX'] || _2(t0.$,'AX',t0.$.AW)),4),
-								t0.$.BA.end(),
-								t0.$.BB.end(),
-								t0.$.BC.end(),
-								t0.$.BD.end(),
-								t0.$.BE.end()
+								t0.$.AL.end(),
+								t0.$.AM.end(),
+								t0.$.AN.end(),
+								t0.$.AO.end(),
+								t0.$.AP.end(),
+								t0.$.AU.bindData(state,'enabled').end(),
+								t0.$.AY.end()
 							,true))
 						,true));
 					};return $0;

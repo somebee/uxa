@@ -43,12 +43,29 @@
 		background: var(--menu-hover-bg);
 		&:before { opacity: 1; }
 	}
+
+	[data-shortcut]:after {
+		vertical-align: middle;
+		content: attr(data-shortcut);
+		display: inline-block;
+		font-size: 9px;
+		line-height: 13px;
+		border: 1px solid var(--border-color);
+		border-radius: 2px;
+		padding: 0px 4px;
+		margin-left: auto;
+		text-transform: uppercase;
+		color: var(--dim);
+		font-weight: bold;
+		margin-right: 4px;
+	}
 	
 	--p-font-size: var(--menu-font-size);
-	--caption-font-size: var(--menu-font-size);
 	--field-height: var(--menu-item-height);
 
 	.field {
+		--label-focus-color: var(--label-color);
+
 		margin-bottom: 0px;
 		// should use variables for this
 		// breaks down with different sizes
@@ -61,8 +78,13 @@
 		}
 	}
 
-	.field:hover {
+	.field.radio:hover,
+	.field.checkbox:hover {
 		background: var(--menu-hover-bg);
+	}
+
+	.field.slider {
+		--label-font-size: smaller;
 	}
 }
 
