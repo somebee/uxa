@@ -102,11 +102,11 @@ tag LogForm < Form
 					for item in state:categories
 						<option> item
 				<label> "Blue"
-			# <TextField label="Title" name='title' placeholder="Descriptive title" desc="Some description of this">
-			# <SelectField label="Category" name='category' desc="Some description of this">
-			# <TextField label="Secret word" name='secret' placeholder="What is the secret?" required=yes pattern="uxauxa" desc="Can you guess it?">
-			# <TextArea label="Description" name='desc' desc="Please feel free to describe" placeholder="Some description" required=yes>
-			# <TextField label="Alias" name='alias' desc="This field is disabled" disabled=yes>
+			<TextField label="Title" name='title' placeholder="Descriptive title" desc="Some description of this">
+			<SelectField label="Category" name='category' desc="Some description of this">
+			<TextField label="Secret word" name='secret' placeholder="What is the secret?" required=yes pattern="uxauxa" desc="Can you guess it?">
+			<TextArea label="Description" name='desc' desc="Please feel free to describe" placeholder="Some description" required=yes>
+			<TextField label="Alias" name='alias' desc="This field is disabled" disabled=yes>
 			# <Button.primary label="Submit" type='submit'>
 			# <Button.primary label="Fill" type='button' :tap='fill'>
 

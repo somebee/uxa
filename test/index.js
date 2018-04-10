@@ -769,21 +769,18 @@ var TextField = Imba.defineTag('TextField', function(tag){
 	
 	tag.prototype.render = function (){
 		var $ = this.$;
-		return this.$open(0).flag('uxa').setChildren([
+		return this.$open(0).flag('field').setChildren([
 			this.input(),
-			$[0] || _1('span',$,0,this).flag('after'),
-			$[1] || _1('hr',$,1,this).flag('static'),
-			$[2] || _1('hr',$,2,this).flag('anim'),
-			$[3] || _1('label',$,3,this),
-			$[4] || _1('span',$,4,this).flag('helper').flag('desc')
+			$[0] || _1('label',$,0,this),
+			$[1] || _1('hr',$,1,this),
+			$[2] || _1('div',$,2,this).flag('help').flag('desc')
 		],1).synced((
-			$[3].setContent(this.label(),3),
-			$[4].dataset('desc',this.desc()).setContent(this.desc(),3).end()
+			$[0].setContent(this.label(),3),
+			$[2].setContent(this.desc(),3)
 		,true));
 	};
 })
 exports.TextField = TextField;
-
 
 
 var TextAreaProxy = Imba.defineTag('TextAreaProxy', 'textarea', function(tag){
@@ -867,17 +864,18 @@ var TextArea = Imba.defineTag('TextArea', TextField, function(tag){
 	
 	tag.prototype.render = function (){
 		var $ = this.$;
-		return this.$open(0).flag('uxa').setChildren([
+		return this.$open(0).flag('field').setChildren([
 			this.input().raw(),
 			this.input(),
-			$[0] || _1('span',$,0,this).flag('after'),
-			$[1] || _1('hr',$,1,this).flag('static'),
-			$[2] || _1('hr',$,2,this).flag('anim'),
-			$[3] || _1('label',$,3,this),
-			$[4] || _1('span',$,4,this).flag('helper').flag('desc')
+			
+			
+			
+			$[0] || _1('label',$,0,this),
+			$[1] || _1('hr',$,1,this),
+			$[2] || _1('div',$,2,this).flag('help').flag('desc')
 		],1).synced((
-			$[3].setContent(this.label(),3),
-			$[4].dataset('desc',this.desc()).setContent(this.desc(),3).end()
+			$[0].setContent(this.label(),3),
+			$[2].setContent(this.desc(),3)
 		,true));
 	};
 })
@@ -7219,12 +7217,12 @@ var LogForm = Imba.defineTag('LogForm', Form, function(tag){
 			_1('div',$,20,this).flag('field').flag('select').setContent([
 				_1('select',$,21,20),
 				_1('label',$,23,20).setText("Blue")
-			],2)
-		
-		
-		
-		
-		
+			],2),
+			_1(TextField,$,24,this).setLabel("Title").setName('title').setPlaceholder("Descriptive title").setDesc("Some description of this"),
+			_1(SelectField,$,25,this).setLabel("Category").setName('category').setDesc("Some description of this"),
+			_1(TextField,$,26,this).setLabel("Secret word").setName('secret').setPlaceholder("What is the secret?").setRequired(true).setPattern("uxauxa").setDesc("Can you guess it?"),
+			_1(TextArea,$,27,this).setLabel("Description").setName('desc').setDesc("Please feel free to describe").setPlaceholder("Some description").setRequired(true),
+			_1(TextField,$,28,this).setLabel("Alias").setName('alias').setDesc("This field is disabled").setDisabled(true)
 		
 		
 		],2).synced((
@@ -7240,7 +7238,12 @@ var LogForm = Imba.defineTag('LogForm', Form, function(tag){
 						($0[i] || _1('option',$0,i)).setContent(ary[i],3);
 					};return $0;
 				})($[22] || _2($,22,$[21]))
-			,4).end()
+			,4).end(),
+			$[24].end(),
+			$[25].end(),
+			$[26].end(),
+			$[27].end(),
+			$[28].end()
 		,true));
 	};
 	

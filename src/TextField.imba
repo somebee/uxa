@@ -19,14 +19,11 @@ export tag TextField
 		<input@input placeholder=" " type='text'>
 	
 	def render
-		<self.uxa>
+		<self.field>
 			input
-			<span.after>
-			<hr.static>
-			<hr.anim>
 			<label> label
-			<span.helper.desc data-desc=desc> desc
-
+			<hr>
+			<.help.desc> desc
 
 
 tag TextAreaProxy < textarea
@@ -88,14 +85,15 @@ export tag TextArea < TextField
 		return self
 		
 	def render
-		<self.uxa>
+		<self.field>
 			input.raw
 			input
-			<span.after>
-			<hr.static>
-			<hr.anim>
+			# <span.after>
+			# <hr.static>
+			# <hr.anim>
 			<label> label
-			<span.helper.desc data-desc=desc> desc
+			<hr>
+			<.help.desc> desc
 			
 export tag SelectField < TextField
 

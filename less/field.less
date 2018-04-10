@@ -22,8 +22,30 @@ label {
 	margin-bottom: var(--smu);
 	color: var(--field-color);
 
+	--help-color: var(--dim);
+	--help-font-size: var(--caption-font-size);
+
+	textarea.input {
+		opacity: 0 !important;
+		position: absolute;
+		pointer-events: none;
+	}
+
+	textarea ~ .input {
+		cursor: text;
+		max-height: 12em;
+		overflow-y: auto;
+		overflow-x: hidden;
+		webkit-overflow-scrolling: touch;
+	}
+
 	.field {
 		margin-bottom: 0px;
+	}
+
+	.help {
+		font-size: var(--help-font-size);
+		color: var(--help-color);
 	}
 
 	--radio-size: calc(var(--field-height) * 0.5);
@@ -34,7 +56,7 @@ label {
 	--focus-color: var(--blue);
 	--invalid-color: var(--red);
 	--bar-color: var(--focus-color);
-	--bar-scale: 0.2;
+	--bar-scale: 0;
 
 	--input-font-size: var(--p-font-size);
 	--label-font-size: var(--caption-font-size);
@@ -51,11 +73,11 @@ label {
 	align-items: flex-start;
 	justify-content: flex-start;
 
-	input:not([type=checkbox]):not([type=radio]):not([type=range]) {
+	input:not([type=checkbox]):not([type=radio]):not([type=range]),.input {
 		-webkit-appearance: none;
 		display: block;
 		position: relative;
-		height: var(--field-height);
+		min-height: var(--field-height);
 		border-radius: 0px;
 		border: 1px solid var(--border-color);
 		border-width: 0px 0px 1px;
@@ -321,8 +343,20 @@ label {
 	}
 }
 
-
-
+// textarea
+.field {
+	textarea ~ .input {
+		cursor: text;
+		min-height: 3em;
+		max-height: 12em;
+		overflow-y: auto;
+		overflow-x: hidden;
+		webkit-overflow-scrolling: touch;
+		border-width: 1px;
+		border-radius: 1px;
+		padding: 0.3em;
+	}
+}
 
 // smart label that rests on top of input
 .field.resting {
