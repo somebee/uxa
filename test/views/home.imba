@@ -66,55 +66,49 @@ tag LogForm < Form
 	
 	def render
 		<self>
-			<.field.resting.lg>
-				<input[state:title] type='text' placeholder='Title of project'>
-				<label data-label="Title"> "Title"
-				<hr>
+			# <.field.resting.lg>
+			# 	<input[state:title] type='text' placeholder='Title of project'>
+			# 	<label data-label="Title"> "Title"
+			# 	<hr>
 				
 			<.field>
-				<input type='text' placeholder='Subtitle of project' pattern="Stuff">
+				<input[state:title] type='text' placeholder='Subtitle of project' pattern="Stuff">
 				<label> "Subtitle"
 				<hr>
 			
 			<.field.radio>
 				<input[state:rating] type='range' min=0 max=10 step=1 name='slide'>
 				<label> "Font-size"
-				
-			# <label.field>
-			# 	<input type='checkbox'>
-			# 	<span> "This is my checkbox right here"
-				
+
 			<.field>
 				<input type='checkbox'>
 				<label> "Another checkbox yes"
-				# <p> "this is my checkbox"
-				# <hr>
 			
 			<.field>
-				<input type='radio' name='group' value='red'>
-				<label> "Red"
-			
-			<.field>
-				<input type='radio' name='group' value='green'>
-				<label> "Green"
+				<.field>
+					<input type='radio' name='group' value='red'>
+					<label> "Red"
 				
-			<.field>
-				<input type='radio' name='group' value='blue'>
-				<label> "Blue"
+				<.field>
+					<input type='radio' name='group' value='green'>
+					<label> "Green"
+					
+				<.field>
+					<input type='radio' name='group' value='blue'>
+					<label> "Blue"
 				
 			<.field.select>
 				<select[state:category]>
 					for item in state:categories
 						<option> item
 				<label> "Blue"
-
-			<TextField label="Title" name='title' placeholder="Descriptive title" desc="Some description of this">
-			<SelectField label="Category" name='category' desc="Some description of this">
-			<TextField label="Secret word" name='secret' placeholder="What is the secret?" required=yes pattern="uxauxa" desc="Can you guess it?">
-			<TextArea label="Description" name='desc' desc="Please feel free to describe" placeholder="Some description" required=yes>
-			<TextField label="Alias" name='alias' desc="This field is disabled" disabled=yes>
-			<Button.primary label="Submit" type='submit'>
-			<Button.primary label="Fill" type='button' :tap='fill'>
+			# <TextField label="Title" name='title' placeholder="Descriptive title" desc="Some description of this">
+			# <SelectField label="Category" name='category' desc="Some description of this">
+			# <TextField label="Secret word" name='secret' placeholder="What is the secret?" required=yes pattern="uxauxa" desc="Can you guess it?">
+			# <TextArea label="Description" name='desc' desc="Please feel free to describe" placeholder="Some description" required=yes>
+			# <TextField label="Alias" name='alias' desc="This field is disabled" disabled=yes>
+			# <Button.primary label="Submit" type='submit'>
+			# <Button.primary label="Fill" type='button' :tap='fill'>
 
 	def onsubmit e
 		e.cancel.halt
@@ -350,8 +344,8 @@ export tag Home
 					<header>
 						<.title> "Title"
 						<.subtitle> "Subitle for section"
-					<.grid.tiles> for item in ['sm','md','lg']
-						<.tile>
+					<.grid.tiles> for item,i in ['sm','md','lg']
+						<.tile .dark=(i == 2)>
 							<div.{item} uxa:md=short>
 							<LogForm.{item}>
 						

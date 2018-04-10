@@ -20,6 +20,11 @@ label {
 	font-size: var(--p-font-size);
 	min-height: var(--field-height);
 	margin-bottom: var(--smu);
+	color: var(--field-color);
+
+	.field {
+		margin-bottom: 0px;
+	}
 
 	--radio-size: calc(var(--field-height) * 0.5);
 
@@ -55,6 +60,8 @@ label {
 		border: 1px solid var(--border-color);
 		border-width: 0px 0px 1px;
 		width: 100%;
+		background: transparent;
+		color: inherit;
 	}
 
 	label {
@@ -113,7 +120,8 @@ label {
 		height: 100%;
 		width: 100%;
 		-webkit-appearance: none;
-		opacity: 0.2;
+		opacity: 0;
+		display: block;
 	}
 
 	[type=checkbox] ~ label,[type=radio] ~ label {
@@ -137,7 +145,7 @@ label {
 		}
 
 		&:before {
-			background: white;
+			background: transparent;
 			border: 1px solid var(--border-color);
 			border-radius: 2px;
 		}
@@ -198,6 +206,7 @@ label {
 		width: 100%;
 		-webkit-appearance: none;
 		height: var(--field-height);
+		background: transparent;
 	}
 
 	:focus,:active {

@@ -7178,84 +7178,69 @@ var LogForm = Imba.defineTag('LogForm', Form, function(tag){
 	tag.prototype.render = function (){
 		var $ = this.$;
 		return this.$open(0).setChildren($.$ = $.$ || [
-			_1('div',$,0,this).flag('field').flag('resting').flag('lg').setContent([
-				_1('input',$,1,0).setType('text').setPlaceholder('Title of project'),
-				_1('label',$,2,0).dataset('label',"Title").setText("Title"),
+			// <.field.resting.lg>
+			// 	<input[state:title] type='text' placeholder='Title of project'>
+			// 	<label data-label="Title"> "Title"
+			// 	<hr>
+			
+			_1('div',$,0,this).flag('field').setContent([
+				_1('input',$,1,0).setType('text').setPlaceholder('Subtitle of project').setPattern("Stuff"),
+				_1('label',$,2,0).setText("Subtitle"),
 				_1('hr',$,3,0)
 			],2),
 			
-			_1('div',$,4,this).flag('field').setContent([
-				_1('input',$,5,4).setType('text').setPlaceholder('Subtitle of project').setPattern("Stuff"),
-				_1('label',$,6,4).setText("Subtitle"),
-				_1('hr',$,7,4)
+			_1('div',$,4,this).flag('field').flag('radio').setContent([
+				_1('input',$,5,4).setType('range').setMin(0).setMax(10).setStep(1).setName('slide'),
+				_1('label',$,6,4).setText("Font-size")
 			],2),
 			
-			_1('div',$,8,this).flag('field').flag('radio').setContent([
-				_1('input',$,9,8).setType('range').setMin(0).setMax(10).setStep(1).setName('slide'),
-				_1('label',$,10,8).setText("Font-size")
+			_1('div',$,7,this).flag('field').setContent([
+				_1('input',$,8,7).setType('checkbox'),
+				_1('label',$,9,7).setText("Another checkbox yes")
 			],2),
 			
-			
-			
-			
-			
-			_1('div',$,11,this).flag('field').setContent([
-				_1('input',$,12,11).setType('checkbox'),
-				_1('label',$,13,11).setText("Another checkbox yes")
-			
-			
+			_1('div',$,10,this).flag('field').setContent([
+				_1('div',$,11,10).flag('field').setContent([
+					_1('input',$,12,11).setType('radio').setName('group').setValue('red',1),
+					_1('label',$,13,11).setText("Red")
+				],2),
+				
+				_1('div',$,14,10).flag('field').setContent([
+					_1('input',$,15,14).setType('radio').setName('group').setValue('green',1),
+					_1('label',$,16,14).setText("Green")
+				],2),
+				
+				_1('div',$,17,10).flag('field').setContent([
+					_1('input',$,18,17).setType('radio').setName('group').setValue('blue',1),
+					_1('label',$,19,17).setText("Blue")
+				],2)
 			],2),
 			
-			_1('div',$,14,this).flag('field').setContent([
-				_1('input',$,15,14).setType('radio').setName('group').setValue('red',1),
-				_1('label',$,16,14).setText("Red")
-			],2),
-			
-			_1('div',$,17,this).flag('field').setContent([
-				_1('input',$,18,17).setType('radio').setName('group').setValue('green',1),
-				_1('label',$,19,17).setText("Green")
-			],2),
-			
-			_1('div',$,20,this).flag('field').setContent([
-				_1('input',$,21,20).setType('radio').setName('group').setValue('blue',1),
-				_1('label',$,22,20).setText("Blue")
-			],2),
-			
-			_1('div',$,23,this).flag('field').flag('select').setContent([
-				_1('select',$,24,23),
-				_1('label',$,26,23).setText("Blue")
-			],2),
-			
-			_1(TextField,$,27,this).setLabel("Title").setName('title').setPlaceholder("Descriptive title").setDesc("Some description of this"),
-			_1(SelectField,$,28,this).setLabel("Category").setName('category').setDesc("Some description of this"),
-			_1(TextField,$,29,this).setLabel("Secret word").setName('secret').setPlaceholder("What is the secret?").setRequired(true).setPattern("uxauxa").setDesc("Can you guess it?"),
-			_1(TextArea,$,30,this).setLabel("Description").setName('desc').setDesc("Please feel free to describe").setPlaceholder("Some description").setRequired(true),
-			_1(TextField,$,31,this).setLabel("Alias").setName('alias').setDesc("This field is disabled").setDisabled(true),
-			_1(Button,$,32,this).flag('primary').setLabel("Submit").setType('submit'),
-			_1(Button,$,33,this).flag('primary').setLabel("Fill").setType('button').on$(0,['tap','fill'],this)
+			_1('div',$,20,this).flag('field').flag('select').setContent([
+				_1('select',$,21,20),
+				_1('label',$,23,20).setText("Blue")
+			],2)
+		
+		
+		
+		
+		
+		
+		
 		],2).synced((
 			$[1].bindData(state,'title').end(),
-			$[2].end(),
-			$[5].end(),
-			$[9].bindData(state,'rating').end(),
+			$[5].bindData(state,'rating').end(),
+			$[8].end(),
 			$[12].end(),
 			$[15].end(),
 			$[18].end(),
-			$[21].end(),
-			$[24].bindData(state,'category').setContent(
+			$[21].bindData(state,'category').setContent(
 				(function tagLoop($0) {
 					for (let i = 0, ary = iter$(state.categories), len = $0.taglen = ary.length; i < len; i++) {
 						($0[i] || _1('option',$0,i)).setContent(ary[i],3);
 					};return $0;
-				})($[25] || _2($,25,$[24]))
-			,4).end(),
-			$[27].end(),
-			$[28].end(),
-			$[29].end(),
-			$[30].end(),
-			$[31].end(),
-			$[32].end(),
-			$[33].end()
+				})($[22] || _2($,22,$[21]))
+			,4).end()
 		,true));
 	};
 	
@@ -7691,7 +7676,7 @@ var Home = Imba.defineTag('Home', function(tag){
 					(t0 = $0[i] || (t0=_1('div',$0,i)).flag('tile').setContent([
 						_1('div',t0.$,'A',t0),
 						_1(LogForm,t0.$,'B',t0)
-					],2)).end((
+					],2)).flagIf('dark',(i == 2)).end((
 						t0.$.A.setFlag(0,item).setNestedAttr('uxa','md',short).end(),
 						t0.$.B.setFlag(0,item).end()
 					,true));
