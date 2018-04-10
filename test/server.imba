@@ -4,6 +4,7 @@ var fs = require 'fs'
 var express = require 'express'
 var less = require 'less'
 var watch = require 'node-watch'
+var cleanLess = require 'less-plugin-clean-css'
 
 # var lpap = require('less-plugin-autoprefix')
 # LessPluginAutoPrefix = lpap.new(browsers: ['> 0.5%', 'IE 9'])
@@ -16,6 +17,8 @@ var app = express()
 app.get '/:name.css' do |req, res|
 	var src = path.resolve("{__dirname}/{req:params:name}.less")
 	var dirs = [src.replace(/\/([^\/]+)$/,'')]
+	var plugins = [cleanLess.new({advanced: true})]
+	var plugins = [cleanLess.new({})]
 	console.log 'requesting css in',dirs
 	res.type('css')
 	# if cssCache[path] and !cfg:debug
@@ -29,7 +32,7 @@ app.get '/:name.css' do |req, res|
 		if req:params[1] == 'less'
 			return res.send data.toString
 
-		less.render(data.toString, paths: dirs, strictMath: 'on') do |err,out| # , plugins: [LessPluginAutoPrefix]
+		less.render(data.toString, paths: dirs, strictMath: 'on', plugins: plugins) do |err,out| # , plugins: [LessPluginAutoPrefix]
 			if err
 				console.log "error from less",err
 				return res.send ""

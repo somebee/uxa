@@ -21,6 +21,7 @@
     "build": "imbapack --watch --colors --display-modules"
   },
   "dependencies": {
+    "less-plugin-clean-css": "^1.5.1",
     "marked": "^0.3.6"
   },
   "peerDependencies": {

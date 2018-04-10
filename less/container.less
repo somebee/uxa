@@ -1,0 +1,26 @@
+:root {
+    --wide-container-width: 960px;
+    --narrow-container-width: 600px;
+    --container-width: 960px;
+}
+
+.container {
+	position: relative;
+	margin: 0 auto;
+	padding: 0px var(--col-gap);
+	width: calc(var(--container-width) + var(--col-gap));
+	max-width: 100%;
+	&.narrow { --container-width: 600px; }
+}
+
+@media screen and (min-width: 1024px) {
+	:root { --container-width: 960px; }
+}
+
+@media screen and (min-width: 1216px) {
+	:root { --container-width: 1152px; }
+}
+
+@media screen and (min-width: 1408px) {
+	:root { --container-width: 1344px; }
+}

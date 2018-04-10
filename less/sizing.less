@@ -11,9 +11,8 @@ button
 
 */
 
-:root {
-	--drawer-width: 240px;
-	--uxa-masthead-height: 64px;
+html {
+	font-size: 12px;
 }
 
 .unit-mixin(@xs,@sm,@md,@lg,@xl) {
@@ -25,27 +24,20 @@ button
 }
 
 .map-type(@from,@to) {
-	--@{to}-h1: ~'var(--@{from}-h1)';
-	--@{to}-h2: ~'var(--@{from}-h2)';
-	--@{to}-h3: ~'var(--@{from}-h3)';
+	// --@{to}-h1: ~'var(--@{from}-h1)';
+	// --@{to}-h2: ~'var(--@{from}-h2)';
+	// --@{to}-h3: ~'var(--@{from}-h3)';
 	--@{to}-c1: ~'var(--@{from}-c1)';
 	--@{to}-c2: ~'var(--@{from}-c2)';
-	--@{to}-p1: ~'var(--@{from}-p1)';
+	// --@{to}-p1: ~'var(--@{from}-p1)';
 	--@{to}-b1: ~'var(--@{from}-b1)';
 	--@{to}-l1: ~'var(--@{from}-l1)';
-	--@{to}-ctrl: ~'var(--@{from}-ctrl)';
-	--@{to}-icon: ~'var(--@{from}-icon)';
-	font: ~'var(--@{to}-p1)';
+	// --@{to}-ctrl: ~'var(--@{from}-ctrl)';
+	// --@{to}-icon: ~'var(--@{from}-icon)';
+	// font: ~'var(--@{to}-p1)';
 }
 
-.size(@name,@xs,@sm,@md,@lg,@xl) {
-	--uxa-xs-@{name}: @xs;
-	--uxa-sm-@{name}: @sm;
-	--uxa-md-@{name}: @md;
-	--uxa-lg-@{name}: @lg;
-	--uxa-xl-@{name}: @xl;
-}
-
+// keep until removed from scrimba
 .sml-var(@name,@sm,@md,@lg) {
 	:root {
 		--sm-@{name}: @sm;
@@ -60,89 +52,112 @@ button
 }
 
 :root {
+	
 	@font: -apple-system, system-ui, uxa-font;
 
-	--uxa-font-family: @font;
+	font-family: @font;
+	--font: @font;
 
 	// lg - large
-	--uxa-lg-h1: 500 28px/34px @font;
-	--uxa-lg-h2: 500 20px/24px @font;
-	--uxa-lg-h3: 500 16px/19px @font;
-	--uxa-lg-p1: 400 16px/22px @font;
-	--uxa-lg-l1: 600 12px/1.0 @font; // label
-	--uxa-lg-c1: 400 12px/1.0 @font; // caption
-	--uxa-lg-c2: 300 12px/1.0 @font; // caption
-	--uxa-lg-b1: 500 14px/1.0 @font; // button main
-	--uxa-lg-i1: 500 18px/1.0 @font; // icon-main
+	// --uxa-lg-h1: 500 28px/34px @font;
+	// --uxa-lg-h2: 500 20px/24px @font;
+	// --uxa-lg-h3: 500 16px/19px @font;
+	// --uxa-lg-p1: 400 16px/22px @font;
+	//--uxa-lg-l1: 600 12px/1.0 @font; // label
+	//--uxa-lg-c1: 400 12px/1.0 @font; // caption
+	//--uxa-lg-c2: 300 12px/1.0 @font; // caption
+	//--uxa-lg-b1: 500 14px/1.0 @font; // button main
 
 	// md - medium
-	--uxa-md-h1: 500 24px/28px @font;
-	--uxa-md-h2: 500 20px/24px @font;
-	--uxa-md-h3: 500 16px/19px @font;
-	--uxa-md-p1: 400 14px/20px @font;
-	--uxa-md-l1: 600 12px/1.0 @font; // label
-	--uxa-md-c1: 400 12px/1.0 @font; // caption
-	--uxa-md-c2: 300 12px/1.0 @font; // caption
-	--uxa-md-b1: 500 14px/1.0 @font; // button main
-	--uxa-md-i1: 500 18px/1.0 @font; // icon-main
+	// --uxa-md-h1: 500 24px/28px @font;
+	// --uxa-md-h2: 500 20px/24px @font;
+	// --uxa-md-h3: 500 16px/19px @font;
+	// --uxa-md-p1: 400 14px/20px @font;
+	//--uxa-md-l1: 600 12px/1.0 @font; // label
+	//--uxa-md-c1: 400 12px/1.0 @font; // caption
+	//--uxa-md-c2: 300 12px/1.0 @font; // caption
+	//--uxa-md-b1: 500 14px/1.0 @font; // button main
 
 	// sm - small
-	--uxa-sm-h1: 500 20px/24px @font;
-	--uxa-sm-h2: 500 16px/19px @font;
-	--uxa-sm-h3: 500 14px/17px @font;
-	--uxa-sm-p1: 300 12px/18px @font;
-	--uxa-sm-l1: 600 12px/1.0 @font; // caption
-	--uxa-sm-c1: 400 12px/1.0 @font; // caption
-	--uxa-sm-c2: 300 12px/1.0 @font; // caption
-	--uxa-sm-b1: 500 13px/1.0 @font; // button main
-
-	.size(icon,14px,18px,22px,26px,36px);
-	.size(ctrl,20px,26px,32px,40px,48px);
+	// --uxa-sm-h1: 500 20px/24px @font;
+	// --uxa-sm-h2: 500 16px/19px @font;
+	// --uxa-sm-h3: 500 14px/17px @font;
+	// --uxa-sm-p1: 300 12px/18px @font;
+	// --uxa-sm-l1: 600 12px/1.0 @font; // caption
+	// --uxa-sm-c1: 400 12px/1.0 @font; // caption
 }
 
-body {
-	font: var(--uxa-md-p1);
+h1,.h1,h2,.h2,h3,.h3 { font-weight: 500; }
+
+h1,.h1 {
+	font-size: var(--h1-font-size);
+	line-height: var(--h1-line-height);
 }
 
-.xs {
-	.map-type(uxa-xs,uxa);
+h2,.h2 {
+	font-size: var(--h2-font-size);
+	line-height: var(--h2-line-height);
 }
+
+h3,.h3 {
+	font-size: var(--h3-font-size);
+	line-height: var(--h3-line-height);
+}
+
+p,.p {
+	font-size: var(--p-font-size);
+	line-height: var(--p-line-height);
+	font-weight: 400;
+}
+
+.--font(@name,@sm,@md,@lg,@lh) {
+	.sm {
+		--@{name}-font-size: (@sm * 1px);
+		--@{name}-line-height: (ceil((@sm * @lh)) * 1px); }
+	:root,.md {
+		--@{name}-font-size: (@md * 1px);
+		--@{name}-line-height: (ceil((@md * @lh)) * 1px);
+	}
+	.lg {
+		--@{name}-font-size: (@lg * 1px);
+		--@{name}-line-height: (ceil((@lg * @lh)) * 1px);
+	}
+}
+
+.--font(h1,20,24,36,1.2);
+.--font(h2,16,20,26,1.2);
+.--font(h3,14,16,24,1.2);
+.--font(p,13,15,17,1.5);
+.--font(caption,9,11,13,1.2);
 
 .sm {
-	.map-type(uxa-sm,uxa);
 	.unit-mixin(3px,6px,12px,24px,32px);
 }
 
-.md {
-	.map-type(uxa-md,uxa);
+:root,.md {
 	.unit-mixin(4px,8px,16px,32px,48px);
 }
 
-:root {
-	&:extend(.md);
-	font-family: var(--uxa-font-family);
-	font-size: 12px; // rem
+.lg {
+	.unit-mixin(5px,10px,20px,40px,60px);
 }
-
-
-.lg { .map-type(uxa-lg,uxa); }
-.xl { .map-type(uxa-xl,uxa); }
-
 
 .mb-xs { margin-bottom: var(--xsu); }
 .mb-sm { margin-bottom: var(--smu); }
 .mb-md,.mb { margin-bottom: var(--mdu); }
 .mb-lg { margin-bottom: var(--lgu); }
 .mb-xl { margin-bottom: var(--xlu); }
+.pad { paddding: var(--mdu); }
 
-h1,.h1 { font: var(--uxa-h1); }
-h2,.h2 { font: var(--uxa-h2); }
-h3,.h3 { font: var(--uxa-h3); }
-p,.p,.p1 { font: var(--uxa-p1); }
-h4,.h4,.c1,caption,.caption { font: var(--uxa-c1); }
-h5,.h5,.c2,caption,.caption { font: var(--uxa-c2); }
-
-// highlight
-blockquote {
-	padding: 1.5rem;
+input,select,textarea,button {
+	font-family: inherit;
+	font-size: inherit;
+	line-height: inherit;
 }
+
+// h1,.h1 { font: var(--uxa-h1); }
+// h2,.h2 { font: var(--uxa-h2); }
+// h3,.h3 { font: var(--uxa-h3); }
+// p,.p,.p1 { font: var(--uxa-p1); }
+// h4,.h4,.c1,caption,.caption { font: var(--uxa-c1); }
+// h5,.h5,.c2,caption,.caption { font: var(--uxa-c2); }

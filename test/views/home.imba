@@ -59,6 +59,16 @@ tag LogForm < Form
 	
 	def render
 		<self>
+			<.field>
+				<input type='text' placeholder='Title of project'>
+				<label> "Title"
+				<hr>
+			
+			<.field.resting>
+				<input type='text' placeholder='Title of project'>
+				<label data-label="Title"> "Title"
+				<hr>
+
 			<TextField label="Title" name='title' placeholder="Descriptive title" desc="Some description of this">
 			<SelectField label="Category" name='category' desc="Some description of this">
 			<TextField label="Secret word" name='secret' placeholder="What is the secret?" required=yes pattern="uxauxa" desc="Can you guess it?">
@@ -234,9 +244,15 @@ export tag Home
 
 	def render
 		<self>
-			# <div.light>
+			<article.hero>
+				<.container.narrow.pad.lg>
+					<h1> "Hello, future expert"
+					<p> "Scrimba is a powerful new way of learning code. Play around with the instructors code any time, right in the player."
+					<.spaced.center>
+						<a.button.primary> "Take Tour"
+					<hr>
 
-			<article.light>
+			<.container.light>
 				
 				<.masthead>
 					<a.logo> "Scrimba"
@@ -295,15 +311,25 @@ export tag Home
 					<header>
 						<.title> "Title"
 						<.subtitle> "Subitle for section"
+					<.grid.tiles> for item in ['sm','md','lg']
+						<.tile>
+							<div.{item} uxa:md=short>
+							<LogForm.{item}>
+						
 
 				<section>
 					<.grid.tiles> for item in items
 						<TileTest[item]>
-				<section>
+				<section.mb-xl>
 					<.grid.tiles> for item in items
 						<TileTest[item].dark>
-				<div uxa:md=long>
-
+				
+			<.container.narrow uxa:md=long>
+			<.container.narrow.sm uxa:md=long>
+			
+			<.container.narrow>
+				<.tile.dark>
+					<h2> "This is a tile!"
 
 
 			# <section>
@@ -313,7 +339,7 @@ export tag Home
 			# 	# <ColorScale tint='pri'>
 			# 	# <ColorScale tint='sec'>
 			# <Palette tint='neutral'>
-			<Palette tint='light'>
-			<Palette tint='dark'>
+			# <Palette tint='light'>
+			# <Palette tint='dark'>
 
 			

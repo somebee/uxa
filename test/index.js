@@ -2729,7 +2729,6 @@ if (true) {
 
 module.exports = __webpack_require__(5);
 
-
 /***/ }),
 /* 15 */
 /***/ (function(module, exports, __webpack_require__) {
@@ -7171,21 +7170,36 @@ var LogForm = Imba.defineTag('LogForm', Form, function(tag){
 	tag.prototype.render = function (){
 		var $ = this.$;
 		return this.$open(0).setChildren($.$ = $.$ || [
-			_1(TextField,$,0,this).setLabel("Title").setName('title').setPlaceholder("Descriptive title").setDesc("Some description of this"),
-			_1(SelectField,$,1,this).setLabel("Category").setName('category').setDesc("Some description of this"),
-			_1(TextField,$,2,this).setLabel("Secret word").setName('secret').setPlaceholder("What is the secret?").setRequired(true).setPattern("uxauxa").setDesc("Can you guess it?"),
-			_1(TextArea,$,3,this).setLabel("Description").setName('desc').setDesc("Please feel free to describe").setPlaceholder("Some description").setRequired(true),
-			_1(TextField,$,4,this).setLabel("Alias").setName('alias').setDesc("This field is disabled").setDisabled(true),
-			_1(Button,$,5,this).flag('primary').setLabel("Submit").setType('submit'),
-			_1(Button,$,6,this).flag('primary').setLabel("Fill").setType('button').on$(0,['tap','fill'],this)
+			_1('div',$,0,this).flag('field').setContent([
+				_1('input',$,1,0).setType('text').setPlaceholder('Title of project'),
+				_1('label',$,2,0).setText("Title"),
+				_1('hr',$,3,0)
+			],2),
+			
+			_1('div',$,4,this).flag('field').flag('resting').setContent([
+				_1('input',$,5,4).setType('text').setPlaceholder('Title of project'),
+				_1('label',$,6,4).dataset('label',"Title").setText("Title"),
+				_1('hr',$,7,4)
+			],2),
+			
+			_1(TextField,$,8,this).setLabel("Title").setName('title').setPlaceholder("Descriptive title").setDesc("Some description of this"),
+			_1(SelectField,$,9,this).setLabel("Category").setName('category').setDesc("Some description of this"),
+			_1(TextField,$,10,this).setLabel("Secret word").setName('secret').setPlaceholder("What is the secret?").setRequired(true).setPattern("uxauxa").setDesc("Can you guess it?"),
+			_1(TextArea,$,11,this).setLabel("Description").setName('desc').setDesc("Please feel free to describe").setPlaceholder("Some description").setRequired(true),
+			_1(TextField,$,12,this).setLabel("Alias").setName('alias').setDesc("This field is disabled").setDisabled(true),
+			_1(Button,$,13,this).flag('primary').setLabel("Submit").setType('submit'),
+			_1(Button,$,14,this).flag('primary').setLabel("Fill").setType('button').on$(0,['tap','fill'],this)
 		],2).synced((
-			$[0].end(),
 			$[1].end(),
-			$[2].end(),
-			$[3].end(),
-			$[4].end(),
 			$[5].end(),
-			$[6].end()
+			$[6].end(),
+			$[8].end(),
+			$[9].end(),
+			$[10].end(),
+			$[11].end(),
+			$[12].end(),
+			$[13].end(),
+			$[14].end()
 		,true));
 	};
 	
@@ -7483,55 +7497,73 @@ var Home = Imba.defineTag('Home', function(tag){
 	tag.prototype.render = function (){
 		var $ = this.$;
 		return this.$open(0).setChildren($.$ = $.$ || [
-			// <div.light>
+			_1('article',$,0,this).flag('hero').setContent(
+				$[1] || _1('div',$,1,0).flag('container').flag('narrow').flag('pad').flag('lg').setContent([
+					_1('h1',$,2,1).setText("Hello, future expert"),
+					_1('p',$,3,1).setText("Scrimba is a powerful new way of learning code. Play around with the instructors code any time, right in the player."),
+					_1('div',$,4,1).flag('spaced').flag('center').setContent(
+						$[5] || _1('a',$,5,4).flag('button').flag('primary').setText("Take Tour")
+					,2),
+					_1('hr',$,6,1)
+				],2)
+			,2),
 			
-			_1('article',$,0,this).flag('light').setContent([
+			_1('div',$,7,this).flag('container').flag('light').setContent([
 				
-				_1('div',$,1,0).flag('masthead').setContent([
-					_1('a',$,2,1).flag('logo').setText("Scrimba"),
-					_1('a',$,3,1).flag('item').setText("tes")
+				_1('div',$,8,7).flag('masthead').setContent([
+					_1('a',$,9,8).flag('logo').setText("Scrimba"),
+					_1('a',$,10,8).flag('item').setText("tes")
 				],2),
 				
-				_1('div',$,4,0).flag('masthead').flag('dark').setText("Masthead"),
+				_1('div',$,11,7).flag('masthead').flag('dark').setText("Masthead"),
 				
-				_1('div',$,5,0).flag('breadcrumb').setContent(
-					$[6] || _1('ul',$,6,5).setContent([
-						_1('li',$,7,6).setText("Home"),
-						_1('li',$,8,6).setText("Next"),
-						_1('li',$,9,6).setText("Other")
+				_1('div',$,12,7).flag('breadcrumb').setContent(
+					$[13] || _1('ul',$,13,12).setContent([
+						_1('li',$,14,13).setText("Home"),
+						_1('li',$,15,13).setText("Next"),
+						_1('li',$,16,13).setText("Other")
 					],2)
 				,2),
 				
-				_1('section',$,10,0),
-				_1('section',$,12,0).flag('section').setContent(
-					$[13] || _1('header',$,13,12).setContent([
-						_1('div',$,14,13).flag('title').setText("Title"),
-						_1('div',$,15,13).flag('subtitle').setText("Subitle for section")
-					],2)
-				,2),
+				_1('section',$,17,7),
+				_1('section',$,19,7).flag('section').setContent([
+					_1('header',$,20,19).setContent([
+						_1('div',$,21,20).flag('title').setText("Title"),
+						_1('div',$,22,20).flag('subtitle').setText("Subitle for section")
+					],2),
+					_1('div',$,23,19).flag('grid').flag('tiles')
+				],2),
 				
-				_1('section',$,16,0).setContent(
-					$[17] || _1('div',$,17,16).flag('grid').flag('tiles')
+				
+				_1('section',$,25,7).setContent(
+					$[26] || _1('div',$,26,25).flag('grid').flag('tiles')
 				,2),
-				_1('section',$,19,0).setContent(
-					$[20] || _1('div',$,20,19).flag('grid').flag('tiles')
-				,2),
-				_1('div',$,22,0)
+				_1('section',$,28,7).flag('mb-xl').setContent(
+					$[29] || _1('div',$,29,28).flag('grid').flag('tiles')
+				,2)
 			],2),
 			
+			_1('div',$,31,this).flag('container').flag('narrow'),
+			_1('div',$,32,this).flag('container').flag('narrow').flag('sm'),
 			
-			
-			
-			
-			
-			
-			
-			
-			
-			_1(Palette,$,23,this).setTint('light'),
-			_1(Palette,$,24,this).setTint('dark')
+			_1('div',$,33,this).flag('container').flag('narrow').setContent(
+				$[34] || _1('div',$,34,33).flag('tile').flag('dark').setContent(
+					$[35] || _1('h2',$,35,34).setText("This is a tile!")
+				,2)
+			,2)
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
 		],2).synced((
-			$[10].setContent(
+			$[17].setContent(
 				(function tagLoop($0) {
 					var t0;
 					for (let i = 0, ary = ['light','dark'], len = $0.taglen = ary.length; i < len; i++) {
@@ -7594,21 +7626,33 @@ var Home = Imba.defineTag('Home', function(tag){
 							t0.$.AJ.end()
 						,true));
 					};return $0;
-				})($[11] || _2($,11,$[10]))
+				})($[18] || _2($,18,$[17]))
 			,4),
-			$[17].setContent((function tagLoop($0) {
+			$[23].setContent((function tagLoop($0) {
+				var t0;
+				for (let i = 0, ary = ['sm','md','lg'], len = $0.taglen = ary.length, item; i < len; i++) {
+					item = ary[i];
+					(t0 = $0[i] || (t0=_1('div',$0,i)).flag('tile').setContent([
+						_1('div',t0.$,'A',t0),
+						_1(LogForm,t0.$,'B',t0)
+					],2)).end((
+						t0.$.A.setFlag(0,item).setNestedAttr('uxa','md',short).end(),
+						t0.$.B.setFlag(0,item).end()
+					,true));
+				};return $0;
+			})($[24] || _2($,24,$[23])),4),
+			$[26].setContent((function tagLoop($0) {
 				for (let i = 0, len = $0.taglen = items.length; i < len; i++) {
 					($0[i] || _1(TileTest,$0,i)).setData(items[i]).end();
 				};return $0;
-			})($[18] || _2($,18,$[17])),4),
-			$[20].setContent((function tagLoop($0) {
+			})($[27] || _2($,27,$[26])),4),
+			$[29].setContent((function tagLoop($0) {
 				for (let i = 0, len = $0.taglen = items.length; i < len; i++) {
 					($0[i] || _1(TileTest,$0,i).flag('dark')).setData(items[i]).end();
 				};return $0;
-			})($[21] || _2($,21,$[20])),4),
-			$[22].setNestedAttr('uxa','md',long).end(),
-			$[23].end(),
-			$[24].end()
+			})($[30] || _2($,30,$[29])),4),
+			$[31].setNestedAttr('uxa','md',long).end(),
+			$[32].setNestedAttr('uxa','md',long).end()
 		,true));
 	};
 })
