@@ -1,7 +1,10 @@
 var mdart = require '!raw-loader!../md/article.md'
 
 import IconButton,Button,TextField,TextArea,Dialog,Menu,MenuItem,Form,Indicator,Tile from 'uxa'
-import SelectField from '../../src/TextField'
+import SelectField from '../../src/Field'
+
+# import TagField from '../../src/TagField'
+import TagInput from '../../src/TagInput'
 
 var short = """
 
@@ -58,6 +61,7 @@ var state = {
 	categories: ['Imba','React','Vue.js','Angular']
 	enabled: yes
 	rating: 8
+	topics: ['#one']
 }
 
 tag LogForm < Form
@@ -71,6 +75,10 @@ tag LogForm < Form
 			# 	<input[state:title] type='text' placeholder='Title of project'>
 			# 	<label data-label="Title"> "Title"
 			# 	<hr>
+			
+			<.field>
+				<TagInput[state:topics]>
+				<label> "Tags"
 				
 			<.field>
 				<input[state:title] type='text' placeholder='Subtitle of project' pattern="Stuff">

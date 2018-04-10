@@ -502,7 +502,7 @@ var Stack = __webpack_require__(26).Stack;
 var Menu = __webpack_require__(6).Menu;
 var MenuItem = __webpack_require__(27).MenuItem;
 var Button$ = __webpack_require__(3), Button = Button$.Button, IconButton = Button$.IconButton;
-var TextField$ = __webpack_require__(9), TextField = TextField$.TextField, TextArea = TextField$.TextArea, SelectField = TextField$.SelectField;
+var Field$ = __webpack_require__(39), TextField = Field$.TextField, TextArea = Field$.TextArea, SelectField = Field$.SelectField, TagField = Field$.TagField;
 var ListItem = __webpack_require__(28).ListItem;
 var Popover = __webpack_require__(7).Popover;
 var Dialog = __webpack_require__(29).Dialog;
@@ -676,6 +676,7 @@ var IconButton = exports.IconButton = IconButton;
 var Menu = exports.Menu = Menu;
 var MenuItem = exports.MenuItem = MenuItem;
 var TextField = exports.TextField = TextField;
+var TagField = exports.TagField = TagField;
 var TextArea = exports.TextArea = TextArea;
 var SelectField = exports.SelectField = SelectField;
 var ListItem = exports.ListItem = ListItem;
@@ -734,182 +735,7 @@ exports.Snackbar = Snackbar;
 
 
 /***/ }),
-/* 9 */
-/***/ (function(module, exports, __webpack_require__) {
-
-function iter$(a){ return a ? (a.toArray ? a.toArray() : a) : []; };
-var Imba = __webpack_require__(0), _2 = Imba.createTagList, _1 = Imba.createElement;
-
-var TextField = Imba.defineTag('TextField', function(tag){
-	tag.prototype.label = function(v){ return this._label; }
-	tag.prototype.setLabel = function(v){ this._label = v; return this; };
-	tag.prototype.desc = function(v){ return this._desc; }
-	tag.prototype.setDesc = function(v){ this._desc = v; return this; };
-	tag.prototype.multiline = function(v){ return this._multiline; }
-	tag.prototype.setMultiline = function(v){ this._multiline = v; return this; };
-	
-	['disabled','placeholder','type','name','value','required','pattern','minlength','maxlength','autocomplete'].map(function(key) {
-		var setter = Imba.toCamelCase(("set-" + key));
-		tag.prototype[key] = function(val) { return this.input()[key](); };
-		return tag.prototype[setter] = function(val) {
-			if (key == 'type') {
-				this.setFlag('type',val);
-			};
-			this.input()[setter](val);
-			return this;
-		};
-	});
-	
-	tag.prototype.bindData = function (target,path,args){
-		this.input().bindData(target,path,args);
-		return this;
-	};
-	
-	tag.prototype.input = function (){
-		let $ = this.$$ || (this.$$ = {});
-		return (this._input = this._input||_1('input',this).flag('input').setPlaceholder(" ").setType('text')).end();
-	};
-	
-	tag.prototype.render = function (){
-		var $ = this.$;
-		return this.$open(0).flag('field').setChildren([
-			this.input(),
-			$[0] || _1('label',$,0,this),
-			$[1] || _1('hr',$,1,this),
-			$[2] || _1('div',$,2,this).flag('help').flag('desc')
-		],1).synced((
-			$[0].setContent(this.label(),3),
-			$[2].setContent(this.desc(),3)
-		,true));
-	};
-})
-exports.TextField = TextField;
-
-
-var TextAreaProxy = Imba.defineTag('TextAreaProxy', 'textarea', function(tag){
-	tag.prototype.owner = function(v){ return this._owner; }
-	tag.prototype.setOwner = function(v){ this._owner = v; return this; };
-	
-	tag.prototype.onfocus = function (e){
-		return this.owner().dom().focus();
-	};
-});
-
-var Editable = Imba.defineTag('Editable', function(tag){
-	tag.prototype.placeholder = function(v){ return this.getAttribute('placeholder'); }
-	tag.prototype.setPlaceholder = function(v){ this.setAttribute('placeholder',v); return this; };
-	tag.prototype.minlength = function(v){ return this.getAttribute('minlength'); }
-	tag.prototype.setMinlength = function(v){ this.setAttribute('minlength',v); return this; };
-	tag.prototype.maxlength = function(v){ return this.getAttribute('maxlength'); }
-	tag.prototype.setMaxlength = function(v){ this.setAttribute('maxlength',v); return this; };
-	tag.prototype.required = function(v){ return this.getAttribute('required'); }
-	tag.prototype.setRequired = function(v){ this.setAttribute('required',v); return this; };
-	tag.prototype.name = function(v){ return this.getAttribute('name'); }
-	tag.prototype.setName = function(v){ this.setAttribute('name',v); return this; };
-	
-	tag.prototype.build = function (){
-		var self = this;
-		self.setTabindex(0);
-		try {
-			self.dom().contentEditable = "plaintext-only";
-		} catch (e) {
-			self.dom().contentEditable = true;
-		};
-		
-		self._raw = (_1(TextAreaProxy).flag('input').setTabindex("-1")).setOwner(self).end();
-		self._raw.setValue = function(value) { return self.setValue(value); };
-		return self;
-	};
-	
-	tag.prototype.raw = function (){
-		return this._raw;
-	};
-	
-	tag.prototype.setAttribute = function (key,value){
-		// console.log "Editable.setAttribute",key,value
-		if (this._raw) { this.raw().setAttribute(key,value) };
-		tag.prototype.__super__.setAttribute.apply(this,arguments);
-		return this;
-	};
-	
-	tag.prototype.setValue = function (value){
-		if (!this._syncing && this.dom().innerText != value) {
-			this.dom().innerText = value;
-		};
-		this.raw().dom().value = value;
-		return this;
-	};
-	
-	tag.prototype.value = function (){
-		return this.dom().innerText;
-	};
-	
-	tag.prototype.oninput = function (e){
-		this.raw().dom().value = this.value();
-		this._syncing = true;
-		this.raw().oninput(e);
-		this._syncing = false;
-		return this;
-	};
-});
-
-var TextArea = Imba.defineTag('TextArea', TextField, function(tag){
-	
-	tag.prototype.input = function (){
-		let $ = this.$$ || (this.$$ = {});
-		return (this._input = this._input||_1(Editable,this).flag('input')).end();
-	};
-	
-	tag.prototype.bindData = function (target,path,args){
-		this.input().raw().bindData(target,path,args);
-		return this;
-	};
-	
-	tag.prototype.render = function (){
-		var $ = this.$;
-		return this.$open(0).flag('field').setChildren([
-			this.input().raw(),
-			this.input(),
-			
-			
-			
-			$[0] || _1('label',$,0,this),
-			$[1] || _1('hr',$,1,this),
-			$[2] || _1('div',$,2,this).flag('help').flag('desc')
-		],1).synced((
-			$[0].setContent(this.label(),3),
-			$[2].setContent(this.desc(),3)
-		,true));
-	};
-})
-exports.TextArea = TextArea;
-
-var SelectField = Imba.defineTag('SelectField', TextField, function(tag){
-	
-	tag.prototype.setOptions = function (val){
-		let $ = this.$$ || (this.$$ = {}), t0;
-		var input = this.input();
-		(t0 = this._input = this._input||(t0=_1('select',this)).flag('input')).setContent(
-			(function tagLoop($0) {
-				for (let i = 0, items = iter$(val), len = $0.taglen = items.length, item; i < len; i++) {
-					item = items[i];
-					($0[i] || _1('option',$0,i)).setValue(item[0],1).setContent(item[1] || item[0],3).end();
-				};return $0;
-			})(t0.$['A'] || _2(t0.$,'A',this._input))
-		,4).end();
-		this;
-		return this;
-	};
-	
-	tag.prototype.input = function (){
-		let $ = this.$$ || (this.$$ = {});
-		return (this._input = this._input||_1('select',this).flag('input')).end();
-	};
-})
-exports.SelectField = SelectField;
-
-
-/***/ }),
+/* 9 */,
 /* 10 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -7145,7 +6971,10 @@ var Imba = __webpack_require__(0), _2 = Imba.createTagList, _1 = Imba.createElem
 var mdart = __webpack_require__(36);
 
 var uxa$ = __webpack_require__(14), IconButton = uxa$.IconButton, Button = uxa$.Button, TextField = uxa$.TextField, TextArea = uxa$.TextArea, Dialog = uxa$.Dialog, Menu = uxa$.Menu, MenuItem = uxa$.MenuItem, Form = uxa$.Form, Indicator = uxa$.Indicator, Tile = uxa$.Tile;
-var SelectField = __webpack_require__(9).SelectField;
+var SelectField = __webpack_require__(39).SelectField;
+
+
+var TagInput = __webpack_require__(38).TagInput;
 
 var short = "\n# Main heading\n## Heading 2\n### Heading 3\n\nParagraph text\n";
 
@@ -7168,7 +6997,8 @@ var state = {
 	category: 'Imba',
 	categories: ['Imba','React','Vue.js','Angular'],
 	enabled: true,
-	rating: 8
+	rating: 8,
+	topics: ['#one']
 };
 
 var LogForm = Imba.defineTag('LogForm', Form, function(tag){
@@ -7186,74 +7016,80 @@ var LogForm = Imba.defineTag('LogForm', Form, function(tag){
 			// 	<hr>
 			
 			_1('div',$,0,this).flag('field').setContent([
-				_1('input',$,1,0).setType('text').setPlaceholder('Subtitle of project').setPattern("Stuff"),
-				_1('label',$,2,0).setText("Subtitle"),
-				_1('hr',$,3,0)
+				_1(TagInput,$,1,0),
+				_1('label',$,2,0).setText("Tags")
 			],2),
 			
-			_1('div',$,4,this).flag('field').setContent([
-				_1('input',$,5,4).setType('text').setRequired('required').setPlaceholder('Required title'),
-				_1('label',$,6,4).setText("Slug"),
-				_1('hr',$,7,4)
+			_1('div',$,3,this).flag('field').setContent([
+				_1('input',$,4,3).setType('text').setPlaceholder('Subtitle of project').setPattern("Stuff"),
+				_1('label',$,5,3).setText("Subtitle"),
+				_1('hr',$,6,3)
 			],2),
 			
-			_1('div',$,8,this).flag('field').flag('range').setContent([
-				_1('input',$,9,8).setType('range').setMin(0).setMax(10).setStep(1).setName('slide'),
-				_1('label',$,10,8).setText("Font-size")
+			_1('div',$,7,this).flag('field').setContent([
+				_1('input',$,8,7).setType('text').setRequired('required').setPlaceholder('Required title'),
+				_1('label',$,9,7).setText("Slug"),
+				_1('hr',$,10,7)
+			],2),
+			
+			_1('div',$,11,this).flag('field').flag('range').setContent([
+				_1('input',$,12,11).setType('range').setMin(0).setMax(10).setStep(1).setName('slide'),
+				_1('label',$,13,11).setText("Font-size")
 			
 			],2),
 			
-			_1('div',$,11,this).flag('field').flag('checkbox').setContent([
-				_1('input',$,12,11).setType('checkbox'),
-				_1('label',$,13,11).setText("Another checkbox yes")
+			_1('div',$,14,this).flag('field').flag('checkbox').setContent([
+				_1('input',$,15,14).setType('checkbox'),
+				_1('label',$,16,14).setText("Another checkbox yes")
 			],2),
 			
-			_1('div',$,14,this).flag('field').setContent([
-				_1('div',$,15,14).flag('field').flag('radio').setContent([
-					_1('input',$,16,15).setType('radio').setName('group').setValue('red',1),
-					_1('label',$,17,15).setText("Red")
+			_1('div',$,17,this).flag('field').setContent([
+				_1('div',$,18,17).flag('field').flag('radio').setContent([
+					_1('input',$,19,18).setType('radio').setName('group').setValue('red',1),
+					_1('label',$,20,18).setText("Red")
 				],2),
 				
-				_1('div',$,18,14).flag('field').flag('radio').setContent([
-					_1('input',$,19,18).setType('radio').setName('group').setValue('green',1),
-					_1('label',$,20,18).setText("Green")
+				_1('div',$,21,17).flag('field').flag('radio').setContent([
+					_1('input',$,22,21).setType('radio').setName('group').setValue('green',1),
+					_1('label',$,23,21).setText("Green")
 				],2),
 				
-				_1('div',$,21,14).flag('field').flag('radio').setContent([
-					_1('input',$,22,21).setType('radio').setName('group').setValue('blue',1),
-					_1('label',$,23,21).setText("Blue")
+				_1('div',$,24,17).flag('field').flag('radio').setContent([
+					_1('input',$,25,24).setType('radio').setName('group').setValue('blue',1),
+					_1('label',$,26,24).setText("Blue")
 				],2)
 			],2),
 			
-			_1('div',$,24,this).flag('field').flag('select').setContent([
-				_1('select',$,25,24),
-				_1('label',$,27,24).setText("Blue")
+			_1('div',$,27,this).flag('field').flag('select').setContent([
+				_1('select',$,28,27),
+				_1('label',$,30,27).setText("Blue")
 			],2),
-			_1(TextField,$,28,this).setLabel("Title").setName('title').setPlaceholder("Descriptive title").setDesc("Some description of this"),
+			_1(TextField,$,31,this).setLabel("Title").setName('title').setPlaceholder("Descriptive title").setDesc("Some description of this"),
 			
-			_1(TextField,$,29,this).setLabel("Secret word").setName('secret').setPlaceholder("What is the secret?").setRequired(true).setPattern("uxauxa").setDesc("Can you guess it?"),
-			_1(TextArea,$,30,this).setLabel("Description").setName('desc').setDesc("Please feel free to describe").setPlaceholder("Some description").setRequired(true)
+			_1(TextField,$,32,this).setLabel("Secret word").setName('secret').setPlaceholder("What is the secret?").setRequired(true).setPattern("uxauxa").setDesc("Can you guess it?"),
+			_1(TextArea,$,33,this).setLabel("Description").setName('desc').setDesc("Please feel free to describe").setPlaceholder("Some description").setRequired(true)
 		
 		
 		
 		],2).synced((
-			$[1].bindData(state,'title').end(),
-			$[5].bindData(state,'title').end(),
-			$[9].bindData(state,'rating').end(),
-			$[12].end(),
-			$[16].end(),
+			$[1].bindData(state,'topics').end(),
+			$[4].bindData(state,'title').end(),
+			$[8].bindData(state,'title').end(),
+			$[12].bindData(state,'rating').end(),
+			$[15].end(),
 			$[19].end(),
 			$[22].end(),
-			$[25].bindData(state,'category').setContent(
+			$[25].end(),
+			$[28].bindData(state,'category').setContent(
 				(function tagLoop($0) {
 					for (let i = 0, ary = iter$(state.categories), len = $0.taglen = ary.length; i < len; i++) {
 						($0[i] || _1('option',$0,i)).setContent(ary[i],3);
 					};return $0;
-				})($[26] || _2($,26,$[25]))
+				})($[29] || _2($,29,$[28]))
 			,4).end(),
-			$[28].end(),
-			$[29].end(),
-			$[30].end()
+			$[31].end(),
+			$[32].end(),
+			$[33].end()
 		,true));
 	};
 	
@@ -7762,6 +7598,392 @@ exports.Home = Home;
 /***/ (function(module, exports) {
 
 module.exports = "# What is Imba?\nImba is a programming language for the web that compiles to performant and readable JavaScript. It is specifically designed to improve the way we create rich site and applications. It has language level support for defining, extending, subclassing, instantiating and rendering dom nodes. For a semi-complex application like TodoMVC, it is more than 10 times faster than React with less code, and a much smaller library.\n\n## Developers\nRather than being an academic exercise, Imba has been developed over several years, alongside actual applications. Imba has been fine-tuned to ease the challenges we face when developing rich, dynamic apps (and sites).\n\n## Interoperability\nImba compiles down to clean and readable JavaScript. Your formatting, indentaiton, and comments are included. You can use any existing JavaScript library seamlessly from Imba, and vica-versa.\n\n## Speed\nYou can use all the syntactic sugar in Imba without needing to worry about the performance and readability of the compiled code, and building your views using Imba's native support for tags results in unprecedented performance. \n\n## Performance\nRendering views using Imba's language level support for tags compiles to *extremely* performant code. In pure synchronous rendering of an application like TodoMVC, Imba beats all existing implementations by an **order of magnitude**."
+
+/***/ }),
+/* 37 */,
+/* 38 */
+/***/ (function(module, exports, __webpack_require__) {
+
+function iter$(a){ return a ? (a.toArray ? a.toArray() : a) : []; };
+var Imba = __webpack_require__(0), _2 = Imba.createTagList, _1 = Imba.createElement;
+
+var Editable = Imba.defineTag('Editable', function(tag){
+	tag.prototype.__placeholder = {'default': " ",name: 'placeholder'};
+	tag.prototype.placeholder = function(v){ return this.getAttribute('placeholder'); }
+	tag.prototype.setPlaceholder = function(v){ this.setAttribute('placeholder',v); return this; }
+	tag.prototype._placeholder = " ";
+	
+	tag.prototype.atStartModifier = function (){
+		var sel;
+		if (sel = this.selection()) {
+			if (sel.isCollapsed && sel.baseOffset == 0) {
+				return true;
+			};
+		};
+		return false;
+	};
+	
+	tag.prototype.build = function (){
+		this.setTabindex(0);
+		this.dom().textContent = "";
+		
+		try {
+			this.dom().contentEditable = "plaintext-only";
+		} catch (e) {
+			this.dom().contentEditable = true;
+		};
+		
+		return this.$open('build0').on$(-1,['keydown','left','atStart','stop','focusPrev'],this).on$(-2,['keydown','del','atStart','stop','focusPrev'],this).on$(-3,['keydown','enter','stop','prevent','submit'],this).synced();
+	};
+	
+	tag.prototype.focusPrev = function (){
+		try {
+			return this.dom().previousElementSibling.focus();
+		} catch (e) { };
+	};
+	
+	tag.prototype.value = function (){
+		return this.dom().innerText;
+	};
+	
+	tag.prototype.selection = function (){
+		var sel = window.getSelection();
+		if (!(sel && this.dom().contains(sel.anchorNode))) { return null };
+		return sel;
+	};
+	
+	tag.prototype.oninput = function (e){
+		return this.log('input',e);
+	};
+	
+	tag.prototype.onkeydown = function (e){
+		return e.stop();
+	};
+	
+	tag.prototype.clear = function (){
+		this.dom().textContent = "";
+		return this;
+	};
+	
+	tag.prototype.submit = function (){
+		let e = this.trigger('add',this.value());
+		this.log('submitted',e);
+		if (!e.isPrevented()) {
+			return this.clear();
+		};
+	};
+	
+	tag.prototype.render = function (){
+		return this.flagIf('empty',this.value().trim() == "");
+	};
+});
+
+var Value = Imba.defineTag('Value', function(tag){
+	tag.prototype.index = function(v){ return this._index; }
+	tag.prototype.setIndex = function(v){ this._index = v; return this; };
+	
+	tag.prototype.build = function (){
+		var v_;
+		return (this.setTabindex(v_ = -1),v_);
+	};
+	
+	tag.prototype.gotoNext = function (){
+		try {
+			this.dom().nextElementSibling.focus();
+		} catch (e) { };
+		return this;
+	};
+	
+	tag.prototype.gotoPrev = function (){
+		try {
+			this.dom().previousElementSibling.focus();
+		} catch (e) { };
+		return this;
+	};
+	
+	tag.prototype.removeItem = function (){
+		let next = this.dom().nextElementSibling;
+		
+		if (next && next.matches('.Editable')) this.gotoNext();
+		return this.trigger('remove',{index: this.index()});
+	};
+	
+	tag.prototype.render = function (){
+		var $ = this.$;
+		return this.$open(0).dataset('value',this.data()).on$(-1,['keydown','left','gotoPrev'],this).on$(-2,['keydown','right','prevent','gotoNext'],this).on$(-3,['keydown','del','prevent','removeItem'],this).setChildren(
+			$[0] || _1('span',$,0,this).flag('value')
+		,2).synced((
+			$[0].setContent(this.data(),3)
+		,true));
+	};
+});
+
+var TagInput = Imba.defineTag('TagInput', function(tag){
+	
+	tag.prototype.pattern = function(v){ return this._pattern; }
+	tag.prototype.setPattern = function(v){ this._pattern = v; return this; };
+	tag.prototype.formatter = function(v){ return this._formatter; }
+	tag.prototype.setFormatter = function(v){ this._formatter = v; return this; };
+	tag.prototype.__placeholder = {'default': "Add...",name: 'placeholder'};
+	tag.prototype.placeholder = function(v){ return this._placeholder; }
+	tag.prototype.setPlaceholder = function(v){ this._placeholder = v; return this; }
+	tag.prototype._placeholder = "Add...";
+	tag.prototype.__minlength = {'default': 0,name: 'minlength'};
+	tag.prototype.minlength = function(v){ return this._minlength; }
+	tag.prototype.setMinlength = function(v){ this._minlength = v; return this; }
+	tag.prototype._minlength = 0;
+	tag.prototype.__maxlength = {'default': 0,name: 'maxlength'};
+	tag.prototype.maxlength = function(v){ return this._maxlength; }
+	tag.prototype.setMaxlength = function(v){ this._maxlength = v; return this; }
+	tag.prototype._maxlength = 0;
+	
+	tag.prototype.build = function (){
+		return this._values = ['one','two'];
+	};
+	
+	tag.prototype.bindData = function (data,key,args){
+		this._proxy = [data,key,args];
+		return this;
+	};
+	
+	tag.prototype.values = function (){
+		if (this._proxy) {
+			let val = this._proxy[0][this._proxy[1]];
+			return this._proxy[2] ? val.apply(this._proxy[0],this._proxy[2]) : val;
+		} else {
+			return this._values;
+		};
+	};
+	
+	tag.prototype.onadd = function (e,value){
+		var values = this.values();
+		var val = this._formatter ? this._formatter(value || '',values) : value;
+		
+		if (this.maxlength() && values.length >= this.maxlength()) {
+			return this;
+		};
+		
+		if (values.indexOf(val) < 0) {
+			values.push(val);
+		};
+		return e.stop();
+	};
+	
+	tag.prototype.onremove = function (e,pars){
+		if(!pars||pars.constructor !== Object) pars = {};
+		var index = pars.index !== undefined ? pars.index : null;
+		if (index != null) {
+			this.values().splice(index,1);
+		};
+		return this;
+	};
+	
+	tag.prototype.render = function (){
+		var self = this, $ = this.$;
+		return self.$open(0).setChildren([
+			(function tagLoop($0) {
+				for (let i = 0, items = iter$(self.values()), len = $0.taglen = items.length; i < len; i++) {
+					($0[i] || _1(Value,$0,i)).setData(items[i]).setIndex(i).end();
+				};return $0;
+			})($[0] || _2($,0)),
+			$[1] || _1(Editable,$,1,self)
+		],1).synced((
+			$[1].setPlaceholder(self.placeholder()).end()
+		,true));
+	};
+})
+exports.TagInput = TagInput;
+
+
+/***/ }),
+/* 39 */
+/***/ (function(module, exports, __webpack_require__) {
+
+function iter$(a){ return a ? (a.toArray ? a.toArray() : a) : []; };
+var Imba = __webpack_require__(0), _2 = Imba.createTagList, _1 = Imba.createElement;
+
+var Field = Imba.defineTag('Field', function(tag){
+	tag.prototype.label = function(v){ return this._label; }
+	tag.prototype.setLabel = function(v){ this._label = v; return this; };
+	tag.prototype.desc = function(v){ return this._desc; }
+	tag.prototype.setDesc = function(v){ this._desc = v; return this; };
+	tag.prototype.multiline = function(v){ return this._multiline; }
+	tag.prototype.setMultiline = function(v){ this._multiline = v; return this; };
+	
+	['disabled','placeholder','type','name','value','required','pattern','minlength','maxlength','autocomplete','formatter'].map(function(key) {
+		var setter = Imba.toCamelCase(("set-" + key));
+		tag.prototype[key] = function(val) { return this.input()[key](); };
+		return tag.prototype[setter] = function(val) {
+			if (key == 'type') {
+				this.setFlag('type',val);
+			};
+			this.input()[setter](val);
+			return this;
+		};
+	});
+	
+	tag.prototype.bindData = function (target,path,args){
+		this.input().bindData(target,path,args);
+		return this;
+	};
+	
+	tag.prototype.input = function (){
+		let $ = this.$$ || (this.$$ = {});
+		return (this._input = this._input||_1('input',this).flag('input').setPlaceholder(" ").setType('text')).end();
+	};
+	
+	tag.prototype.render = function (){
+		var $ = this.$;
+		return this.$open(0).flag('field').setChildren([
+			this.input(),
+			$[0] || _1('label',$,0,this),
+			$[1] || _1('hr',$,1,this),
+			$[2] || _1('div',$,2,this).flag('help').flag('desc')
+		],1).synced((
+			$[0].setContent(this.label(),3),
+			$[2].setContent(this.desc(),3)
+		,true));
+	};
+})
+exports.Field = Field;
+
+var TagInput = __webpack_require__(38).TagInput;
+
+var TextField = Imba.defineTag('TextField', Field)
+exports.TextField = TextField;
+
+var TagField = Imba.defineTag('TagField', Field, function(tag){
+	
+	tag.prototype.input = function (){
+		let $ = this.$$ || (this.$$ = {});
+		return (this._in = this._in||_1(TagInput,this).flag('in')).end();
+	};
+})
+exports.TagField = TagField;
+
+
+var TextAreaProxy = Imba.defineTag('TextAreaProxy', 'textarea', function(tag){
+	tag.prototype.owner = function(v){ return this._owner; }
+	tag.prototype.setOwner = function(v){ this._owner = v; return this; };
+	
+	tag.prototype.onfocus = function (e){
+		return this.owner().dom().focus();
+	};
+});
+
+var Editable = Imba.defineTag('Editable', function(tag){
+	tag.prototype.placeholder = function(v){ return this.getAttribute('placeholder'); }
+	tag.prototype.setPlaceholder = function(v){ this.setAttribute('placeholder',v); return this; };
+	tag.prototype.minlength = function(v){ return this.getAttribute('minlength'); }
+	tag.prototype.setMinlength = function(v){ this.setAttribute('minlength',v); return this; };
+	tag.prototype.maxlength = function(v){ return this.getAttribute('maxlength'); }
+	tag.prototype.setMaxlength = function(v){ this.setAttribute('maxlength',v); return this; };
+	tag.prototype.required = function(v){ return this.getAttribute('required'); }
+	tag.prototype.setRequired = function(v){ this.setAttribute('required',v); return this; };
+	tag.prototype.name = function(v){ return this.getAttribute('name'); }
+	tag.prototype.setName = function(v){ this.setAttribute('name',v); return this; };
+	
+	tag.prototype.build = function (){
+		var self = this;
+		self.setTabindex(0);
+		try {
+			self.dom().contentEditable = "plaintext-only";
+		} catch (e) {
+			self.dom().contentEditable = true;
+		};
+		
+		self._raw = (_1(TextAreaProxy).flag('input').setTabindex("-1")).setOwner(self).end();
+		self._raw.setValue = function(value) { return self.setValue(value); };
+		return self;
+	};
+	
+	tag.prototype.raw = function (){
+		return this._raw;
+	};
+	
+	tag.prototype.setAttribute = function (key,value){
+		// console.log "Editable.setAttribute",key,value
+		if (this._raw) { this.raw().setAttribute(key,value) };
+		tag.prototype.__super__.setAttribute.apply(this,arguments);
+		return this;
+	};
+	
+	tag.prototype.setValue = function (value){
+		if (!this._syncing && this.dom().innerText != value) {
+			this.dom().innerText = value;
+		};
+		this.raw().dom().value = value;
+		return this;
+	};
+	
+	tag.prototype.value = function (){
+		return this.dom().innerText;
+	};
+	
+	tag.prototype.oninput = function (e){
+		this.raw().dom().value = this.value();
+		this._syncing = true;
+		this.raw().oninput(e);
+		this._syncing = false;
+		return this;
+	};
+});
+
+var TextArea = Imba.defineTag('TextArea', Field, function(tag){
+	
+	tag.prototype.input = function (){
+		let $ = this.$$ || (this.$$ = {});
+		return (this._input = this._input||_1(Editable,this).flag('input')).end();
+	};
+	
+	tag.prototype.bindData = function (target,path,args){
+		this.input().raw().bindData(target,path,args);
+		return this;
+	};
+	
+	tag.prototype.render = function (){
+		var $ = this.$;
+		return this.$open(0).flag('field').setChildren([
+			this.input().raw(),
+			this.input(),
+			
+			
+			
+			$[0] || _1('label',$,0,this),
+			$[1] || _1('hr',$,1,this),
+			$[2] || _1('div',$,2,this).flag('help').flag('desc')
+		],1).synced((
+			$[0].setContent(this.label(),3),
+			$[2].setContent(this.desc(),3)
+		,true));
+	};
+})
+exports.TextArea = TextArea;
+
+var SelectField = Imba.defineTag('SelectField', Field, function(tag){
+	
+	tag.prototype.setOptions = function (val){
+		let $ = this.$$ || (this.$$ = {}), t0;
+		var input = this.input();
+		(t0 = this._input = this._input||(t0=_1('select',this)).flag('input')).setContent(
+			(function tagLoop($0) {
+				for (let i = 0, items = iter$(val), len = $0.taglen = items.length, item; i < len; i++) {
+					item = items[i];
+					($0[i] || _1('option',$0,i)).setValue(item[0],1).setContent(item[1] || item[0],3).end();
+				};return $0;
+			})(t0.$['A'] || _2(t0.$,'A',this._input))
+		,4).end();
+		this;
+		return this;
+	};
+	
+	tag.prototype.input = function (){
+		let $ = this.$$ || (this.$$ = {});
+		return (this._input = this._input||_1('select',this).flag('input')).end();
+	};
+})
+exports.SelectField = SelectField;
+
 
 /***/ })
 /******/ ]);

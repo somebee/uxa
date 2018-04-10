@@ -25,6 +25,11 @@ label {
 	--help-color: var(--dim);
 	--help-font-size: var(--caption-font-size);
 
+	&:focus-within {
+		--field-label-color: var(--label-focus-color);
+		--ui-color: var(--focus-color);
+	}
+
 	textarea.input {
 		opacity: 0 !important;
 		position: absolute;
@@ -398,5 +403,38 @@ label {
 		line-height: var(--field-height);
 		top: var(--label-height);
 		font-size: var(--input-font-size);
+	}
+}
+
+.TagInput {
+	--spacing: 2px;
+	margin: 0px calc(var(--spacing) * -1);
+
+	.Value,.Editable {
+		display: inline-block;
+		border-radius: 2px;
+		margin: var(--spacing);
+		height: var(--field-height);
+		display: inline-flex;
+		flex-direction: row;
+		align-items: center;
+		justify-content: center;
+	}
+	.Value {
+		padding: 0px var(--smu);
+		border: 1px solid var(--border-color);
+		cursor: default;
+	}
+	.Value:focus {
+		border-color: var(--ui-color);
+	}
+
+	.Editable {
+		line-height: var(--field-height);
+	}
+
+	.Editable[placeholder].empty {
+		color: var(--dim);
+		&:after { content: attr(placeholder); }
 	}
 }

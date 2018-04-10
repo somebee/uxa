@@ -1,10 +1,10 @@
 
-export tag TextField
+export tag Field
 	prop label
 	prop desc
 	prop multiline
 	
-	['disabled','placeholder','type','name','value','required','pattern','minlength','maxlength','autocomplete'].map do |key|
+	['disabled','placeholder','type','name','value','required','pattern','minlength','maxlength','autocomplete','formatter'].map do |key|
 		var setter = Imba.toCamelCase("set-{key}")
 		self:prototype[key] = do |val| this.input[key]()
 		self:prototype[setter] = do |val|
@@ -26,6 +26,15 @@ export tag TextField
 			<label> label
 			<hr>
 			<.help.desc> desc
+
+import TagInput from './TagInput'
+
+export tag TextField < Field
+
+export tag TagField < Field
+	
+	def input
+		<TagInput@in>
 
 
 tag TextAreaProxy < textarea
@@ -77,7 +86,7 @@ tag Editable
 		@syncing = no
 		self
 
-export tag TextArea < TextField
+export tag TextArea < Field
 
 	def input
 		<Editable@input>
@@ -97,7 +106,7 @@ export tag TextArea < TextField
 			<hr>
 			<.help.desc> desc
 			
-export tag SelectField < TextField
+export tag SelectField < Field
 
 	def options= val
 		var input = self.input
