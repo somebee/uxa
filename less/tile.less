@@ -4,10 +4,19 @@
 .--size(tile-width,250px,320px,500px);
 .--size(tile-height,160px,200px,320px);
 
+.tiles {
+	display: grid; // to make sure margins are not collapsed?
+	margin: 0px calc(var(--col-gap) * -0.5);
+	--tile-gap: calc(var(--col-gap) * 0.5);
+}
+
 .tile {
+	position: relative;
 	margin: var(--tile-gap);
 	border: var(--tile-border);
-	min-height: var(--tile-min-height);
+	align-self: stretch;
+	flex: 1 1 auto;
+	// min-height: var(--tile-min-height);
 	background: var(--tile-bg-color);
 	border-radius: 2px;	
 	padding: var(--tile-pad);

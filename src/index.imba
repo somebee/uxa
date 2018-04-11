@@ -3,7 +3,6 @@ import Menu from './Menu'
 import MenuItem from './MenuItem'
 import Button,IconButton from './Button'
 import TextField,TextArea,SelectField,TagField from './Field'
-import ListItem from './ListItem'
 import Popover from './Popover'
 import Dialog from './Dialog'
 import Indicator from './Indicator'
@@ -132,7 +131,6 @@ export var TextField = TextField
 export var TagField = TagField
 export var TextArea = TextArea
 export var SelectField = SelectField
-export var ListItem = ListItem
 export var MenuItem = MenuItem
 export var Popover = Popover
 export var Dialog = Dialog

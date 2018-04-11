@@ -3,21 +3,22 @@ import Button,IconButton,TextField,ListItem,Menu,MenuItem,Popover,Dialog from 'u
 export tag Head
 	def render
 		<self.masthead.lg.bar.base-bg.flat>
-			<.masthead> "Scrimba"
-			<a href="#forms"> 'forms'
-			<a href="#articles"> 'articles'
-			<a href="#panels"> 'panels'
-			<a href="#alerts"> 'alerts'
-			<a href="#buttons"> 'buttons'
-			<Button.primary :tap='showCreate' label='create'>
-			<Button@avatar.primary :tap='menu' label='profile'>
-			<IconButton.primary :tap='showMenu2' icon=':' uxa-anchor=[1,1,1,1]>
+			<.brand> "Scrimba"
+			<.flexer>
+			<a.tab href="#forms"> 'forms'
+			<a.tab.active href="#articles"> 'articles'
+			<a.tab href="#panels"> 'panels'
+			<a.tab href="#alerts"> 'alerts'
+			<a.tab href="#buttons"> 'buttons'
+			# <Button.primary :tap='showCreate' label='create'>
+			# <Button@avatar.primary :tap='menu' label='profile'>
+			# <IconButton.primary :tap='showMenu2' icon=':' uxa-anchor=[1,1,1,1]>
 			
 	def menu
 		log "tap menu!",self
 		@avatar.uxa.open <Popover.list.inset>
-			<ListItem.header label='Sindre Aarsaether' subtext='hello@scrimba.com'>
-			<ListItem label='Profile photo' subtext='Change your profile photo'>
+			# <ListItem.header label='Sindre Aarsaether' subtext='hello@scrimba.com'>
+			# <ListItem label='Profile photo' subtext='Change your profile photo'>
 			<hr.sm>
 			<Menu.inset>
 				<MenuItem icon='w' label='Open'>

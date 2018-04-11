@@ -503,7 +503,6 @@ var Menu = __webpack_require__(6).Menu;
 var MenuItem = __webpack_require__(27).MenuItem;
 var Button$ = __webpack_require__(3), Button = Button$.Button, IconButton = Button$.IconButton;
 var Field$ = __webpack_require__(39), TextField = Field$.TextField, TextArea = Field$.TextArea, SelectField = Field$.SelectField, TagField = Field$.TagField;
-var ListItem = __webpack_require__(28).ListItem;
 var Popover = __webpack_require__(7).Popover;
 var Dialog = __webpack_require__(29).Dialog;
 var Indicator = __webpack_require__(11).Indicator;
@@ -679,7 +678,6 @@ var TextField = exports.TextField = TextField;
 var TagField = exports.TagField = TagField;
 var TextArea = exports.TextArea = TextArea;
 var SelectField = exports.SelectField = SelectField;
-var ListItem = exports.ListItem = ListItem;
 MenuItem = exports.MenuItem = MenuItem;
 var Popover = exports.Popover = Popover;
 var Dialog = exports.Dialog = Dialog;
@@ -6505,7 +6503,7 @@ var MenuItem = Imba.defineTag('MenuItem', 'a', function(tag){
 			return tag.prototype.__super__.ontap.call(this,e);
 		};
 		
-		e.cancel().halt().silence();
+		e.prevent().stop().silence();
 		
 		var action = this.action();
 		
@@ -6542,48 +6540,7 @@ exports.MenuItem = MenuItem;
 
 
 /***/ }),
-/* 28 */
-/***/ (function(module, exports, __webpack_require__) {
-
-var Imba = __webpack_require__(0), _1 = Imba.createElement;
-var Icon = __webpack_require__(2).Icon;
-
-var ListItem = Imba.defineTag('ListItem', function(tag){
-	tag.prototype.icon = function(v){ return this._icon; }
-	tag.prototype.setIcon = function(v){ this._icon = v; return this; };
-	tag.prototype.rightIcon = function(v){ return this._rightIcon; }
-	tag.prototype.setRightIcon = function(v){ this._rightIcon = v; return this; };
-	tag.prototype.label = function(v){ return this._label; }
-	tag.prototype.setLabel = function(v){ this._label = v; return this; };
-	tag.prototype.subtext = function(v){ return this._subtext; }
-	tag.prototype.setSubtext = function(v){ this._subtext = v; return this; };
-	
-	tag.prototype.render = function (){
-		var $ = this.$;
-		return this.$open(0).setChildren([
-			($[0] || _1('div',$,0,this).flag('gutter')).setContent(
-				this.icon() ? (
-					($[1] || _1(Icon,$,1,0).flag('left')).bindData(this,'icon',[]).end()
-				) : void(0)
-			,3),
-			($[2] || _1('div',$,2,this).flag('main')).setContent([
-				this.label() ? (
-					($[3] || _1('div',$,3,2).flag('h3').flag('text')).setNestedAttr('uxa','md',this.label()).end()
-				) : void(0),
-				this.subtext() ? (
-					($[4] || _1('div',$,4,2).flag('p1').flag('muted')).setNestedAttr('uxa','md',this.subtext()).end()
-				) : void(0)
-			],1),
-			this.rightIcon() ? (
-				($[5] || _1(Icon,$,5,this).flag('right')).bindData(this,'rightIcon',[]).end()
-			) : void(0)
-		],1).synced();
-	};
-})
-exports.ListItem = ListItem;
-
-
-/***/ }),
+/* 28 */,
 /* 29 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -6613,7 +6570,7 @@ var Dialog = Imba.defineTag('Dialog', Form, function(tag){
 	
 	tag.prototype.onsubmit = async function (e){
 		var self = this;
-		e.cancel().halt(); 
+		e.prevent().stop(); 
 		
 		if (self.uxa().queue().busy()) {
 			return;
@@ -6844,24 +6801,22 @@ var Head = Imba.defineTag('Head', function(tag){
 	tag.prototype.render = function (){
 		var $ = this.$;
 		return this.$open(0).flag('masthead').flag('lg').flag('bar').flag('base-bg').flag('flat').setChildren($.$ = $.$ || [
-			_1('div',$,0,this).flag('masthead').setText("Scrimba"),
-			_1('a',$,1,this).setHref("#forms").setText('forms'),
-			_1('a',$,2,this).setHref("#articles").setText('articles'),
-			_1('a',$,3,this).setHref("#panels").setText('panels'),
-			_1('a',$,4,this).setHref("#alerts").setText('alerts'),
-			_1('a',$,5,this).setHref("#buttons").setText('buttons'),
-			_1(Button,$,6,this).flag('primary').on$(0,['tap','showCreate'],this).setLabel('create'),
-			this._avatar = this._avatar||_1(Button,this).flag('avatar').flag('primary').on$(0,['tap','menu'],this).setLabel('profile'),
-			_1(IconButton,$,7,this).flag('primary').on$(0,['tap','showMenu2'],this).setIcon(':').setUxaAnchor([1,1,1,1])
+			_1('div',$,0,this).flag('brand').setText("Scrimba"),
+			_1('div',$,1,this).flag('flexer'),
+			_1('a',$,2,this).flag('tab').setHref("#forms").setText('forms'),
+			_1('a',$,3,this).flag('tab').flag('active').setHref("#articles").setText('articles'),
+			_1('a',$,4,this).flag('tab').setHref("#panels").setText('panels'),
+			_1('a',$,5,this).flag('tab').setHref("#alerts").setText('alerts'),
+			_1('a',$,6,this).flag('tab').setHref("#buttons").setText('buttons')
+		
+		
+		
 		],2).synced((
-			$[1].end(),
 			$[2].end(),
 			$[3].end(),
 			$[4].end(),
 			$[5].end(),
-			$[6].end(),
-			this._avatar.end(),
-			$[7].end()
+			$[6].end()
 		,true));
 	};
 	
@@ -6869,18 +6824,18 @@ var Head = Imba.defineTag('Head', function(tag){
 		var t0;
 		this.log("tap menu!",this);
 		this._avatar.uxa().open((t0 = (t0=_1(Popover)).flag('list').flag('inset').setContent([
-			_1(ListItem,t0.$,'A',t0).flag('header').setLabel('Sindre Aarsaether').setSubtext('hello@scrimba.com'),
-			_1(ListItem,t0.$,'B',t0).setLabel('Profile photo').setSubtext('Change your profile photo'),
-			_1('hr',t0.$,'C',t0).flag('sm'),
-			_1(Menu,t0.$,'D',t0).flag('inset').setContent([
-				_1(MenuItem,t0.$,'E','D').setIcon('w').setLabel('Open'),
-				_1(MenuItem,t0.$,'F','D').setIcon('v').setLabel('Paste in place'),
-				_1(MenuItem,t0.$,'G','D').setIcon('v').setLabel('Research'),
-				_1(MenuItem,t0.$,'H','D').setIcon('.').setLabel('Go to site...'),
-				_1('hr',t0.$,'I','D').flag('sm'),
-				_1(MenuItem,t0.$,'J','D').flag('pos').setIcon('>').setLabel('Home'),
-				_1(MenuItem,t0.$,'K','D').flag('pri').setIcon('>').setLabel('Back'),
-				_1(MenuItem,t0.$,'L','D').flag('neg').setIcon('>').setLabel('Sign out').setDisabled(true)
+			// <ListItem.header label='Sindre Aarsaether' subtext='hello@scrimba.com'>
+			// <ListItem label='Profile photo' subtext='Change your profile photo'>
+			_1('hr',t0.$,'A',t0).flag('sm'),
+			_1(Menu,t0.$,'B',t0).flag('inset').setContent([
+				_1(MenuItem,t0.$,'C','B').setIcon('w').setLabel('Open'),
+				_1(MenuItem,t0.$,'D','B').setIcon('v').setLabel('Paste in place'),
+				_1(MenuItem,t0.$,'E','B').setIcon('v').setLabel('Research'),
+				_1(MenuItem,t0.$,'F','B').setIcon('.').setLabel('Go to site...'),
+				_1('hr',t0.$,'G','B').flag('sm'),
+				_1(MenuItem,t0.$,'H','B').flag('pos').setIcon('>').setLabel('Home'),
+				_1(MenuItem,t0.$,'I','B').flag('pri').setIcon('>').setLabel('Back'),
+				_1(MenuItem,t0.$,'J','B').flag('neg').setIcon('>').setLabel('Sign out').setDisabled(true)
 			],2)
 		
 		
@@ -6890,16 +6845,14 @@ var Head = Imba.defineTag('Head', function(tag){
 		
 		
 		],2)).end((
-			t0.$.A.end(),
-			t0.$.B.end(),
-			t0.$.D.end((
+			t0.$.B.end((
+				t0.$.C.end(),
+				t0.$.D.end(),
 				t0.$.E.end(),
 				t0.$.F.end(),
-				t0.$.G.end(),
 				t0.$.H.end(),
-				t0.$.J.end(),
-				t0.$.K.end(),
-				t0.$.L.end()
+				t0.$.I.end(),
+				t0.$.J.end()
 			,true))
 		,true)));
 		return this;
@@ -7811,7 +7764,7 @@ var Field = Imba.defineTag('Field', function(tag){
 	tag.prototype.multiline = function(v){ return this._multiline; }
 	tag.prototype.setMultiline = function(v){ this._multiline = v; return this; };
 	
-	['disabled','placeholder','type','name','value','required','pattern','minlength','maxlength','autocomplete','formatter'].map(function(key) {
+	['disabled','placeholder','type','name','value','required','pattern','minlength','maxlength','autocomplete','formatter','autofocus'].map(function(key) {
 		var setter = Imba.toCamelCase(("set-" + key));
 		tag.prototype[key] = function(val) { return this.input()[key](); };
 		return tag.prototype[setter] = function(val) {
@@ -7835,15 +7788,14 @@ var Field = Imba.defineTag('Field', function(tag){
 	
 	tag.prototype.render = function (){
 		var $ = this.$;
-		return this.$open(0).flag('field').setChildren([
+		return this.$open(0).flag('field').flagIf('has-label',(!(!(this.label())))).setChildren([
 			this.input(),
-			$[0] || _1('label',$,0,this),
-			$[1] || _1('hr',$,1,this),
-			$[2] || _1('div',$,2,this).flag('help').flag('desc')
-		],1).synced((
-			$[0].setContent(this.label(),3),
-			$[2].setContent(this.desc(),3)
-		,true));
+			this.label() ? (
+				($[0] || _1('label',$,0,this)).setContent(this.label(),3)
+			) : void(0),
+			($[1] || _1('hr',$,1,this)),
+			($[2] || _1('div',$,2,this).flag('help').flag('desc')).setContent(this.desc(),3)
+		],1).synced();
 	};
 })
 exports.Field = Field;
@@ -7883,6 +7835,8 @@ var Editable = Imba.defineTag('Editable', function(tag){
 	tag.prototype.setRequired = function(v){ this.setAttribute('required',v); return this; };
 	tag.prototype.name = function(v){ return this.getAttribute('name'); }
 	tag.prototype.setName = function(v){ this.setAttribute('name',v); return this; };
+	tag.prototype.autofocus = function(v){ return this.getAttribute('autofocus'); }
+	tag.prototype.setAutofocus = function(v){ this.setAttribute('autofocus',v); return this; };
 	
 	tag.prototype.build = function (){
 		var self = this;
@@ -7922,10 +7876,21 @@ var Editable = Imba.defineTag('Editable', function(tag){
 	};
 	
 	tag.prototype.oninput = function (e){
+		e.stop();
 		this.raw().dom().value = this.value();
 		this._syncing = true;
 		this.raw().oninput(e);
 		this._syncing = false;
+		return this;
+	};
+	
+	tag.prototype.commit = function (){
+		if (this._raw._data) {
+			let val = this._raw._data.getFormValue(this._raw);
+			if (val != this._proxyVal) {
+				this.setValue(this._proxyVal = val);
+			};
+		};
 		return this;
 	};
 });
@@ -7942,21 +7907,22 @@ var TextArea = Imba.defineTag('TextArea', Field, function(tag){
 		return this;
 	};
 	
+	tag.prototype.oninput = function (e){
+		this.input().setValue(this.input().raw().value());
+		return e.stop();
+	};
+	
 	tag.prototype.render = function (){
 		var $ = this.$;
-		return this.$open(0).flag('field').setChildren([
+		return this.$open(0).flag('field').flagIf('has-label',(!(!(this.label())))).setChildren([
 			this.input().raw(),
-			this.input(),
-			
-			
-			
-			$[0] || _1('label',$,0,this),
-			$[1] || _1('hr',$,1,this),
-			$[2] || _1('div',$,2,this).flag('help').flag('desc')
-		],1).synced((
-			$[0].setContent(this.label(),3),
-			$[2].setContent(this.desc(),3)
-		,true));
+			this._input,
+			this.label() ? (
+				($[0] || _1('label',$,0,this)).setContent(this.label(),3)
+			) : void(0),
+			($[1] || _1('hr',$,1,this)),
+			($[2] || _1('div',$,2,this).flag('help').flag('desc')).setContent(this.desc(),3)
+		],1).synced();
 	};
 })
 exports.TextArea = TextArea;

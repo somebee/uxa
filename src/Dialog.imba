@@ -14,7 +14,7 @@ export tag Dialog < Form
 		self
 		
 	def onsubmit e
-		e.cancel.halt # should it do this by default?
+		e.prevent.stop # should it do this by default?
 
 		if uxa.queue.busy
 			return

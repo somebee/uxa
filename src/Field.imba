@@ -4,7 +4,7 @@ export tag Field
 	prop desc
 	prop multiline
 	
-	['disabled','placeholder','type','name','value','required','pattern','minlength','maxlength','autocomplete','formatter'].map do |key|
+	['disabled','placeholder','type','name','value','required','pattern','minlength','maxlength','autocomplete','formatter','autofocus'].map do |key|
 		var setter = Imba.toCamelCase("set-{key}")
 		self:prototype[key] = do |val| this.input[key]()
 		self:prototype[setter] = do |val|
@@ -21,9 +21,10 @@ export tag Field
 		<input@input placeholder=" " type='text'>
 	
 	def render
-		<self.field>
+		<self.field .has-label=(!!label)>
 			input
-			<label> label
+			if label
+				<label> label
 			<hr>
 			<.help.desc> desc
 
@@ -49,6 +50,7 @@ tag Editable
 	attr maxlength
 	attr required
 	attr name
+	attr autofocus
 
 	def build
 		tabindex = 0
@@ -80,10 +82,18 @@ tag Editable
 		dom:innerText
 		
 	def oninput e
+		e.stop
 		raw.dom:value = value
 		@syncing = yes
 		raw.oninput(e)
 		@syncing = no
+		self
+	
+	def commit
+		if @raw.@data
+			let val = @raw.@data.getFormValue(@raw)
+			if val != @proxyVal
+				setValue(@proxyVal = val)
 		self
 
 export tag TextArea < Field
@@ -95,14 +105,16 @@ export tag TextArea < Field
 		input.raw.bindData(target,path,args)
 		return self
 		
+	def oninput e
+		input.setValue(input.raw.value)
+		e.stop
+
 	def render
-		<self.field>
+		<self.field .has-label=(!!label)>
 			input.raw
-			input
-			# <span.after>
-			# <hr.static>
-			# <hr.anim>
-			<label> label
+			@input
+			if label
+				<label> label
 			<hr>
 			<.help.desc> desc
 			
