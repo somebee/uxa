@@ -16,6 +16,13 @@ import Actionable from './Actionable'
 var marked = require('marked')
 # var mdconverter = showdown.Converter.new(noHeaderId: yes, tables: yes)
 
+export var Markdown = {
+	options: {}
+	marked: marked
+	render: do |text,modifiers| this:marked(text)
+	configure: do |options| this:marked.setOptions(options)
+}
+
 var MarkdownCache = {}
 var SetterCache = {}
 
@@ -26,7 +33,7 @@ var mdclean = do |md, out|
 		out
 
 var md2html = do |md|
-	MarkdownCache[md] ||= mdclean(md,marked(md))
+	MarkdownCache[md] ||= mdclean(md,Markdown.render(md))
 	
 var toSetter = do |key|
 	SetterCache[key] ||= Imba.toCamelCase('set-'+key)
