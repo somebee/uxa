@@ -25,3 +25,9 @@
 @media screen and (min-width: 1408px) {
 	:root { --container-width: 1344px; }
 }
+
+// when containers are centered on retina-screens and the width of viewport is odd
+// rendering glitches
+@media (-webkit-min-device-pixel-ratio: 2) and (min-width: 1024px) {
+	.odd-width .container { left: 0.5px; }
+}
