@@ -93,7 +93,7 @@ export tag TagInput
 
 	def values
 		if @proxy
-			let val = @proxy[0][@proxy[1]]
+			let val = @proxy[0][@proxy[1]] ||= []
 			return @proxy[2] ? val.apply(@proxy[0],@proxy[2]) : val
 		else
 			@values
