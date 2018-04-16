@@ -42,8 +42,9 @@ a[href] {
 }
 
 :root, .light {
-	--dim: hsl(211, 13%, 66%);
-	--neutral: hsl(218, 5%, 42%);
+	--dim: hsl(211, 8%, 66%);
+	--neutral: hsl(218, 5%, 32%);
+
 	--red: hsl(0, 60%, 55%);
 	--green: hsl(123, 62%, 43%);
 	--blue: hsl(214, 77%, 57%);
@@ -184,11 +185,6 @@ h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6 {
 	color: var(--h-color);
 }
 
-.legend {
-	font-size: var(--legend-size);
-	line-height: 1em;
-}
-
 .grid {
 	display: grid;
 	grid-template-columns: repeat(3, 1fr);
@@ -253,8 +249,6 @@ hr {
 
 .legend {
 	color: var(--legend-color);
-	font-size: var(--legend-size);
-	line-height: 1em;
 }
 
 body {
@@ -278,6 +272,7 @@ body {
 @import "masthead.less";
 @import "breadcrumb.less";
 @import "tabs.less";
+@import "note.less";
 
 .size-modifier(mt,margin-top);
 .size-modifier(mb,margin-bottom);

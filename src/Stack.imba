@@ -20,7 +20,7 @@ export tag Overlay
 	def show
 		document:body.appendChild(dom)
 		component.trigger('uxashow')
-		reflow if @isMenu
+		reflow if @isMenu or @options:anchor
 		dom:offsetWidth
 		Imba.TagManager.insert(self,dom:parentNode)
 		flag('uxa-show')
@@ -72,11 +72,15 @@ export tag Overlay
 		@eventResponder = (@options and @options:responder) or (target)
 	
 	def reflow
-		unless target.dom:offsetParent
-			hide unless hasFlag('hide')
-			return self
-
-		var box = target.dom.getBoundingClientRect
+		let box = @options:anchor
+		if (!box or box == yes) and target isa Imba.Tag 
+			unless target.dom:offsetParent
+				hide unless hasFlag('hide')
+				return self
+			box ||= target.dom.getBoundingClientRect
+		
+		# var box = target.dom.getBoundingClientRect
+		return unless box
 
 		var w = component.dom:offsetWidth
 		var h = component.dom:offsetHeight

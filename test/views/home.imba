@@ -64,6 +64,35 @@ var state = {
 	topics: ['#one']
 }
 
+var blocks = [
+	{name: "Header", desc: "A large header with margin"}
+	{name: "Sub Header", desc: "A smaller header"}
+	{name: "Bulleted List", desc: "Create a simple bulleted list"}
+	{name: "Numbered List", desc: "Create a list with numbering"}
+]
+
+tag GroupedMenu
+	
+	def render
+		<self.menu>
+			<.item> "Edit item"
+			<.item data-icon='mright'> "Remove item"
+			<hr>
+			<.header> "Blocks"
+			for item in blocks
+				<.item.double data-icon='mright'> <.body>
+					<.name> item:name
+					<.legend> item:desc
+				
+			<.item data-icon='mclose'> "Close menu"
+			<hr>
+			<.header> "Shortcuts"
+			<.item data-shortcut='space'> "pause / resume"
+			<.item data-shortcut='shift ←'> "slower playback"
+			<.item data-shortcut='shift →'> "faster playback"
+			<.item data-shortcut='→'> "go forward 10s"
+			<.item data-shortcut='←'> "go back 10s"
+
 tag LogForm < Form
 	
 	def fill
@@ -314,6 +343,13 @@ export tag Home
 						<li> "Home"
 						<li> "Next"
 						<li> "Other"
+				
+				<section>
+					<div uxa:md.inline="Hello *inline* ">
+					<div uxa:md="Hello *not inline*">
+					
+				<section>
+					<GroupedMenu>
 
 				<section>
 					for item in ['light','dark']
@@ -356,6 +392,7 @@ export tag Home
 									<.item data-icon='mright'> "Edit item"
 									<.item data-icon='mclose'> "Close menu"
 									<hr>
+									<.header> "Shortcuts"
 									<.item data-shortcut='space'> "pause / resume"
 									<.item data-shortcut='shift ←'> "slower playback"
 									<.item data-shortcut='shift →'> "faster playback"

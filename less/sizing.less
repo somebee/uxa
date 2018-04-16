@@ -70,6 +70,7 @@ html {
 .--font(h3,14,16,24,1.2);
 .--font(p,13,15,17,1.6);
 .--font(caption,11,11,12,1.3);
+.--font(legend,11,12,13,1.2);
 
 h1,.h1,h2,.h2,h3,.h3 { font-weight: 500; }
 
@@ -100,13 +101,19 @@ label,.caption {
 	font-weight: 500;
 }
 
+.legend {
+	font-size: var(--legend-font-size);
+	line-height: var(--legend-line-height);
+	font-weight: normal;
+}
+
 .sm {
 	.unit-mixin(3px,6px,12px,24px,32px);
 	font-size: var(--p-font-size);
 }
 
 :root,.md {
-	.unit-mixin(4px,8px,16px,32px,48px);
+	.unit-mixin(4px,8px,14px,24px,36px);
 	font-size: var(--p-font-size);
 }
 

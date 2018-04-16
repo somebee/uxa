@@ -1,4 +1,5 @@
 import '../src/index'
+import Router from 'imba-router'
 
 var socket = WebSocket.new('ws://localhost:3002/socket')
 
@@ -14,6 +15,7 @@ extend tag element
 import Head from './views/head'
 import Nav from './views/nav'
 import Home from './views/home'
+import Note from './views/note'
 
 socket:onmessage = do |e|
 	console.log 'got message!!!',e
@@ -24,9 +26,18 @@ tag App
 	
 	def render
 		<self>
-			<Head#head.dark>
-			<Nav#nav.panel.drawer>
-			<#main>
-				<Home>
+			<#head.masthead.lg.bar.base-bg.flat.dark>
+				<.brand> "UXA"
+				<.flexer>
+				<a.tab route-to="/"> 'Home'
+				<a.tab route-to="/components"> 'Components'
+				<a.tab route-to="/elements"> 'Elements'
+				<a.tab route-to="/form"> 'Form'
+				<a.tab route-to="/note"> 'Note'
+			
+			<Home route='/'>
+			<Note route='/note'>
+			# <#main>
+			# 	<Home>
 
-Imba.mount(<App>)
+Imba.mount(<App router=Router.new(mode: 'hash')>)

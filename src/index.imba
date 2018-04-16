@@ -12,9 +12,9 @@ import Tile from './Tile'
 import Icon from './Icon'
 import Queue from './Queue'
 import Actionable from './Actionable'
+import Note from './note/index'
 
 var marked = require('marked')
-# var mdconverter = showdown.Converter.new(noHeaderId: yes, tables: yes)
 
 export var Markdown = {
 	options: {}
@@ -114,8 +114,6 @@ class UXAWrapper
 	def queue
 		@queue ||= Queue.new(@owner)
 
-
-# hello
 extend tag element
 	
 	def uxa
@@ -128,6 +126,7 @@ extend class Imba.Event
 
 	def uxa
 		target.uxa
+
 
 export var UXA = UXAWrapper.new(null)
 export var Button = Button
@@ -147,6 +146,7 @@ export var Snackbar = Snackbar
 export var Tile = Tile
 export var Icon = Icon
 export var Actionable = Actionable
+export var Note = Note
 
 if $web$
 	window.UXA = UXA
