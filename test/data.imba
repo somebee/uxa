@@ -6,6 +6,31 @@ export var blocks = [
 	{name: "Numbered List", desc: "Create a list with numbering"}
 ]
 
+export var md = """
+	# Header
+	
+	## Sub Header
+	
+	Paragraph of text
+	
+	```imba
+	var hello = 100
+	```
+"""
+
+export var post = {
+	markdown: md
+	json: {
+		type: 'root',
+		body: [
+			{type: 'h1', body: ["Header"]}
+			{type: 'h2', body: ["Sub header"]}
+			{type: 'p', body: ["Paragraph of text"]}
+			{type: 'code', language: "imba", body: ["var hello = 100"]}
+		]
+	}
+}
+
 export var note = {type: 'root', body: [
 	{type: 'h1', body: ["Heading 1"]}
 	{type: 'h2', body: ["Heading 2"]}

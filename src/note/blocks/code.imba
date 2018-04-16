@@ -2,6 +2,7 @@ import Block,Content from './base'
 
 # import highlight from '../highlighter'
 import UXA from '../../uxa'
+import Code from '../../Code'
 		
 export tag CodeBlock < Block
 	register 'code'
@@ -36,7 +37,7 @@ export tag CodeBlock < Block
 		e.stop
 		
 	def refresh
-		var html = UXA.highlight(plaintext,data:language or 'imba')
+		var html = Code.highlight(plaintext,data:language or 'imba')
 		@rich.dom:innerHTML = html
 		return self
 		

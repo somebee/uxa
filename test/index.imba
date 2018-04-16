@@ -3,14 +3,10 @@ import Router from 'imba-router'
 
 var socket = WebSocket.new('ws://localhost:3002/socket')
 
-var marked = require 'marked'
+import Code from '../src/Code'
 
-extend tag element
-	prop markdown watch: yes
-	
-	def markdownDidSet text
-		dom:innerHTML = marked(text)
-		
+import highlight from './highlighter/index'
+Code:highlight = highlight
 
 import Head from './views/head'
 import Nav from './views/nav'

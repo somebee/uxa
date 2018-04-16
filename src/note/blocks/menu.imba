@@ -41,7 +41,10 @@ export tag ActionsMenu < Menu
 
 	def match item
 		@matcher ? @matcher(item) : yes
-		
+	
+	def mount
+		yes
+
 	def unmount
 		if data
 			data.@menu = null
@@ -49,12 +52,7 @@ export tag ActionsMenu < Menu
 		self
 	
 	def hide
-		# data.@menu = null
-		# data.@completion = null
 		trigger('uxahide')
-		# data.@menu = null
-		# data.@completion = null
-		# orphanize
 
 	def render
 		let ai = activeIndex + 1

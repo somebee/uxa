@@ -4,6 +4,7 @@ export tag Root
 	prop editable default: false, watch: yes
 	prop value watch: yes
 	prop data watch: yes
+	prop format default: 'json' # what about markdown?
 	
 	def build
 		flag('uxa-note')

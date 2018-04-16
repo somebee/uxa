@@ -56,6 +56,11 @@ export tag Entity < span
 			
 			var typ = node:nodeName.toLowerCase
 			
+			if typ == 'strong'
+				typ = 'b'
+			elif typ == 'em'
+				typ = 'i'
+			
 			unless allow[typ]
 				return traverse(node:childNodes)
 			
@@ -274,8 +279,10 @@ export tag Block
 		dom.insertAdjacentElement('afterend',next.dom)
 		next.edit
 	
-	def onaddbefore e
-		let block = context.block(type: schema:above or 'p', body: [])
+	def onaddbefore e, data
+		
+		data ||= {type: schema:above or 'p', body: []}
+		var block = context.block(data)
 		# (<Block[{type: schema:above or 'p', body: []}]>)
 		dom.insertAdjacentElement('beforeBegin',block.dom)
 		
@@ -302,6 +309,10 @@ export tag Block
 	def onjoinabove e
 		log 'onjoinabove',e
 		if let above = prevBlock
+			if above isa HRBlock
+				above.orphanize
+				return
+
 			if plaintext:length == 0
 				trigger('focusbefore')
 				# if there is no prev block - focus on next?
@@ -405,10 +416,11 @@ export tag Block
 
 		elif key:enter
 			e.prevent
-
+			
+			# isEmpty
 			if plaintext:length == 0 and data:type != 'p'
 				call('morph',serialize(type: 'p'))
-			elif !key:textAfter
+			elif !key:textAfter or key:textAfter == '\n'
 				call('addafter',{body: []})
 			elif !key:textBefore
 				call('addbefore')
@@ -427,7 +439,10 @@ export tag Block
 		let text = e.event:data
 		let sel = selection.serialize
 		let typ = e.event:inputType or 'input'
-		log 'oninput',e,text
+		
+		# unless @keydownSel
+		# 	log "keydown did not happen here?!?",e,text
+		# log 'oninput',e,text
 
 		if text == '/'
 			log sel
@@ -437,6 +452,8 @@ export tag Block
 				end: sel:end
 				value: "/"
 			}
+		
+		# input trigger for hr?
 
 		if let c = @completion
 			if typ.match(/delete/)
@@ -471,12 +488,16 @@ export tag Block
 		log 'onaction',data
 		if action == 'block'
 			clearCompletion
-			console.log "adding block",params[0]
+			let block = params[0]
+			console.log "adding block",block
+			
+			if block:type == 'hr'
+				trigger('addbefore',block)
 			# turn into?
-			if plaintext:length == 0
-				trigger('morph',serialize(params[0]))
+			elif plaintext:length == 0
+				trigger('morph',serialize(block))
 			else
-				trigger('addafter',params[0])
+				trigger('addafter',block)
 		self
 
 	def showActionsMenu
@@ -519,3 +540,26 @@ tag PBlock < Block
 	def ondelstart e
 		trigger('joinabove')
 		e.stop
+		
+tag QuoteBlock < Block
+	register 'quote', nodeType: 'blockquote'
+	
+tag HRBlock < Block
+	register 'hr' # , nodeType: 'div', flag: 'hr'
+	
+	def serialize
+		{type: 'hr'}
+		
+	def deserialize
+		self
+	
+	def render
+		<self.hr>
+		
+	def focus start = yes
+		try
+			if start
+				nextBlock.focus(yes)
+			else
+				prevBlock.focus(no)
+			

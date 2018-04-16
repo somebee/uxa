@@ -11,6 +11,7 @@ import Snackbar from './Snackbar'
 import Tile from './Tile'
 import Icon from './Icon'
 import Queue from './Queue'
+import Code from './Code'
 import Actionable from './Actionable'
 import Note from './note/index'
 
@@ -22,6 +23,8 @@ export var Markdown = {
 	render: do |text,modifiers| this:marked(text)
 	configure: do |options| this:marked.setOptions(options)
 }
+
+Markdown.configure(highlight: do |code,lang| Code.highlight(code,lang) )
 
 var MarkdownCache = {}
 var SetterCache = {}
@@ -128,6 +131,7 @@ extend class Imba.Event
 		target.uxa
 
 
+export var Code = Code
 export var UXA = UXAWrapper.new(null)
 export var Button = Button
 export var IconButton = IconButton

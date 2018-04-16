@@ -4,8 +4,10 @@
 	-webkit-tab-size: 4;
 	font-size: var(--p-font-size);
 	line-height: var(--p-line-height);
+
 	--ui-color: fade(#3c5166,25%);
-	--bullet-color: #6d95be;
+	// --bullet-color: #6d95be;
+	--bullet-color: currentColor;
 	--bullet-content: "•";
 	--placeholder-text: "Type '/' for commands";
 
@@ -19,10 +21,14 @@
 
 	h1 {
 		--placeholder-text: "Heading";
+		margin-top: 2em;
+		color: inherit;
 	}
 
 	h2 {
 		--placeholder-text: "Subheading";
+		margin-top: 2em;
+		color: inherit;
 	}
 
 	h3 {
@@ -31,22 +37,48 @@
 
 	p {
 		--placeholder-text: "Type '/' for commands";
+		margin-top: 1em;
+	}
+
+	a {
+		color: inherit;
+		text-decoration: underline;
+	}
+
+	.hr {
+		margin: 2em 0px;
+		text-align: center;
+		&:after {
+			content: "---";
+		}
+	}
+
+	blockquote {
+		--placeholder-text: "Quote";
+	}
+
+	blockquote {
+		margin: 2em 0;
+		font-style: italic;
+		padding: 0px 2em;
 	}
 
 	& > h1:first-child {
 		font-size: 36px;
 		line-height: 44px;
 		--placeholder-text: "Title";
+		margin-top: 0px;
 	}
 
 	& > h1:first-child + p {
 		font-size: 20px;
 		line-height: 30px;
 		opacity: 0.9;
-		// --placeholder-text: "Tell your story";
 	}
 
-	
+	h1 + h2, h2 + h2 {
+		margin-top: 1em;
+	}
 
 	.Block {
 		position: relative;
@@ -59,7 +91,7 @@
 			position: absolute;
 			width: 3px;
 			border-radius: 1px;
-			transition: all 0.1s ease-out;
+			// transition: all 0.1s ease-out;
 			background: var(--ui-color);
 			content: " ";
 			height: 100%;
@@ -76,10 +108,6 @@
 	.Block:focus-within {
 		--ui-color: var(--blue);
 		&:before { opacity: 0.7; }
-	}
-
-	&:focus-within .Block:not(:focus-within) {
-		// opacity: 0.7;
 	}
 
 	pre.raw {
@@ -100,7 +128,7 @@
 	.debug i { outline: 1px solid rgba(0,255,255,0.3); }
 	.debug b { outline: 1px solid rgba(0,0,255,0.3); }
 
-	.Content.editable:empty:after {
+	.Content.editable:focus:empty:after {
 		content: var(--placeholder-text);
 		opacity: 0.3;
 	}
@@ -119,20 +147,20 @@
 		height: 100%;
 	}
 
-	.h1 {
+	._h1 {
 		font-size: 24px;
 		line-height: 30px;
 		color: rgb(72, 100, 145);
 		font-weight: 600;
 	}
 
-	.h2 {
+	._h2 {
 		font-size: 20px;
 		line-height: 24px;
 		font-weight: 500;
 	}
 
-	.p {
+	._p {
 		font-size: 15px;
 		line-height: 24px;
 	}
@@ -147,6 +175,10 @@
 
 	li {
 		margin: 0.25em 0;
+	}
+
+	.li {
+		margin-top: 1em;
 	}
 
 	.li .body {
