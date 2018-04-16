@@ -1,9 +1,113 @@
 import Block,Content from './base'
-
+import Sel,eventKeys from '../util'
 # import highlight from '../highlighter'
 import UXA from '../../uxa'
 import Code from '../../Code'
+
+class Selection
+	prop root
+
+	def initialize root
+		@root = root
 		
+	def start
+		@root:selectionStart
+		
+	def end
+		@root:selectionEnd
+		
+	def toString
+		@root:value.slice(start,end)
+		
+	def atStart
+		
+		start == 0
+		
+	def atEnd
+		end == @root:value:length
+		
+	def atTop
+		textBefore.indexOf('\n') == -1
+		
+	def atBottom
+		textAfter.indexOf('\n') == -1
+	
+	def serialize
+		{
+			start: start
+			length: end - start
+			text: toString
+			before: @root:value.substr(0,start)
+			after: @root:value.substr(end)
+		}
+		
+	def textBefore
+		@root:value.substr(0,start)
+		
+	def textAfter
+		@root:value.substr(end)
+		
+	def insert text
+		
+		var start = self.start
+		var offset = textBefore:length + text:length
+		console.log "insert",text,start,offset
+		@root:value = textBefore + text + textAfter
+		@root:selectionStart = @root:selectionEnd = offset
+		self
+		
+	def collapse
+		if start != end
+			@root:selectionEnd = start
+		self
+
+tag PlainContent < textarea
+	prop data watch: yes
+	prop spellcheck dom: yes
+	
+	def selection
+		Selection.new(dom)
+		
+	def dataDidSet data
+		deserialize(data:body)
+	
+	def plaintext
+		dom:value
+		
+	def serialize
+		[dom:value]
+		
+	def deserialize value
+		value = value:body or value
+		console.log "deserialize",value
+		dom:value = value isa Array ? value[0] : value
+		self
+		
+	def onkeydown e
+		let key = eventKeys(e)
+		let sel = selection
+		let selData = sel.serialize
+		key:selection = sel
+		key:text = selData:text
+		key:textBefore = selData:before
+		key:textAfter = selData:after
+
+		e.data = key
+		return
+	
+	def select start, end
+		console.log "select",start,end
+		start = plaintext:length + start + 1 if start < 0
+		end = start if end == undefined
+		end = plaintext:length + end + 1 if end < 0
+		@dom.focus
+		@dom:selectionStart = start
+		@dom:selectionEnd = end
+		self
+		
+	# def onkeydown e
+	# 	let key = (e.data ||= eventKeys(e))
+
 export tag CodeBlock < Block
 	register 'code'
 
@@ -24,8 +128,24 @@ export tag CodeBlock < Block
 
 		if o:enter and !o:meta
 			return
+			if o:selection.atEnd
+				o:selection.insert("\n\n").collapse
+			else
+				o:selection.insert("\n").collapse
+			refresh
+			return e.prevent
 
 		super
+		
+	def oninput e
+		# let raw = body.dom:textContent
+		# let text = body.dom:innerText
+		
+		# if raw !== text
+		# 	console.log "difference between text and raw"
+		
+		refresh
+		self
 		
 	def ondirty
 		refresh
@@ -38,6 +158,9 @@ export tag CodeBlock < Block
 			
 		e.stop
 		
+	def plaintext
+		@body.dom:value
+		
 	def refresh
 		# console.log "raw",JSON.stringify(plaintext)
 		var html = Code.highlight(plaintext,data:language or 'imba')
@@ -49,7 +172,8 @@ export tag CodeBlock < Block
 		refresh
 		
 	def body
-		<Content@body[data] editable=context.editable spellcheck=false>
+		# <Content@body[data] editable=context.editable spellcheck=false>
+		<PlainContent@body[data:body] spellcheck=false>
 	
 	def render
 		<self .{type}>

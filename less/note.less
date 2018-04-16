@@ -149,8 +149,11 @@
 	.debug i { outline: 1px solid rgba(0,255,255,0.3); }
 	.debug b { outline: 1px solid rgba(0,0,255,0.3); }
 
-	.Content.editable:focus:empty:after {
+	.Content.editable:empty:after {
 		content: var(--placeholder-text);
+		opacity: 0;
+	}
+	.Content.editable:focus:empty:after {
 		opacity: 0.3;
 	}
 
@@ -234,6 +237,16 @@
 		line-height: 17px;
 		margin: 1.5em 0em;
 
+		textarea + .rich {
+			position: relative;
+		}
+
+		span {
+			min-height: 17px;
+			display: inline-block;
+			vertical-align: top;
+		}
+
 		.content {
 			position: relative;
 		}
@@ -250,6 +263,27 @@
 		}
 		.Content.editable {
 			-webkit-user-modify: read-write-plaintext-only;
+			-moz-user-modify: read-write;
+			caret-color: #ffe83d;
+			color: #ffe83d;
+			-webkit-text-fill-color: transparent;
+		}
+
+		textarea {
+			position: relative;
+			white-space: pre-line;
+			overflow: auto;
+			padding: 1em;
+			font-family: inherit;
+			font-size: inherit;
+			line-height: inherit;
+			position: absolute !important;
+			border: 0px solid transparent;
+			background: transparent;
+			-webkit-appearance: none;
+			height: calc(100% + 40px);
+			width: 100%;
+			resize: none;
 			caret-color: #ffe83d;
 			color: #ffe83d;
 			-webkit-text-fill-color: transparent;

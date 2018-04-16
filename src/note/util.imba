@@ -100,13 +100,21 @@ export class Sel
 				let other = Sel.range(@root,start,start + 1)
 				@rect = other.getBoundingClientRect
 		return @rect
-			
+		
+	def toString
+		raw.toString
 		
 	def atStart
 		return raw:isCollapsed and start == 0
 		
 	def atEnd
 		return raw:isCollapsed and postfix:length == 0
+		
+	def textBefore
+		prefix
+		
+	def textAfter
+		postfix
 
 	def atTop
 		var bounds = rect
@@ -132,8 +140,8 @@ export class Sel
 	def serialize
 		@serialized ||= {
 			start: start
-			length: raw.toString:length
-			text: raw.toString
+			length: toString:length
+			text: toString
 			before: prefix
 			after: postfix
 		}
@@ -149,13 +157,13 @@ export class Sel
 		
 	def self.range node, start, end, range
 		if start < 0
-			start = Math.max(node:textContent:length + (start + 1),0)
+			start = Math.max(node:innerText:length + (start + 1),0)
 
 		if end == undefined
 			end = start
 		
 		if end < 0
-			end = Math.max(node:textContent:length + (end + 1),0)
+			end = Math.max(node:innerText:length + (end + 1),0)
 			
 		# console.log "range",node,start,end,node:textContent:length
 			

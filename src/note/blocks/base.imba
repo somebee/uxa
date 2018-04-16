@@ -7,6 +7,8 @@ export var types = {}
 import Triggers,Schema,Actions from '../options'
 import ActionsMenu from './menu'
 
+Imba.Events.register(['compositionend'])
+
 export tag Entity < span
 	prop data watch: yes
 	prop spellcheck dom: yes
@@ -175,9 +177,6 @@ export tag Content < Entity
 		let key = eventKeys(e)
 
 		let sel = selection
-		# let index = sel and sel.start
-		# let prefix = sel.prefix
-		# let postfix = sel.postfix
 		key:selection = sel
 		key:text = sel.raw.toString
 		key:textBefore = sel.prefix
@@ -296,8 +295,6 @@ export tag Block
 		# let outlined = isOutlineMode		
 		next ? trigger('focusafter') : trigger('focusbefore')
 		orphanize
-		
-
 
 	def onfocusafter
 		if let block = nextBlock
@@ -380,7 +377,7 @@ export tag Block
 		let sel = key:selection
 		let tabtrigger = Triggers[key:textBefore]
 
-		@keydownSel = sel
+		@keydownSel = sel.serialize
 
 		if @menu
 			@menu?.onkeydown(e,key)
@@ -473,15 +470,24 @@ export tag Block
 				call('addafter',fragment)
 				trigger('dirty')
 		self
+	
+	# def oncompositionend e
+	# 	log 'compositionend',e
 		
 	def oninput e
+		# log "oninput!!",e
 		let text = e.event:data
 		let sel = selection.serialize
-		let typ = e.event:inputType or 'input'
-		
+		let typ = e.event:inputType or 'unknown'
+
+		# firefox
+		if @keydownSel and typ == 'unknown'
+			text = plaintext.slice(@keydownSel:start,sel:start)
+			# console.log "text is?!",text,@keydownSel,sel
+
 		# unless @keydownSel
 		# 	log "keydown did not happen here?!?",e,text
-		# log 'oninput',e,text
+		# log 'oninput',e,tex
 
 		if text == '/'
 			log sel
@@ -493,7 +499,6 @@ export tag Block
 			}
 		
 		# input trigger for hr?
-
 		if let c = @completion
 			if typ.match(/delete/)
 				c:end = sel:start
@@ -501,7 +506,7 @@ export tag Block
 				c:end = sel:start
 			
 			c:value = plaintext.slice(c:start,c:end)
-			console.log 'completion',c:value,c
+			# console.log 'completion',c:value,c
 			
 			if @menu
 				@menu.query = c:value.slice(1)
