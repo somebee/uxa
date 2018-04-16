@@ -29,6 +29,8 @@ export def styles
 
 var registeredLanguages = {}
 
+
+
 export def getLanguage lang
 	if $web$ and !styleElement
 		styleElement = document.createElement('style')
@@ -41,7 +43,8 @@ export def getLanguage lang
 		monarch.register(lang,languages[lang]:language:language)
 		return registeredLanguages[lang] = true
 	return false
-		
+
+getLanguage('javascript')
 
 export def tokenize lang, code, options = {}
 	if $node$ and options:decorate and lang == 'imba'

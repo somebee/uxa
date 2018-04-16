@@ -96,7 +96,7 @@ exports.language = {
 			[/'([^']*)'/, 'attribute.value'],
 			[/[\w\-]+/, 'attribute.name'],
 			[/=/, 'delimiter'],
-			[/>/, { token: 'delimiter', next: '@scriptEmbedded', nextEmbedded: 'text/javascript' }],
+			[/>/, { token: 'delimiter', next: '@scriptEmbedded', nextEmbedded: 'javascript' }],
 			[/[ \t\r\n]+/], // whitespace
 			[/(<\/)(script\s*)(>)/, ['delimiter', 'tag', { token: 'delimiter', next: '@pop' }]]
 		],
@@ -104,7 +104,7 @@ exports.language = {
 		// After <script ... type
 		scriptAfterType: [
 			[/=/, 'delimiter', '@scriptAfterTypeEquals'],
-			[/>/, { token: 'delimiter', next: '@scriptEmbedded', nextEmbedded: 'text/javascript' }], // cover invalid e.g. <script type>
+			[/>/, { token: 'delimiter', next: '@scriptEmbedded', nextEmbedded: 'javascript' }], // cover invalid e.g. <script type>
 			[/[ \t\r\n]+/], // whitespace
 			[/<\/script\s*>/, { token: '@rematch', next: '@pop' }]
 		],
@@ -113,7 +113,7 @@ exports.language = {
 		scriptAfterTypeEquals: [
 			[/"([^"]*)"/, { token: 'attribute.value', switchTo: '@scriptWithCustomType.$1' }],
 			[/'([^']*)'/, { token: 'attribute.value', switchTo: '@scriptWithCustomType.$1' }],
-			[/>/, { token: 'delimiter', next: '@scriptEmbedded', nextEmbedded: 'text/javascript' }], // cover invalid e.g. <script type=>
+			[/>/, { token: 'delimiter', next: '@scriptEmbedded', nextEmbedded: 'javascript' }], // cover invalid e.g. <script type=>
 			[/[ \t\r\n]+/], // whitespace
 			[/<\/script\s*>/, { token: '@rematch', next: '@pop' }]
 		],

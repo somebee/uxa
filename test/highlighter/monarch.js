@@ -4618,11 +4618,61 @@ class ThemeTrieElement {
 
 var languages = {};
 var lexers = {};
+var aliases = {
+    "text/css": "css",
+    "application/javascript": "javascript"
+}
 
+
+// create mock modeService
+/*
+    isRegisteredMode(mimetypeOrModeId: string): boolean;
+    getRegisteredModes(): string[];
+    getRegisteredLanguageNames(): string[];
+    getExtensions(alias: string): string[];
+    getFilenames(alias: string): string[];
+    getMimeForMode(modeId: string): string;
+    getLanguageName(modeId: string): string;
+    getModeIdForLanguageName(alias: string): string;
+    getModeIdByFilenameOrFirstLine(filename: string, firstLine?: string): string;
+    getModeId(commaSeparatedMimetypesOrCommaSeparatedIds: string): string;
+    getLanguageIdentifier(modeId: string | LanguageId): LanguageIdentifier;
+    getConfigurationFiles(modeId: string): string[];
+
+    // --- instantiation
+    lookup(commaSeparatedMimetypesOrCommaSeparatedIds: string): IModeLookupResult[];
+    getMode(commaSeparatedMimetypesOrCommaSeparatedIds: string): IMode;
+    getOrCreateMode(commaSeparatedMimetypesOrCommaSeparatedIds: string): TPromise<IMode>;
+    getOrCreateModeByLanguageName(languageName: string): TPromise<IMode>;
+    getOrCreateModeByFilenameOrFirstLine(filename: string, firstLine?: string): TPromise<IMode>;
+*/
+var modeService = {
+    getModeIdForLanguageName(name){
+        // console.log("get for langaugeName");
+        return aliases[name] || name;
+    },
+
+    getModeId(name){
+        return aliases[name] || name;
+    },
+
+    getMode(langid){
+        // console.log(TokenizationRegistry.get(langid));
+        return {getId: function(){ return langid; }}
+    },
+
+    getOrCreateMode(langid){
+        return true;
+    },
+
+    isRegisteredMode(name){
+        return !!languages[name];
+    }
+}
 
 function register(langId,config){
 	languages[langId] =	languages[langId] || compile(langId,config);
-	lexers[langId] = lexers[langId] || createTokenizationSupport(null,null,langId,languages[langId]);
+	lexers[langId] = lexers[langId] || createTokenizationSupport(modeService,null,langId,languages[langId]);
 	return lexers[langId];
 }
 

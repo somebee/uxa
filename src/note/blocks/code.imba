@@ -15,6 +15,8 @@ export tag CodeBlock < Block
 		refresh
 		
 	def onkeydown e, o
+		return super if !o
+			
 		if o:tab
 			o:selection.insert("  ").collapse
 			refresh
@@ -50,6 +52,7 @@ export tag CodeBlock < Block
 	
 	def render
 		<self .{type}>
+			<.lines>
 			<.content>
 				body
 				<@rich.block-overlay>

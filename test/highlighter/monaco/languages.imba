@@ -20,6 +20,7 @@ export var javascript = {
 	id: 'javascript'
 	extensions: ['.js', '.jsx'],
 	aliases: ['JavaScript', 'js'],
+	mimetypes: ['text/javascript','application/javascript'],
 	language: require('./javascript')
 }
 

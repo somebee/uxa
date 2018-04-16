@@ -163,27 +163,25 @@ export tag Content < Entity
 
 	def block
 		parent.parent
-		
-	def onpaste e
-		@pasting = e
 	
 	# should happen on block-leven instead?
 	def onkeydown e
 		let key = eventKeys(e)
 
 		let sel = selection
-		let index = sel and sel.start
-		let prefix = sel.prefix
-		let postfix = sel.postfix
-		let code = data:type == 'code'
-		
+		# let index = sel and sel.start
+		# let prefix = sel.prefix
+		# let postfix = sel.postfix
 		key:selection = sel
 		key:text = sel.raw.toString
-		key:textBefore = prefix
-		key:textAfter = postfix
+		key:textBefore = sel.prefix
+		key:textAfter = sel.postfix
 
 		e.data = key
 		return
+		
+	def onpaste e
+		@pasting = yes
 			
 	def oninput e
 		if let paste = @pasting
@@ -217,6 +215,9 @@ export tag Block
 
 		let type = types[data:type] or Block
 		type.build(owner).setData(data).end
+		
+	def build
+		tabindex = -1
 
 	def context
 		@owner_
@@ -226,6 +227,12 @@ export tag Block
 
 	def isRich
 		yes
+		
+	def isEmpty
+		plaintext:length == 0
+		
+	def isOutlineMode
+		document:activeElement and document:activeElement.matches('.Block')
 
 	def type
 		data:type
@@ -237,7 +244,7 @@ export tag Block
 		body.plaintext
 		
 	def select start, end
-		body.select(start,end)
+		start == undefined ? focus : body.select(start,end)
 		
 	def range start, end
 		body.range(start,end)
@@ -258,14 +265,41 @@ export tag Block
 	def schema
 		Schema[type] or Schema:default
 			
-	def focus start = yes
-		start ? select(0) : select(-1)
+	def focus
+		dom.focus
+		# start ? select(0) : select(-1)
+		
+	def onpaste e
+		@pasting = e
+		var data = e.event:clipboardData
+		try
+			var code = JSON.parse(data.getData('scrimba/code'))
+			var block = JSON.parse(data.getData('uxa/block'))
+			console.log "found code",block
+			if block
+				e.prevent.stop
+				isEmpty ? trigger('morph',block) : trigger('addafter',block)
+		catch e
+			log 'error',e
+			
+	def ondel e
+		e.stop
+
+		let next = nextBlock
+		let prev = prevBlock
+		# let outlined = isOutlineMode		
+		next ? trigger('focusafter') : trigger('focusbefore')
+		orphanize
+		
+
 
 	def onfocusafter
-		nextBlock and nextBlock.focus(yes)
+		if let block = nextBlock
+			isOutlineMode ? block.focus : block.select(0)
 	
 	def onfocusbefore
-		prevBlock and prevBlock.focus(no)
+		if let block = prevBlock
+			isOutlineMode ? block.focus : block.select(-1)
 
 	def onmorph e, to
 		if to isa String
@@ -294,7 +328,7 @@ export tag Block
 		fragment:type = schema:next or fragment:type or 'p'
 		let next = context.block(fragment) # (<Block[fragment]>)
 		dom.insertAdjacentElement('afterend',next.dom)
-		next.focus
+		next.select(0)
 
 	def onmoveup e
 		if prevBlock
@@ -307,7 +341,6 @@ export tag Block
 			e.stop
 		
 	def onjoinabove e
-		log 'onjoinabove',e
 		if let above = prevBlock
 			if above isa HRBlock
 				above.orphanize
@@ -336,18 +369,19 @@ export tag Block
 		var block = context.block(serialize)
 		dom.insertAdjacentElement('beforeBegin',block.dom)
 		
-	def onkeydown e, key
+	def onkeydown e
+		let key = (e.data ||= eventKeys(e))
 		let sel = key:selection
 		let tabtrigger = Triggers[key:textBefore]
 
 		@keydownSel = sel
 
-		e.data = key
 		if @menu
 			@menu?.onkeydown(e,key)
 			if !e.bubble
 				return 
-
+		
+		# keydown directly at target
 		var call = do |action, params|
 			e.@command = self.trigger(action,params)
 			e.prevent
@@ -359,7 +393,6 @@ export tag Block
 			tabtrigger = {type: tabtrigger} if tabtrigger isa String
 			let item = serialize(tabtrigger)
 			return call('morph',item) # trigger('input',e)
-
 
 		if key:meta and key:d
 			call('duplicate')
@@ -378,9 +411,6 @@ export tag Block
 					# sel.range.surroundContents(a)
 					document.execCommand('createLink',yes,url)
 
-
-
-
 		elif key:meta and key:b and isRich and key:text
 				e.prevent
 				document.execCommand('bold')
@@ -394,13 +424,13 @@ export tag Block
 		elif key:down
 			if key:meta
 				return call('movedown')
-			if sel.atBottom
+			if !sel or sel.atBottom
 				return call('focusafter')
 
 		elif key:up
 			if key:meta
 				return call('moveup')
-			if sel.atTop
+			if !sel or sel.atTop
 				return call('focusbefore')
 					
 		elif key:left
@@ -412,7 +442,10 @@ export tag Block
 				return call('focusafter')
 
 		elif key:del and !key:textBefore
-			return call('delstart',key)
+			if !sel
+				return call('del',key)
+			else
+				return call('delstart',key)
 
 		elif key:enter
 			e.prevent
@@ -538,7 +571,12 @@ tag PBlock < Block
 	register 'p', nodeType: 'p'
 	
 	def ondelstart e
-		trigger('joinabove')
+		let prev = prevBlock
+		if prev and prev.matches('.CodeBlock')
+			prev.focus
+		else
+			trigger('joinabove')
+
 		e.stop
 		
 tag QuoteBlock < Block
@@ -559,7 +597,7 @@ tag HRBlock < Block
 	def focus start = yes
 		try
 			if start
-				nextBlock.focus(yes)
+				nextBlock.select(0)
 			else
-				prevBlock.focus(no)
+				prevBlock.select(-1)
 			

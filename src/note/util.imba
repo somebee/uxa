@@ -98,12 +98,15 @@ export class Sel
 	def atTop
 		var bounds = range.getBoundingClientRect
 		var box = @root.getBoundingClientRect
-		Math.abs(box:top - bounds:top) < 6 or atStart
+		var pad = window.getComputedStyle(@root, null).getPropertyValue('padding-top')
+		Math.abs(box:top + parseInt(pad) - bounds:top) < 6 or atStart
 		
 	def atBottom
 		var bounds = range.getBoundingClientRect
 		var box = @root.getBoundingClientRect
-		Math.abs(box:bottom - bounds:bottom) < 6 or atEnd
+		var pad = window.getComputedStyle(@root, null).getPropertyValue('padding-bottom')
+		console.log "atBottom?",bounds,box,pad
+		Math.abs(box:bottom - bounds:bottom - parseInt(pad)) < 6 or atEnd
 		
 	def insert content
 		if content isa String
