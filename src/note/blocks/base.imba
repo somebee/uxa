@@ -377,7 +377,7 @@ export tag Block
 		let sel = key:selection
 		let tabtrigger = Triggers[key:textBefore]
 
-		@keydownSel = sel.serialize
+		@keydownSel = sel and sel.serialize
 
 		if @menu
 			@menu?.onkeydown(e,key)
@@ -447,7 +447,7 @@ export tag Block
 		elif key:del and !key:textBefore
 			if !sel
 				return call('del',key)
-			else
+			elif !key:text
 				return call('delstart',key)
 
 		elif key:enter
@@ -506,19 +506,9 @@ export tag Block
 				c:end = sel:start
 			
 			c:value = plaintext.slice(c:start,c:end)
-			# console.log 'completion',c:value,c
-			
+
 			if @menu
 				@menu.query = c:value.slice(1)
-				
-			# if typ == 'deleteWordBackward'
-			# 	yes
-			# elif typ == 'deleteContentBackward'
-			# 	yes
-
-		# if @menu
-		# 	# no room for selections?
-		# 	@menu.query += text
 	
 	def clearCompletion
 		if @completion
