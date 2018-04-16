@@ -31,6 +31,8 @@ export tag Root
 		self
 
 	def dataDidSet data
+		@history = []
+		@redo = []
 		deserialize(data) if data and @setup
 
 	def editableDidSet bool, prev
@@ -85,7 +87,6 @@ export tag Root
 
 	def deserializeCaret caret
 		if let block = dom:children[caret:block]
-			console.log "deserialize caret",block.@tag,caret
 			block.@tag.select(caret:start,caret:start + caret:length)
 		return self
 
@@ -99,14 +100,9 @@ export tag Root
 		snapshot:caret = serializeCaret
 		snapshot:ts = time
 
-		# check mutations
-		# log 'mutations', @mutations
-
 		if force or !prev or delta > 400 or !@history[1]
-			# log 'new entry',snapshot
 			@history.unshift(snapshot) # :length = @historyIndex
 		else
-			# log 'overwrite history entry',snapshot
 			@history[0] = snapshot
 		@redo = []
 		@mutations = []

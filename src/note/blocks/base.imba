@@ -278,9 +278,11 @@ export tag Block
 		@pasting = e
 		var data = e.event:clipboardData
 		try
-			var code = JSON.parse(data.getData('scrimba/code'))
-			var block = JSON.parse(data.getData('uxa/block'))
-			console.log "found code",block
+			# for type in data:types
+			# 	console.log type, data.getData(type)
+			let json = data.getData('uxa/block')
+			var block = JSON.parse(json)
+
 			if block
 				e.prevent.stop
 				isEmpty ? trigger('morph',block) : trigger('addafter',block)

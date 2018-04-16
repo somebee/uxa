@@ -242,7 +242,7 @@
 		line-height: 17px;
 		margin: 1.5em 0em;
 
-		textarea + .rich {
+		.rich {
 			position: relative;
 		}
 
@@ -295,10 +295,16 @@
 			tab-size: 4;
 			-webkit-tab-size: 4;
 			-moz-tab-size: 4;
+			display: none;
 		}
 	}
 	.article {
 		max-width: 700px;
+	}
+
+	&.editable .CodeBlock {
+		.rich { pointer-events: none; }
+		textarea { display: block; }
 	}
 }
 
