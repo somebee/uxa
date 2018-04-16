@@ -100,7 +100,7 @@
 			content: " ";
 			height: 100%;
 			left: -18px;
-			display: block;
+			display: none;
 			opacity: 0;
 		}
 
@@ -113,8 +113,12 @@
 		--ui-color: var(--blue);
 		&:before { opacity: 0.7; }
 	}
+	
+	&.editable .Block:before {
+		display: block;
+	}
 
-	.Block:focus {
+	&.editable .Block:focus {
 		&:before {
 			width: auto;
 			left: -3px;
@@ -217,7 +221,7 @@
 		font-family: monospace;
 		font-size: 13px;
 		line-height: 17px;
-		background: #3d4351;
+		// background: #3d4351;
 		color: #d4d4d4;
 	}
 
@@ -247,6 +251,8 @@
 		.Content.editable {
 			-webkit-user-modify: read-write-plaintext-only;
 			caret-color: #ffe83d;
+			color: #ffe83d;
+			-webkit-text-fill-color: transparent;
 		}
 	}
 	.article {

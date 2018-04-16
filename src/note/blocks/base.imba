@@ -60,6 +60,8 @@ export tag Entity < span
 				typ = 'b'
 			elif typ == 'em'
 				typ = 'i'
+			elif typ == 'br'
+				return traverse(document.createTextNode('\n'))
 			
 			unless allow[typ]
 				return traverse(node:childNodes)
@@ -130,11 +132,15 @@ export tag Entity < span
 		Sel.range(body,start,end)
 	
 	def plaintext
-		body:textContent.replace(/(\&nbsp;| )/g,' ')
+		body:innerText.replace(/(\&nbsp;| )/g,' ')
 
 	def deserialize data
 		clear
 		Entity.deserialize(body,data:body or data)
+		deserialized
+	
+	def deserialized
+		self
 
 	def serialize root = body, options = data
 		Entity.serialize(root,options)
@@ -535,7 +541,7 @@ export tag Block
 
 	def showActionsMenu
 		unless @menu
-			let pos = selection.range.getBoundingClientRect
+			let pos = selection.rect # range.getBoundingClientRect
 			console.log "range!!!",pos
 			uxa.open(@menu = <ActionsMenu[self] actions=Actions>, anchor: pos)
 			# Imba.mount(@menu = <ActionsMenu[self] actions=Actions>)

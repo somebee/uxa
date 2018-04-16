@@ -25,8 +25,9 @@ export var post = {
 		body: [
 			{type: 'h1', body: ["Header"]}
 			{type: 'h2', body: ["Sub header"]}
-			{type: 'p', body: ["Paragraph of text"]}
 			{type: 'code', language: "imba", body: ["var hello = 100"]}
+			{type: 'p', body: ["Paragraph of text"]}
+			{type: 'code', language: "imba", body: ["var hello = 100\nvar other = 200"]}
 		]
 	}
 }
@@ -37,4 +38,5 @@ export var note = {type: 'root', body: [
 	{type: 'p', body: ["A paragraph ",{type: 'b', body: ["bolded"]}," here"]}
 	{type: 'code', body: ["var hello = 100"]}
 	{type: 'p', body: ["A paragraph ",{type: 'b', body: ["bolded"]}," here"]}
+	{type: 'code', language: "imba", body: ["var hello = 100\nvar other = 200"]}
 ]}

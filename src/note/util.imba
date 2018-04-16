@@ -89,6 +89,19 @@ export class Sel
 	def start
 		return prefix:length
 		
+	def rect
+		return @rect if @rect
+		@rect = range.getBoundingClientRect
+		# safari issue?
+		if @rect:bottom == 0
+			let data = serialize
+			let start = data:before ? (data:start - 1) : data:start
+			if data:length == 0
+				let other = Sel.range(@root,start,start + 1)
+				@rect = other.getBoundingClientRect
+		return @rect
+			
+		
 	def atStart
 		return raw:isCollapsed and start == 0
 		
@@ -96,13 +109,13 @@ export class Sel
 		return raw:isCollapsed and postfix:length == 0
 
 	def atTop
-		var bounds = range.getBoundingClientRect
+		var bounds = rect
 		var box = @root.getBoundingClientRect
 		var pad = window.getComputedStyle(@root, null).getPropertyValue('padding-top')
 		Math.abs(box:top + parseInt(pad) - bounds:top) < 6 or atStart
 		
 	def atBottom
-		var bounds = range.getBoundingClientRect
+		var bounds = rect
 		var box = @root.getBoundingClientRect
 		var pad = window.getComputedStyle(@root, null).getPropertyValue('padding-bottom')
 		console.log "atBottom?",bounds,box,pad
@@ -117,7 +130,7 @@ export class Sel
 		return range
 		
 	def serialize
-		{
+		@serialized ||= {
 			start: start
 			length: raw.toString:length
 			text: raw.toString

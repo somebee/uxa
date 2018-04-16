@@ -146,7 +146,7 @@ export def htmlify code, lineCount = 30
 		let start = 0
 		let desc = tokens[li]
 		let k = 0
-		let s = ""
+		let s = "<span class='line'>"
 		while k < desc:length
 			let code = desc.charCodeAt(k++) - 64			
 			if k % 2 == 0 # move
@@ -155,6 +155,7 @@ export def htmlify code, lineCount = 30
 				s += '</span>'
 			else
 				s += '<span class="'+(types ? types[code] : ('tok'+code)) +'">'
+		s += '</span>'
 		out.push(s)
 	
 	return out.join('\n')

@@ -39,6 +39,7 @@ export tag CodeBlock < Block
 		e.stop
 		
 	def refresh
+		# console.log "raw",JSON.stringify(plaintext)
 		var html = Code.highlight(plaintext,data:language or 'imba')
 		@rich.dom:innerHTML = html
 		return self
@@ -55,4 +56,4 @@ export tag CodeBlock < Block
 			<.lines>
 			<.content>
 				body
-				<@rich.block-overlay>
+				<pre@rich.block-overlay>
