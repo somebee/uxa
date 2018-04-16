@@ -27,16 +27,9 @@ export var post = {
 			{type: 'h2', body: ["Sub header"]}
 			{type: 'code', language: "imba", body: ["var hello = 100"]}
 			{type: 'p', body: ["Paragraph of text"]}
-			{type: 'code', language: "imba", body: ["var hello = 100\nvar other = 200"]}
+			{type: 'code', language: "imba", body: ["if true\n\tvar hello = 100\n\tvar other = 200"]}
 		]
 	}
 }
 
-export var note = {type: 'root', body: [
-	{type: 'h1', body: ["Heading 1"]}
-	{type: 'h2', body: ["Heading 2"]}
-	{type: 'p', body: ["A paragraph ",{type: 'b', body: ["bolded"]}," here"]}
-	{type: 'code', body: ["var hello = 100"]}
-	{type: 'p', body: ["A paragraph ",{type: 'b', body: ["bolded"]}," here"]}
-	{type: 'code', language: "imba", body: ["var hello = 100\nvar other = 200"]}
-]}
+export var note = post:json

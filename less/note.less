@@ -2,6 +2,7 @@
 .uxa-note {
 	tab-size: 4;
 	-webkit-tab-size: 4;
+	-moz-tab-size: 4;
 	font-size: var(--p-font-size);
 	line-height: var(--p-line-height);
 
@@ -271,7 +272,7 @@
 
 		textarea {
 			position: relative;
-			white-space: pre-line;
+			white-space: pre-wrap;
 			overflow: auto;
 			padding: 1em;
 			font-family: inherit;
@@ -287,6 +288,9 @@
 			caret-color: #ffe83d;
 			color: #ffe83d;
 			-webkit-text-fill-color: transparent;
+			tab-size: 4;
+			-webkit-tab-size: 4;
+			-moz-tab-size: 4;
 		}
 	}
 	.article {

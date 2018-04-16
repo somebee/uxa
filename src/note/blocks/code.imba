@@ -51,8 +51,9 @@ class Selection
 		
 		var start = self.start
 		var offset = textBefore:length + text:length
-		console.log "insert",text,start,offset
-		@root:value = textBefore + text + textAfter
+		var value = textBefore + text + textAfter
+		console.log "insert",text,start,offset,JSON.stringify(value)
+		@root:value = value
 		@root:selectionStart = @root:selectionEnd = offset
 		self
 		
@@ -105,6 +106,9 @@ tag PlainContent < textarea
 		@dom:selectionEnd = end
 		self
 		
+	# def render
+	# 	self
+		
 	# def onkeydown e
 	# 	let key = (e.data ||= eventKeys(e))
 
@@ -122,7 +126,7 @@ export tag CodeBlock < Block
 		return super if !o
 			
 		if o:tab
-			o:selection.insert("  ").collapse
+			o:selection.insert("\t").collapse
 			refresh
 			return e.prevent
 
@@ -136,6 +140,8 @@ export tag CodeBlock < Block
 			return e.prevent
 
 		super
+		
+	
 		
 	def oninput e
 		# let raw = body.dom:textContent
@@ -162,6 +168,7 @@ export tag CodeBlock < Block
 		@body.dom:value
 		
 	def refresh
+		data:body = plaintext
 		# console.log "raw",JSON.stringify(plaintext)
 		var html = Code.highlight(plaintext,data:language or 'imba')
 		@rich.dom:innerHTML = html
