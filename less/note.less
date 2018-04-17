@@ -11,6 +11,7 @@
 	--bullet-color: currentColor;
 	--bullet-content: "•";
 	--placeholder-text: "Type '/' for commands";
+	--placeholder-opacity: 0.3;
 
 	:focus {
 		outline: none !important;
@@ -156,11 +157,16 @@
 
 	.Content.editable:empty:after {
 		content: var(--placeholder-text);
-		opacity: 0;
+		opacity: var(--placeholder-opacity);
 	}
-	.Content.editable:focus:empty:after {
-		opacity: 0.3;
+
+	p:not(:focus-within) {
+		--placeholder-opacity: 0;
 	}
+
+	// .Content.editable:focus:empty:after {
+	// 	opacity: 0.3;
+	// }
 
 	
 	.block-content {
@@ -296,7 +302,13 @@
 			-webkit-tab-size: 4;
 			-moz-tab-size: 4;
 			display: none;
+
+			&::selection { background: rgba(89, 112, 162, 0.35); }
+			&::-moz-selection { background: rgba(89, 112, 162, 0.35); }
 		}
+
+		::selection { background: rgba(89, 112, 162, 0.35); }
+		::-moz-selection { background: rgba(89, 112, 162, 0.35); }
 	}
 	.article {
 		max-width: 700px;
