@@ -9,6 +9,29 @@ import ActionsMenu from './menu'
 
 Imba.Events.register(['compositionend'])
 
+var serializers =
+	plain: {
+		a: {attributes: ['href','target']}
+		b: {}
+		i: {}
+	}
+	
+	deep: {
+		a: {attributes: ['href','target']}
+		b: {}
+		i: {}
+		p: {}
+		h1: {}
+		h2: {}
+		h3: {}
+	}
+
+var allow = {
+	a: ['href','target']
+	b: []
+	i: []
+}
+
 export tag Entity < span
 	prop data watch: yes
 	prop spellcheck dom: yes
@@ -16,15 +39,19 @@ export tag Entity < span
 	def self.deserialize item
 		return <Entity[item]>
 		
-	def self.serialize root, base
+	def self.htmlToBlocks html
+		var frag = document.createElement('div')
+		frag:innerHTML = html
+		var data = serialize(frag:childNodes,serializers:deep)
+		return data
+		
+	def self.serialize root, format
 		var data = []
 		var curr = data
 		
-		if base
-			data = Object.assign({},base)
-			data:body = curr = []
+		format ||= serializers:plain 
 			
-		var pluck-attrs = do |options,node,*attrs|
+		var pluck-attrs = do |options,node,attrs|
 			# console.log "pluck",node,attrs
 			for key in attrs
 				let val = node.getAttribute(key)
@@ -64,15 +91,16 @@ export tag Entity < span
 				typ = 'i'
 			elif typ == 'br'
 				return traverse(document.createTextNode('\n'))
+				
+			var fmt = format[typ]
 			
-			unless allow[typ]
+			unless fmt
 				return traverse(node:childNodes)
-			
 			
 			var el = {type: typ, body: []}
 			
-			if typ == 'a'
-				pluck-attrs(el,node,'href','target')
+			if fmt:attributes
+				pluck-attrs(el,node,fmt:attributes)
 			
 			var prev = curr	
 			prev.push(el)
@@ -80,7 +108,20 @@ export tag Entity < span
 			traverse(node:childNodes)
 			curr = prev
 		
-		traverse(base ? root:childNodes : root)
+		traverse(root)
+		
+		var isDeep = data.some do |item|
+			item:type in ['p','h1','h2','h3']
+		
+		if isDeep
+			data = data.map do |item|
+				if item isa String
+					{type: 'p', body: [item]}
+				elif item:type in ['a','b','i']
+					{type: 'p', body: [item]}
+				else
+					item
+			data.DEEP = yes
 		return data
 		
 	def self.deserialize root, config
@@ -187,10 +228,19 @@ export tag Content < Entity
 		
 	def onpaste e
 		@pasting = yes
+		var blocks
+		if var cd = e.event:clipboardData
+			if var html = cd.getData('text/html')
+				blocks = Entity.htmlToBlocks(html)
+		e.@blocks = blocks
+		self
 			
 	def oninput e
 		if let paste = @pasting
 			@pasting = null
+			let content = Entity.serialize(body:childNodes,serializers:deep)
+			console.log content
+			# if the depth is
 			reformat
 
 export tag Block
@@ -259,13 +309,39 @@ export tag Block
 	
 	def nextBlock
 		try dom:nextElementSibling.@tag
-			
+	
+	def removeSelf
+		orphanize
+
 	def replaceWithBlock block
 		block = Block.deserialize(block,context)
 		var sel = selection?.serialize
 		parent.dom.replaceChild(block.dom,self.dom)
 		block.select(sel:start,sel:start + sel:length) if sel
 		return block
+		
+	def addBlockAfter block
+		block = Block.deserialize(block,context)
+		dom.insertAdjacentElement('afterend',block.dom)
+		return block
+		
+	def splitBlock offset
+		let range
+		if offset isa Range
+			range = offset.cloneRange
+			range.setEnd(body.dom,body.dom:childNodes:length)
+		elif offset isa Number
+			range = range(offset,-1)
+		
+		if range
+			let contents = range.extractContents # cloneContents
+			let block = serialize(
+				body: Entity.serialize(contents:childNodes)
+			)
+			return addBlockAfter(block)
+			# call('addafter',fragment)
+		return null
+		
 			
 	def schema
 		Schema[type] or Schema:default
@@ -275,8 +351,22 @@ export tag Block
 		# start ? select(0) : select(-1)
 		
 	def onpaste e
-		@pasting = e
 		var data = e.event:clipboardData
+		var blocks = e.@blocks
+
+		if blocks and blocks.DEEP
+			e.prevent.stop
+			if !isEmpty
+				# split first
+				splitBlock(selection.range)
+
+			var next = self
+			for item in blocks
+				next = next.addBlockAfter(item)
+			next.select(-1)
+			removeSelf if isEmpty
+			return
+
 		try
 			# for type in data:types
 			# 	console.log type, data.getData(type)
@@ -328,8 +418,7 @@ export tag Block
 	def onaddafter e, fragment
 		unless fragment
 			fragment = {type: schema:next or type, body: []}
-
-		# console.log "add after",fragment,schema
+			
 		fragment:type = schema:next or fragment:type or 'p'
 		let next = context.block(fragment) # (<Block[fragment]>)
 		dom.insertAdjacentElement('afterend',next.dom)
