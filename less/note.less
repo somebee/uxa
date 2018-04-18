@@ -80,9 +80,12 @@
 		margin-top: 0px;
 	}
 
-	& > h1:first-child + p {
+	& > h1:first-child + h2 {
+		--placeholder-text: "Subtitle";
 		font-size: 20px;
+		font-weight: normal;
 		line-height: 30px;
+		margin-top: 0.5em;
 		opacity: 0.9;
 	}
 
@@ -91,6 +94,7 @@
 	}
 
 	.Block {
+		--placeholder-opacity: 0.3;
 		position: relative;
 
 		.body,.content {
@@ -235,7 +239,8 @@
 		font-family: monospace;
 		font-size: 13px;
 		line-height: 17px;
-		// background: #3d4351;
+		font-size: var(--code-font-size);
+		line-height: var(--code-line-height);
 		color: #d4d4d4;
 	}
 
@@ -248,12 +253,15 @@
 		line-height: 17px;
 		margin: 1.5em 0em;
 
+		font-size: var(--code-font-size);
+		line-height: var(--code-line-height);
+
 		.rich {
 			position: relative;
 		}
 
 		span {
-			min-height: 17px;
+			min-height: var(--code-line-height);
 			display: inline-block;
 			vertical-align: top;
 		}
