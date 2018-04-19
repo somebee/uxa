@@ -23,8 +23,7 @@ export tag ActionsMenu < Menu
 			let action = filtered[activeIndex]
 			log 'trigger action',action
 			e.stop.prevent
-			data.trigger('action',action)
-			hide
+			exec(action)
 		render
 		self
 		
@@ -37,12 +36,18 @@ export tag ActionsMenu < Menu
 		@filtered = actions.filter(@matcher)
 		activeIndex = 0
 		render
+		hide if @filtered:length == 0
 		self
 
 	def match item
 		@matcher ? @matcher(item) : yes
 	
+	def exec action
+		data.trigger('action',action)
+		hide
+
 	def mount
+		# when focus is moved away from 
 		yes
 
 	def unmount
@@ -60,6 +65,6 @@ export tag ActionsMenu < Menu
 		<self.menu>
 			<.header> "Blocks"
 			for action in actions when match(action)
-				<.item.double .hover=(++i == ai) data-shortcut=action:shortcut> <.body>
+				<.item.double :tap.exec(action) .hover=(++i == ai) data-shortcut=action:shortcut> <.body>
 					<.name> action:name
 					<.legend> action:desc

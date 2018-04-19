@@ -600,7 +600,15 @@ export tag Block
 
 			if @menu
 				@menu.query = c:value.slice(1)
-	
+				@menu.hide unless c:value
+
+	def onfocusout e
+		# log 'onfocusout',e,e.event:relatedTarget
+		if let rel = e.event:relatedTarget
+			unless dom.contains(rel)
+				log "focus moved out of block!"
+				@menu.hide if @menu
+
 	def clearCompletion
 		if @completion
 			range(@completion:start,@completion:end).deleteContents
