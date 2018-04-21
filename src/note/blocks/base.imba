@@ -7,8 +7,6 @@ export var types = {}
 import Triggers,Schema,Actions from '../options'
 import ActionsMenu from './menu'
 
-Imba.Events.register(['compositionend'])
-
 var serializers =
 	plain: {
 		a: {attributes: ['href','target']}
@@ -26,12 +24,6 @@ var serializers =
 		h3: {}
 	}
 
-var allow = {
-	a: ['href','target']
-	b: []
-	i: []
-}
-
 export tag Entity < span
 	prop data watch: yes
 	prop spellcheck dom: yes
@@ -40,7 +32,7 @@ export tag Entity < span
 		return <Entity[item]>
 		
 	def self.htmlToBlocks html
-		var frag = document.createElement('div')
+		var frag = Imba.document.createElement('div')
 		frag:innerHTML = html
 		var data = serialize(frag:childNodes,serializers:deep)
 		return data
@@ -57,12 +49,6 @@ export tag Entity < span
 				let val = node.getAttribute(key)
 				options[key] = val if val
 			return options
-			
-		var allow = {
-			a: ['href','target']
-			b: []
-			i: []
-		}
 
 		var traverse = do |node|
 			if node isa NodeList
@@ -90,7 +76,7 @@ export tag Entity < span
 			elif typ == 'em'
 				typ = 'i'
 			elif typ == 'br'
-				return traverse(document.createTextNode('\n'))
+				return traverse(Imba.document.createTextNode('\n'))
 				
 			var fmt = format[typ]
 			
@@ -130,7 +116,7 @@ export tag Entity < span
 		var traverse = do |data|
 			let el
 			if data isa String
-				el = document.createTextNode(data)
+				el = Imba.document.createTextNode(data)
 				return curr.appendChild(el)
 				
 			elif data isa Array
@@ -140,7 +126,7 @@ export tag Entity < span
 				var typ = data:type
 				var prev = curr
 				# should extract this - make intelligent
-				curr = document.createElement(typ)
+				curr = Imba.document.createElement(typ)
 				if typ == 'a'
 					curr:href = data:href if data:href
 					curr:target = data:target if data:target
@@ -287,7 +273,7 @@ export tag Block
 		plaintext:length == 0
 		
 	def isOutlineMode
-		document:activeElement and document:activeElement.matches('.Block')
+		Imba.document:activeElement and Imba.document:activeElement.matches('.Block')
 
 	def type
 		data:type
@@ -311,6 +297,8 @@ export tag Block
 		try dom:nextElementSibling.@tag
 	
 	def removeSelf
+		# need to have at least one block
+		return unless nextBlock or prevBlock
 		orphanize
 
 	def replaceWithBlock block
@@ -386,7 +374,7 @@ export tag Block
 		let prev = prevBlock
 		# let outlined = isOutlineMode		
 		next ? trigger('focusafter') : trigger('focusbefore')
-		orphanize
+		removeSelf if next or prev
 
 	def onfocusafter
 		if let block = nextBlock
@@ -437,13 +425,13 @@ export tag Block
 	def onjoinabove e
 		if let above = prevBlock
 			if above isa HRBlock
-				above.orphanize
+				above.removeSelf
 				return
 
 			if plaintext:length == 0
 				trigger('focusbefore')
 				# if there is no prev block - focus on next?
-				orphanize
+				removeSelf
 				return # above.focus(false)
 
 			let data = above.serialize
@@ -451,7 +439,7 @@ export tag Block
 			data:body = [].concat(data:body,serialize:body)
 			var block = above.replaceWithBlock(data)
 			block.select(offset)
-			orphanize
+			removeSelf
 		self
 	
 	def ondelstart e
@@ -561,9 +549,6 @@ export tag Block
 				call('addafter',fragment)
 				trigger('dirty')
 		self
-	
-	# def oncompositionend e
-	# 	log 'compositionend',e
 		
 	def oninput e
 		# log "oninput!!",e

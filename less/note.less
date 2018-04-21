@@ -42,7 +42,12 @@
 	}
 
 	h3 {
+		margin-top: 1em;
 		--placeholder-text: "Small Subheading";
+	}
+
+	h3 + p {
+		margin-top: 0.5em;
 	}
 
 	p {
@@ -80,12 +85,9 @@
 		margin-top: 0px;
 	}
 
-	& > h1:first-child + h2 {
-		--placeholder-text: "Subtitle";
+	& > h1:first-child + p {
 		font-size: 20px;
-		font-weight: normal;
 		line-height: 30px;
-		margin-top: 0.5em;
 		opacity: 0.9;
 	}
 
@@ -94,7 +96,6 @@
 	}
 
 	.Block {
-		--placeholder-opacity: 0.3;
 		position: relative;
 
 		.body,.content {
@@ -239,8 +240,7 @@
 		font-family: monospace;
 		font-size: 13px;
 		line-height: 17px;
-		font-size: var(--code-font-size);
-		line-height: var(--code-line-height);
+		// background: #3d4351;
 		color: #d4d4d4;
 	}
 
@@ -253,15 +253,12 @@
 		line-height: 17px;
 		margin: 1.5em 0em;
 
-		font-size: var(--code-font-size);
-		line-height: var(--code-line-height);
-
 		.rich {
 			position: relative;
 		}
 
 		span {
-			min-height: var(--code-line-height);
+			min-height: 17px;
 			display: inline-block;
 			vertical-align: top;
 		}

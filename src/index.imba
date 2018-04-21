@@ -13,7 +13,7 @@ import Icon from './Icon'
 import Queue from './Queue'
 import Code from './Code'
 import Actionable from './Actionable'
-import Note from './note/index'
+# import Note from './note/index'
 
 var marked = require('marked')
 
@@ -150,7 +150,7 @@ export var Snackbar = Snackbar
 export var Tile = Tile
 export var Icon = Icon
 export var Actionable = Actionable
-export var Note = Note
+# export var Note = Note
 
 if $web$
 	window.UXA = UXA

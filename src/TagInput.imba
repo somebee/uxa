@@ -26,7 +26,7 @@ tag Editable
 		try dom:previousElementSibling.focus
 		
 	def value
-		dom:innerText
+		dom:innerText or ""
 		
 	def selection
 		var sel = window.getSelection

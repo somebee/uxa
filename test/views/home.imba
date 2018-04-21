@@ -1,9 +1,7 @@
-var mdart = require '!raw-loader!../md/article.md'
+# var mdart = require '!raw-loader!../md/article.md'
 
 import IconButton,Button,TextField,TextArea,Dialog,Menu,MenuItem,Form,Indicator,Tile from 'uxa'
 import SelectField from '../../src/Field'
-
-# import TagField from '../../src/TagField'
 import TagInput from '../../src/TagInput'
 
 var short = """

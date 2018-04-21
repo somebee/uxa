@@ -6,6 +6,9 @@ var less = require 'less'
 var watch = require 'node-watch'
 var cleanLess = require 'less-plugin-clean-css'
 
+import {App} from './app'
+import {Router} from 'imba-router'
+
 # var lpap = require('less-plugin-autoprefix')
 # LessPluginAutoPrefix = lpap.new(browsers: ['> 0.5%', 'IE 9'])
 # var less = global:less = require 'less'
@@ -39,12 +42,27 @@ app.get '/:name.css' do |req, res|
 
 			res.send out:css
 
+app.use('/static', express.static(path.resolve("{__dirname}")))
 
+app.get(/.*/) do |req,res|
+	var path = req:path
+	var router = Router.new(url: path)
+	var node = <html router=router>
+		<head>
+			<link rel="stylesheet" href="https://i.icomoon.io/public/305431ae11/scrimba/style.css">
+			<link rel="stylesheet" type="text/css" href="style.css" id="uxa-css">
+		<body>
+			<App>
+			<script src='static/index.js'>
+	
+	node.router.onReady do 
+		console.log "onready",path
+		res.send node.toString
+		
 app.get '/' do |req,res|
 	res.sendFile("{__dirname}/index.html")
 	
-app.use('/static', express.static(path.resolve("{__dirname}")))
-	
+
 var server = http.createServer
 server.on('request', app)
 
