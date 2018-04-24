@@ -117,7 +117,24 @@ export tag TextArea < Field
 				<label> label
 			<hr>
 			<.help.desc> desc
-			
+
+export tag CheckBox < Field
+	
+	prop content
+
+	def input
+		<input@input type='checkbox'>
+
+	def bindData target, path, args
+		(@input or input).bindData(target,path,args)
+		return self
+
+	def render
+		<self.field>
+			input
+			@content
+
+
 export tag SelectField < Field
 
 	def options= val

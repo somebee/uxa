@@ -1,4 +1,4 @@
-import Button,IconButton,TextField,ListItem,Menu,MenuItem,Popover,Dialog from 'uxa'
+import Button,IconButton,TextField,ListItem,Menu,MenuItem,Popover,Dialog from '../../src/index'
 
 export tag Head
 	def render

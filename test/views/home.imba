@@ -1,6 +1,6 @@
 # var mdart = require '!raw-loader!../md/article.md'
 
-import IconButton,Button,TextField,TextArea,Dialog,Menu,MenuItem,Form,Indicator,Tile from 'uxa'
+import IconButton,Button,TextField,TextArea,Dialog,Menu,MenuItem,Form,Indicator,Tile from '../../src/index'
 import SelectField from '../../src/Field'
 import TagInput from '../../src/TagInput'
 
@@ -86,8 +86,8 @@ tag GroupedMenu
 			<hr>
 			<.header> "Shortcuts"
 			<.item data-shortcut='space'> "pause / resume"
-			<.item data-shortcut='shift ←'> "slower playback"
-			<.item data-shortcut='shift →'> "faster playback"
+			<.item data-shortcut='⇧ ←'> "slower playback"
+			<.item data-shortcut='⇧ →'> "faster playback"
 			<.item data-shortcut='→'> "go forward 10s"
 			<.item data-shortcut='←'> "go back 10s"
 
@@ -392,10 +392,10 @@ export tag Home
 									<hr>
 									<.header> "Shortcuts"
 									<.item data-shortcut='space'> "pause / resume"
-									<.item data-shortcut='shift ←'> "slower playback"
-									<.item data-shortcut='shift →'> "faster playback"
+									<.item data-shortcut='⇧←'> "slower playback"
+									<.item data-shortcut='⇧→'> "faster playback"
 									<.item data-shortcut='→'> "go forward 10s"
-									<.item data-shortcut='←'> "go back 10s"
+									<.item data-shortcut='←⌘'> "go back 10s"
 									<hr>
 									for item in state:categories
 										<.field.radio>

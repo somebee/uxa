@@ -28,6 +28,10 @@ app.get '/:name.css' do |req, res|
 	# 	console.log 'returning cached css'
 	# 	return res.send(cssCache[path])
 
+	let fileManagers = less:environment && less:environment:fileManagers || []
+	for m in fileManagers
+		m:contents = {}
+
 	fs.readFile(src) do |err,data|
 		unless data
 			return res.send ""
@@ -35,7 +39,7 @@ app.get '/:name.css' do |req, res|
 		if req:params[1] == 'less'
 			return res.send data.toString
 
-		less.render(data.toString, paths: dirs, strictMath: 'on', plugins: plugins) do |err,out| # , plugins: [LessPluginAutoPrefix]
+		less.render(data.toString, useFileCache: false, env: "development", paths: dirs, strictMath: 'on', plugins: plugins) do |err,out| # , plugins: [LessPluginAutoPrefix]
 			if err
 				console.log "error from less",err
 				return res.send ""

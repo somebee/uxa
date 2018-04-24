@@ -2,7 +2,7 @@ import Stack from './Stack'
 import Menu from './Menu'
 import MenuItem from './MenuItem'
 import Button,IconButton from './Button'
-import TextField,TextArea,SelectField,TagField from './Field'
+import TextField,TextArea,SelectField,TagField,CheckBox from './Field'
 import Popover from './Popover'
 import Dialog from './Dialog'
 import Indicator from './Indicator'
@@ -140,6 +140,7 @@ export var MenuItem = MenuItem
 export var TextField = TextField
 export var TagField = TagField
 export var TextArea = TextArea
+export var CheckBox = CheckBox
 export var SelectField = SelectField
 export var MenuItem = MenuItem
 export var Popover = Popover
@@ -150,6 +151,7 @@ export var Snackbar = Snackbar
 export var Tile = Tile
 export var Icon = Icon
 export var Actionable = Actionable
+
 # export var Note = Note
 
 if $web$
