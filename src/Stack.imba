@@ -16,8 +16,9 @@ export tag Overlay
 			<div.backdrop :tap='autohide'>
 
 	# TODO improve state transitioning to allow reusing overlays
-
 	def show
+		@activeElement = document:activeElement
+		# also store the closest focusable parent?
 		document:body.appendChild(dom)
 		component.trigger('uxashow')
 		reflow if @isMenu or @options:anchor
@@ -36,10 +37,17 @@ export tag Overlay
 		component.flag('uxa-hide')
 		unflag('uxa-show')
 		component.unflag('uxa-show')
+		
+		var refocus = @activeElement
+		@activeElement = null
 
 		if target
 			target?.unflag('uxa-overlay-active')
-
+		
+		setTimeout(&,20) do
+			if refocus and refocus:offsetParent
+				refocus.focus
+			
 		setTimeout(&,200) do
 			var par = dom:parentNode
 			par.removeChild(dom)
