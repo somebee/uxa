@@ -1,0 +1,42 @@
+.--size(masthead-height,32px,48px,64px);
+.--size(masthead-font-size,16px,20px,24px);
+.--size(masthead-padding,0px 6px,0px 12px,0px 16px);
+
+.masthead {
+	padding: 0px 0px;
+	height: var(--masthead-height);
+	background: var(--masthead-bg);
+	padding: var(--masthead-padding);
+	font-size: var(--masthead-font-size);
+	font-weight: 500;
+
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: center;
+
+	.tab {
+		font-size: var(--p-font-size);
+		padding: var(--xsu);
+		line-height: 1;
+	}
+
+	.Avatar {
+		width: 24px;
+		height: 24px;
+		border-radius: 1px;
+	}
+
+	& > .right {
+		&:extend(.hbar);
+		margin-left: auto;
+		padding-right: 12px;
+		position: absolute;
+		right: 0px;
+		background: inherit;
+		height: 100%;
+		display: flex;
+		flex-direction: row;
+		align-items: center;
+	}
+}

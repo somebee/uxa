@@ -1,13 +1,15 @@
 
-export tag TextField
+export tag Field
 	prop label
 	prop desc
 	prop multiline
 	
-	['disabled','placeholder','type','name','value','required','pattern','minlength','maxlength','autocomplete'].map do |key|
+	['disabled','placeholder','type','name','value','required','pattern','minlength','maxlength','autocomplete','formatter','autofocus'].map do |key|
 		var setter = Imba.toCamelCase("set-{key}")
 		self:prototype[key] = do |val| this.input[key]()
 		self:prototype[setter] = do |val|
+			if key == 'type'
+				this.setFlag('type',val)
 			this.input[setter](val)
 			return this
 			
@@ -19,14 +21,21 @@ export tag TextField
 		<input@input placeholder=" " type='text'>
 	
 	def render
-		<self.uxa>
+		<self.field .has-label=(!!label)>
 			input
-			<span.after>
-			<hr.static>
-			<hr.anim>
-			<label> label
-			<span.helper.desc data-desc=desc> desc
+			if label
+				<label> label
+			<hr>
+			<.help.desc> desc
 
+import TagInput from './TagInput'
+
+export tag TextField < Field
+
+export tag TagField < Field
+	
+	def input
+		<TagInput@in>
 
 
 tag TextAreaProxy < textarea
@@ -41,6 +50,7 @@ tag Editable
 	attr maxlength
 	attr required
 	attr name
+	attr autofocus
 
 	def build
 		tabindex = 0
@@ -72,13 +82,21 @@ tag Editable
 		dom:innerText
 		
 	def oninput e
+		e.stop
 		raw.dom:value = value
 		@syncing = yes
 		raw.oninput(e)
 		@syncing = no
 		self
+	
+	def commit
+		if @raw.@data
+			let val = @raw.@data.getFormValue(@raw)
+			if val != @proxyVal
+				setValue(@proxyVal = val)
+		self
 
-export tag TextArea < TextField
+export tag TextArea < Field
 
 	def input
 		<Editable@input>
@@ -87,17 +105,37 @@ export tag TextArea < TextField
 		input.raw.bindData(target,path,args)
 		return self
 		
+	def oninput e
+		input.setValue(input.raw.value)
+		e.stop
+
 	def render
-		<self.uxa>
+		<self.field .has-label=(!!label)>
 			input.raw
+			@input
+			if label
+				<label> label
+			<hr>
+			<.help.desc> desc
+
+export tag CheckBox < Field
+	
+	prop content
+
+	def input
+		<input@input type='checkbox'>
+
+	def bindData target, path, args
+		(@input or input).bindData(target,path,args)
+		return self
+
+	def render
+		<self.field>
 			input
-			<span.after>
-			<hr.static>
-			<hr.anim>
-			<label> label
-			<span.helper.desc data-desc=desc> desc
-			
-export tag SelectField < TextField
+			@content
+
+
+export tag SelectField < Field
 
 	def options= val
 		var input = self.input

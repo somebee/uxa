@@ -1,32 +1,21 @@
 import '../src/index'
+import Router from 'imba-router'
+import App from './app'
 
 var socket = WebSocket.new('ws://localhost:3002/socket')
 
-var marked = require 'marked'
+import Code from '../src/Code'
 
-extend tag element
-	prop markdown watch: yes
-	
-	def markdownDidSet text
-		dom:innerHTML = marked(text)
-		
+import highlight from './highlighter/index'
+Code:highlight = highlight
 
-import Head from './views/head'
-import Nav from './views/nav'
-import Home from './views/home'
 
 socket:onmessage = do |e|
 	console.log 'got message!!!',e
 	#uxa-css.href = "style.css?{Math.random}"
-	
 
-tag App
-	
-	def render
-		<self>
-			<Head#head.dark>
-			<Nav#nav.panel.drawer>
-			<#main>
-				<Home>
+var app = <App router=Router.new>
 
-Imba.mount(<App>)
+app.router.onReady do
+	document:body:innerHTML = ''
+	Imba.mount(app)

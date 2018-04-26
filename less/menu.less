@@ -1,22 +1,150 @@
 .Menu {
-	& > hr {
-		margin-top: var(--xsu);
-		margin-bottom: var(--xsu);
-	}
-
 	& + .backdrop {
 		background: transparent;
 	}
 }
 
-.Menu.floating {
-	padding: 4px 0px;
+// .--size(menu-gutter,12px,13px,14px);
+
+.--font(menu,12px,13px,14px,1.2);
+// .--size(menu-font-size,12px,13px,14px);
+.--size(menu-item-height,24px,28px,32px);
+.--size(menu-hr-size,2px,4px,6px);
+
+.menu-icon(){
+	width: var(--gutter);
+	min-height: var(--menu-item-height);
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	font-size: var(--menu-font-size);
+	width: 1em;
+	height: 1em;
+	min-height: initial;
+	margin-right: 4px;
+}
+
+.menu {
+	background: var(--menu-bg);
+	font-size: var(--menu-font-size);
+	line-height: var(--menu-line-height);
+	border: var(--menu-border);
+
+	--pad: var(--mdu);
+	--gutter: var(--menu-item-height); // calc(20px + var(--smu));
+
+	hr {
+		margin: var(--xsu) 0px;
+		opacity: 0.75;
+	}
+
+	& > hr:first-child,& > hr:last-child { display: none; }
+
+	.header {
+		color: var(--dim);
+		font-size: smaller;
+		line-height: inherit;
+		padding: 4px var(--pad) 2px;
+		text-transform: uppercase;
+		font-weight: 500;
+		// margin-left: var(--pad);
+	}
+
+	.item {
+		min-height: var(--menu-item-height);
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-start;
+		align-items: center;
+		text-decoration: none;
+		cursor: default;
+		color: inherit;
+		padding: 0px var(--pad);
+
+		.body {
+			padding: 6px 0px;
+		}
+
+	}
+
+	.item.double {
+		// --gutter: calc(40px + var(--smu));
+	}
+
+	.item:before {
+		text-align: center;
+		margin: 0px;
+		opacity: 0.5;
+		width: var(--gutter);
+		display: block;
+		.menu-icon;
+		flex: 0 0 auto;
+	}
+
+	// .item:not([data-icon]):before { content: ""; }
+
+	.item:hover,.item.hover {
+		text-decoration: none;
+		background: var(--menu-hover-bg);
+		&:before { opacity: 1; }
+	}
+
+	[data-shortcut]:after {
+		vertical-align: middle;
+		content: attr(data-shortcut);
+		display: inline-block;
+		font-size: calc(var(--menu-font-size) - 1px);
+		// font-size: 9px;
+		// line-height: 13px;
+		// border: 1px solid var(--border-color);
+		// border-radius: 2px;
+		// padding: 0px 4px;
+		margin-left: auto;
+		// text-transform: uppercase;
+		color: var(--dim);
+		font-weight: 400;
+	}
+	
+	--p-font-size: var(--menu-font-size);
+	--field-height: var(--menu-item-height);
+
+	.field {
+		padding: 0px var(--pad);
+		margin-bottom: 0px;
+		--label-focus-color: var(--label-color);
+		// should use variables for this
+		// breaks down with different sizes
+		[type=radio] ~ label {
+			margin-left: 6px;
+		}
+
+		[type=checkbox] ~ label {
+			margin-left: 6px;
+		}
+	}
+
+	.field.radio:hover,
+	.field.radio.hover,
+	.field.checkbox:hover,
+	.field.checkbox.hover {
+		background: var(--menu-hover-bg);
+	}
+
+	.field.range {
+		--label-font-size: smaller;
+		padding: 4px 8px; // FIX
+	}
+}
+
+.menu.floating {
 	transition: opacity 0.2s ease, transform 0.2s ease;
 	transform: translateY(0px);
-	width: 260px;
+	width: 220px;
 	max-width: 300px;
 	opacity: 0;
-	
+	padding: 4px 0px;
+	border-width: 0px;
+	border-radius: 2px;
 
 	&.uxa-show {
 		transform: translateY(0px);
@@ -26,60 +154,5 @@
 	&.uxa-hide {
 		transform: translateY(0px) scale(0.95);
 		opacity: 0;
-	}
-}
-
-.MenuItem {
-	// padding: var(--mi-padding);
-	display: flex;
-	flex-direction: row;
-	cursor: default;
-	align-items: center;
-
-	--size: var(--uxa-ctrl);
-	--bg: var(--uxa-tint-0);
-	--hover-bg: var(--uxa-tint-50);
-	--active-bg: var(--uxa-tint-100);
-	--icon-color: var(--uxa-tint-300);
-	--disabled-color: var(--uxa-tint-300);
-
-	min-height: var(--size);
-	background: var(--bg);
-	padding: 0px calc(var(--uxa-ctrl) * 0.5);
-	color: inherit;
-	text-decoration: none;
-
-	&.pos {
-		--icon-color: var(--uxa-tint-pos);
-	}
-
-	&.neg {
-		--icon-color: var(--uxa-tint-neg);
-	}
-
-	&.pri {
-		--icon-color: var(--uxa-tint-pri);
-	}
-
-	.Icon:first-child {
-		margin-right: var(--mdu);
-		color: var(--icon-color);
-		--size: var(--uxa-sm-icon);
-		// color: var(--mi-icon-color);
-	}
-
-	&:hover {
-		text-decoration: none;
-		--icon-color: var(--uxa-pri-A400);
-		--bg: var(--hover-bg);
-	}
-
-	&:active {
-		--bg: var(--active-bg);
-	}
-
-	&[disabled] {
-		pointer-events: none;
-		color: var(--disabled-color);
 	}
 }

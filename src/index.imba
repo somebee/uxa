@@ -2,8 +2,7 @@ import Stack from './Stack'
 import Menu from './Menu'
 import MenuItem from './MenuItem'
 import Button,IconButton from './Button'
-import TextField,TextArea,SelectField from './TextField'
-import ListItem from './ListItem'
+import TextField,TextArea,SelectField,TagField,CheckBox from './Field'
 import Popover from './Popover'
 import Dialog from './Dialog'
 import Indicator from './Indicator'
@@ -12,10 +11,20 @@ import Snackbar from './Snackbar'
 import Tile from './Tile'
 import Icon from './Icon'
 import Queue from './Queue'
+import Code from './Code'
 import Actionable from './Actionable'
+# import Note from './note/index'
 
 var marked = require('marked')
-# var mdconverter = showdown.Converter.new(noHeaderId: yes, tables: yes)
+
+export var Markdown = {
+	options: {}
+	marked: marked
+	render: do |text,modifiers| this:marked(text)
+	configure: do |options| this:marked.setOptions(options)
+}
+
+Markdown.configure(highlight: do |code,lang| Code.highlight(code,lang) )
 
 var MarkdownCache = {}
 var SetterCache = {}
@@ -27,7 +36,7 @@ var mdclean = do |md, out|
 		out
 
 var md2html = do |md|
-	MarkdownCache[md] ||= mdclean(md,marked(md))
+	MarkdownCache[md] ||= mdclean(md,Markdown.render(md))
 	
 var toSetter = do |key|
 	SetterCache[key] ||= Imba.toCamelCase('set-'+key)
@@ -108,8 +117,6 @@ class UXAWrapper
 	def queue
 		@queue ||= Queue.new(@owner)
 
-
-# hello
 extend tag element
 	
 	def uxa
@@ -123,15 +130,18 @@ extend class Imba.Event
 	def uxa
 		target.uxa
 
+
+export var Code = Code
 export var UXA = UXAWrapper.new(null)
 export var Button = Button
 export var IconButton = IconButton
 export var Menu = Menu
 export var MenuItem = MenuItem
 export var TextField = TextField
+export var TagField = TagField
 export var TextArea = TextArea
+export var CheckBox = CheckBox
 export var SelectField = SelectField
-export var ListItem = ListItem
 export var MenuItem = MenuItem
 export var Popover = Popover
 export var Dialog = Dialog
@@ -141,6 +151,8 @@ export var Snackbar = Snackbar
 export var Tile = Tile
 export var Icon = Icon
 export var Actionable = Actionable
+
+# export var Note = Note
 
 if $web$
 	window.UXA = UXA

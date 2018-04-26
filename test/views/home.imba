@@ -1,7 +1,8 @@
-var mdart = require '!raw-loader!../md/article.md'
+# var mdart = require '!raw-loader!../md/article.md'
 
-import IconButton,Button,TextField,TextArea,Dialog,Menu,MenuItem,Form,Indicator,Tile from 'uxa'
-import SelectField from '../../src/TextField'
+import IconButton,Button,TextField,TextArea,Dialog,Menu,MenuItem,Form,Indicator,Tile from '../../src/index'
+import SelectField from '../../src/Field'
+import TagInput from '../../src/TagInput'
 
 var short = """
 
@@ -14,29 +15,24 @@ Paragraph text
 """
 
 var long = """
-# Heading
+# Heading 1
 
 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec cursus elit at
 odio congue, ac varius massa tincidunt. Nulla blandit odio vel bibendum 
 condimentum. In hac habitasse [platea](#platea) dictumst. Nam eu nisl ut erat 
-sollicitudin tincidunt. Nunc nec scelerisque felis. Nulla fringilla 
-id nulla vitae pulvinar.
-
----
+sollicitudin tincidunt.
 
 ## Heading 2
 
 Nullam eget urna vitae ex ullamcorper dictum ac ullamcorper nisl. Mauris a
 quam non ante ullamcorper ultrices quis quis libero. Quisque ultrices lorem
-metus. Duis mi est, elementum nec egestas a, luctus et lacus. Pellentesque
-augue libero, scelerisque sit amet purus ut, tempor sagittis neque.
+metus. Duis mi est, elementum nec egestas a, luctus et lacus.
 
 ### Heading 3
 
 Nullam eget urna vitae ex ullamcorper dictum ac ullamcorper nisl. Mauris a
 quam non ante ullamcorper ultrices quis quis libero. Quisque ultrices lorem
-metus. Duis mi est, elementum nec egestas a, luctus et lacus. Pellentesque
-augue libero, scelerisque sit amet purus ut, tempor sagittis neque.
+metus.
 
 """
 
@@ -49,6 +45,52 @@ var tile2 = """
 In this [tutorial](#tutorial) we'll wrap the Hacker News API in a tiny SDK and learn how to use it to fetch data from Hacker News submissions and comments.
 """
 
+var items = [{
+	title: "Introduction to HTML"
+},{
+	title: "Learn about Variables"
+},{
+	title: "Creating a website"
+}]
+
+var state = {
+	title: "Something"
+	category: 'Imba'
+	categories: ['Imba','React','Vue.js','Angular']
+	enabled: yes
+	rating: 8
+	topics: ['#one']
+}
+
+var blocks = [
+	{name: "Header", desc: "A large header with margin"}
+	{name: "Sub Header", desc: "A smaller header"}
+	{name: "Bulleted List", desc: "Create a simple bulleted list"}
+	{name: "Numbered List", desc: "Create a list with numbering"}
+]
+
+tag GroupedMenu
+	
+	def render
+		<self.menu>
+			<.item> "Edit item"
+			<.item data-icon='mright'> "Remove item"
+			<hr>
+			<.header> "Blocks"
+			for item in blocks
+				<.item.double data-icon='mright'> <.body>
+					<.name> item:name
+					<.legend> item:desc
+				
+			<.item data-icon='mclose'> "Close menu"
+			<hr>
+			<.header> "Shortcuts"
+			<.item data-shortcut='space'> "pause / resume"
+			<.item data-shortcut='⇧ ←'> "slower playback"
+			<.item data-shortcut='⇧ →'> "faster playback"
+			<.item data-shortcut='→'> "go forward 10s"
+			<.item data-shortcut='←'> "go back 10s"
+
 tag LogForm < Form
 	
 	def fill
@@ -56,13 +98,59 @@ tag LogForm < Form
 	
 	def render
 		<self>
+			# <.field.resting.lg>
+			# 	<input[state:title] type='text' placeholder='Title of project'>
+			# 	<label data-label="Title"> "Title"
+			# 	<hr>
+			
+			<.field>
+				<TagInput[state:topics]>
+				<label> "Tags"
+				
+			<.field>
+				<input[state:title] type='text' placeholder='Subtitle of project' pattern="Stuff">
+				<label> "Subtitle"
+				<hr>
+				
+			<.field>
+				<input[state:title] type='text' required placeholder='Required title'>
+				<label> "Slug"
+				<hr>
+			
+			<.field.range>
+				<input[state:rating] type='range' min=0 max=10 step=1 name='slide'>
+				<label> "Font-size"
+				# <.control>
+
+			<.field.checkbox>
+				<input type='checkbox'>
+				<label> "Another checkbox yes"
+			
+			<.field>
+				<.field.radio>
+					<input type='radio' name='group' value='red'>
+					<label> "Red"
+				
+				<.field.radio>
+					<input type='radio' name='group' value='green'>
+					<label> "Green"
+					
+				<.field.radio>
+					<input type='radio' name='group' value='blue'>
+					<label> "Blue"
+				
+			<.field.select>
+				<select[state:category]>
+					for item in state:categories
+						<option> item
+				<label> "Blue"
 			<TextField label="Title" name='title' placeholder="Descriptive title" desc="Some description of this">
-			<SelectField label="Category" name='category' desc="Some description of this">
+			# <SelectField label="Category" name='category' desc="Some description of this">
 			<TextField label="Secret word" name='secret' placeholder="What is the secret?" required=yes pattern="uxauxa" desc="Can you guess it?">
 			<TextArea label="Description" name='desc' desc="Please feel free to describe" placeholder="Some description" required=yes>
-			<TextField label="Alias" name='alias' desc="This field is disabled" disabled=yes>
-			<Button.primary label="Submit" type='submit'>
-			<Button.primary label="Fill" type='button' :tap='fill'>
+			# <TextField label="Alias" name='alias' desc="This field is disabled" disabled=yes>
+			# <Button.primary label="Submit" type='submit'>
+			# <Button.primary label="Fill" type='button' :tap='fill'>
 
 	def onsubmit e
 		e.cancel.halt
@@ -163,13 +251,13 @@ tag Palette
 					<Dialog.modal> <div uxa:md="This will submit instantly">
 			
 			<section.flat>
-				<h3> "Flat buttons"
+				# <h3> "Flat buttons"
 				<Button.muted label="Dismiss">
 				<Button.secondary label="Secondary">
 				<Button.primary label="Primary">
 				<Button.primary label="Disabled" disabled=yes>
 				<Button.primary icon='v' label="Menu" :menu='menu'>
-				<h3> "Icon buttons"
+				# <h3> "Icon buttons"
 				<.hbar>
 					<IconButton.xs icon='*'>
 					<IconButton.sm icon='*'>
@@ -177,28 +265,21 @@ tag Palette
 					<IconButton.lg icon='*'>
 					<IconButton.xl icon='*'>
 
-				<h3> "Floating IconButton"
-				<.hbar css:position='relative'>
-					<IconButton.floating.xs icon='*'>
-					<IconButton.floating.sm icon='*'>
-					<IconButton.floating.md icon='*'>
-					<IconButton.floating.lg icon='*'>
-					<IconButton.floating.xl icon='*'>
+				# <h3> "Floating IconButton"
+				# <.hbar css:position='relative'>
+				# 	<IconButton.floating.xs icon='*'>
+				# 	<IconButton.floating.sm icon='*'>
+				# 	<IconButton.floating.md icon='*'>
+				# 	<IconButton.floating.lg icon='*'>
+				# 	<IconButton.floating.xl icon='*'>
 				
 			<section>
 				<div uxa:md=long>
-				<div.hx3 uxa:md=long>
 				<hr>
 				<LogForm>
 				
 			<section>
-				# <h2> "Typography"
-				# <div.xs uxa:md=short>
-				# <div.sm uxa:md=short>
 				<div.md uxa:md=short>
-				# <div.lg uxa:md=short>
-				# <div.xl uxa:md=short>
-				# <Indicator type='indeterminate'>
 			
 			<section>
 				<h2> "Tiles"
@@ -223,17 +304,148 @@ tag Palette
 				# <ColorSample bg='alt-bg'>
 				# <ColorSample bg='pri'>
 				# <ColorSample bg='sec'>
-	
+
+tag TileTest
+	def render
+		<self.tile>
+			<.body>
+				<.title>
+					<span> data:title
+					<span.dim> " (example.uxa.io)"
+				<.legend.bullets.dim>
+					<span> "by John Doe"
+					<span> "20 minutes ago"
 export tag Home
 
 	def render
 		<self>
-			<section>
-				<h3> "Colors"
-				<ColorScale tint='base'>
-				<ColorScale tint='dark'>
-				<ColorScale tint='pri'>
-				<ColorScale tint='sec'>
-			<Palette tint='neutral'>
-			<Palette tint='dark'>
+			<article.hero>
+				<.container.narrow.pad.lg>
+					<h1> "Hello, future expert"
+					<p> "Scrimba is a powerful new way of learning code. Play around with the instructors code any time, right in the player."
+					<.spaced.center>
+						<a.button.primary> "Take Tour"
+					<hr>
+
+			<.container.light>
+				
+				<.masthead>
+					<a.logo> "Scrimba"
+					<a.item> "tes"
+
+				<.masthead.dark>
+					"Masthead"
+
+				<.breadcrumb>
+					<ul>
+						<li> "Home"
+						<li> "Next"
+						<li> "Other"
+				
+				<section>
+					<div uxa:md.inline="Hello *inline* ">
+					<div uxa:md="Hello *not inline*">
+					
+				<section>
+					<GroupedMenu>
+
+				<section>
+					for item in ['light','dark']
+						<.grid.tiles .{item}>
+							<.tile>
+								<p> "Default color"
+								<p.red> "Red"
+								<p.green> "Green"
+								<p.blue> "Blue"
+								<p.yellow> "Yellow"
+								<p.dim> "Dim"
+								<p.muted> "Muted"
+								<.spaced>
+									<a.button> "Cancel"
+									<a.button.primary> "Submit"
+							<.tile>
+								<.spaced.bar>
+									<a.button data-icon='mclose'> "Archive"
+									<a.button data-icon-after='mclose'> "Undo"
+									<a.sm.button data-icon='mclose'> "Archive"
+									<a.sm.button data-icon-after='mclose'> "Undo"
+								<hr>
+								<p> "Some text right here"
+								<.bar.spaced>
+									<.green> "Green"
+									<.blue> "Blue"
+									<.yellow> "Yellow"
+								<hr>
+								<.bar.spaced>
+									<a.button.solid.primary data-icon='mclose'> "Archive"
+									<a.button.solid data-icon='mclose'> "Undo"
+									<a.button.solid data-icon='mclose'> "Archive"
+									<a.button.solid> "Undo"
+
+							<.tile>
+								<.menu>
+									<.item> "Edit item"
+									<.item data-icon='mright'> "Remove item"
+									<hr>
+									<.item data-icon='mright'> "Edit item"
+									<.item data-icon='mclose'> "Close menu"
+									<hr>
+									<.header> "Shortcuts"
+									<.item data-shortcut='space'> "pause / resume"
+									<.item data-shortcut='⇧←'> "slower playback"
+									<.item data-shortcut='⇧→'> "faster playback"
+									<.item data-shortcut='→'> "go forward 10s"
+									<.item data-shortcut='←⌘'> "go back 10s"
+									<hr>
+									for item in state:categories
+										<.field.radio>
+											<input[state:category] type='radio' value=item>
+											<label> item
+											# for item in state:categories
+											#	<option> item
+									<hr>
+									<.field.checkbox>
+										<input[state:enabled] type='checkbox'>
+										<label> "Show invisibles"
+									<hr>
+									# <.item>
+									<.field.range>
+										<input type='range' min=0.4 step=0.1 max=2 number=yes>
+										<label> "Speed"
+
+				<section.section>
+					<header>
+						<.title> "Title"
+						<.subtitle> "Subitle for section"
+					<.grid.tiles> for item,i in ['sm','md','lg']
+						<.tile .dark=(i == 2)>
+							<div.{item} uxa:md=short>
+							<LogForm.{item}>
+						
+
+				<section>
+					<.grid.tiles> for item in items
+						<TileTest[item]>
+				<section.mb-xl>
+					<.grid.tiles> for item in items
+						<TileTest[item].dark>
+				
+			<.container.narrow uxa:md=long>
+			<.container.narrow.sm uxa:md=long>
+			
+			<.container.narrow>
+				<.tile.dark>
+					<h2> "This is a tile!"
+
+
+			# <section>
+			# 	<h3> "Colors"
+			# 	# <ColorScale tint='base'>
+			# 	# <ColorScale tint='dark'>
+			# 	# <ColorScale tint='pri'>
+			# 	# <ColorScale tint='sec'>
+			# <Palette tint='neutral'>
+			<Palette tint='light'>
+			# <Palette tint='dark'>
+
 			

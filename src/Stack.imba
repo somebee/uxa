@@ -16,11 +16,12 @@ export tag Overlay
 			<div.backdrop :tap='autohide'>
 
 	# TODO improve state transitioning to allow reusing overlays
-
 	def show
+		@activeElement = document:activeElement
+		# also store the closest focusable parent?
 		document:body.appendChild(dom)
 		component.trigger('uxashow')
-		reflow if @isMenu
+		reflow if @isMenu or @options:anchor
 		dom:offsetWidth
 		Imba.TagManager.insert(self,dom:parentNode)
 		flag('uxa-show')
@@ -36,10 +37,17 @@ export tag Overlay
 		component.flag('uxa-hide')
 		unflag('uxa-show')
 		component.unflag('uxa-show')
+		
+		var refocus = @activeElement
+		@activeElement = null
 
 		if target
 			target?.unflag('uxa-overlay-active')
-
+		
+		setTimeout(&,20) do
+			if refocus and refocus:offsetParent
+				refocus.focus
+			
 		setTimeout(&,200) do
 			var par = dom:parentNode
 			par.removeChild(dom)
@@ -72,11 +80,15 @@ export tag Overlay
 		@eventResponder = (@options and @options:responder) or (target)
 	
 	def reflow
-		unless target.dom:offsetParent
-			hide unless hasFlag('hide')
-			return self
-
-		var box = target.dom.getBoundingClientRect
+		let box = @options:anchor
+		if (!box or box == yes) and target isa Imba.Tag 
+			unless target.dom:offsetParent
+				hide unless hasFlag('hide')
+				return self
+			box ||= target.dom.getBoundingClientRect
+		
+		# var box = target.dom.getBoundingClientRect
+		return unless box
 
 		var w = component.dom:offsetWidth
 		var h = component.dom:offsetHeight

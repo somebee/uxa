@@ -1,56 +1,31 @@
 
-:root {
-	--tile-width: 300px;
-	--tile-height: 240px;
+.--size(tile-pad,12px,12px,12px);
+.--size(tile-min-height,80px,120px,160px);
+.--size(tile-width,250px,320px,440px);
+.--size(tile-height,160px,200px,320px);
+
+.tiles {
+	display: grid; // to make sure margins are not collapsed?
+	margin: 0px calc(var(--col-gap) * -0.5);
+	--tile-gap: calc(var(--col-gap) * 0.5);
 }
 
+.tile {
+	position: relative;
+	margin: var(--tile-gap);
+	border: var(--tile-border);
+	align-self: stretch;
+	flex: 1 1 auto;
+	// min-height: var(--tile-min-height);
+	background: var(--tile-bg-color);
+	border-radius: 2px;	
+	padding: var(--tile-pad);
 
-.Tile {
-	--bg: var(--uxa-tint-50);
-	--footer-bg: var(--uxa-tint-100);
-
-	--padding: var(--mdu);
-	--spacing: var(--smu);
-
-	h1,h2,h3 {
-		color: var(--uxa-tint-1000);
+	.body {
+		position: relative;
 	}
 
-	width: var(--tile-width);
-	height: var(--tile-height);
-
-	.vbox;
-	// display: inline-flex;
-	// background: var(--bg);
-
-	padding: var(--spacing);
-	white-space: initial;
-
-	& > .header {
-		&:extend(.hbar);
-		background: var(--bg);
-		padding: var(--padding);
-	}
-
-	& > .main {
-		background: var(--bg);
-		padding: var(--padding);
-		flex: 1 1 auto;
-		overflow: hidden;
-
-		.actions { &:extend(.actions-right); }
-	}
-
-	& > .footer {
-		font-size: var(--h4-size);
-		padding: var(--smu) var(--padding);
-		background: var(--footer-bg);
-		flex: 0 0 auto;
-
-		&:extend(.hbar);
-
-		.actions {
-			&:extend(.actions-right);
-		}
+	.legend {
+		margin: 2px 0px;
 	}
 }

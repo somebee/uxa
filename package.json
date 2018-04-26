@@ -20,6 +20,10 @@
   "scripts": {
     "build": "imbapack --watch --colors --display-modules"
   },
+  "devDependencies": {
+    "imba-router": "^0.2.0",
+    "less-plugin-clean-css": "^1.5.1"
+  },
   "dependencies": {
     "marked": "^0.3.6"
   },
