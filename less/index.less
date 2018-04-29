@@ -1,6 +1,10 @@
 
 @import 'reset';
 
+@phones: ~"screen and (max-width: 460px)";
+@phones-portrait: ~"screen and (max-width: 460px) and (orientation:portrait)";
+@phones-landscape: ~"screen and (max-height: 460px) and (orientation:landscape)";
+
 a[href] {
 	text-decoration: none;
 	&:hover { text-decoration: underline; }
@@ -166,9 +170,14 @@ a[href] {
 	list-style: none inside none;
 	margin: 0;
 	padding: 0;
+	display: flex;
+	flex-direction: row;
+	align-items: center;
+	justify-content: flex-start;
+	flex-wrap: wrap;
 
-	& > *:not(:first-child):not(:empty) {
-		&:before {
+	& > *:not(:last-child):not(:empty) {
+		&:after {
 			content: "\00a0•\00a0";
 			color: var(--bullet-color);
 		}

@@ -49,7 +49,7 @@ export tag Button < button
 		unflag('_touch')
 		
 	def render
-		<self.uxa>
+		<self.button>
 			if icon
 				<Icon[icon]>
 			if label

@@ -76,7 +76,7 @@ module.exports = __webpack_require__(20);
 
 
 
-var Imba = {VERSION: '1.4.0-beta.1'};
+var Imba = {VERSION: '1.4.0'};
 
 
 
@@ -660,7 +660,7 @@ var Button = Imba.defineTag('Button', 'button', function(tag){
 	
 	tag.prototype.render = function (){
 		var $ = this.$;
-		return this.$open(0).flag('uxa').setChildren([
+		return this.$open(0).flag('button').setChildren([
 			this.icon() ? (
 				($[0] || _1(Icon,$,0,this)).bindData(this,'icon',[]).end()
 			) : void(0),
@@ -3396,6 +3396,7 @@ Imba.TagManagerClass = function TagManagerClass(){
 	this._mounted = [];
 	this._mountables = 0;
 	this._unmountables = 0;
+	this._unmounting = 0;
 	this;
 };
 
@@ -3477,30 +3478,36 @@ Imba.TagManagerClass.prototype.mountNode = function (node){
 			el = el.parentNode;
 		};
 	};
-	
 	return;
 };
 
 Imba.TagManagerClass.prototype.tryUnmount = function (){
-	var count = 0;
+	this._unmounting++;
+	
+	var unmount = [];
 	var root = document.body;
 	for (let i = 0, items = iter$(this._mounted), len = items.length, item; i < len; i++) {
 		item = items[i];
+		if (!item) { continue; };
 		if (!document.documentElement.contains(item._dom)) {
+			unmount.push(item);
+			this._mounted[i] = null;
+		};
+	};
+	
+	this._unmounting--;
+	
+	if (unmount.length) {
+		this._mounted = this._mounted.filter(function(item) { return item && unmount.indexOf(item) == -1; });
+		for (let i = 0, len = unmount.length, item; i < len; i++) {
+			item = unmount[i];
 			item.FLAGS = item.FLAGS & ~Imba.TAG_MOUNTED;
 			if (item.unmount && item._dom) {
 				item.unmount();
 			} else if (item._scheduler) {
-				// MAYBE FIX THIS?
 				item.unschedule();
 			};
-			this._mounted[i] = null;
-			count++;
 		};
-	};
-	
-	if (count) {
-		this._mounted = this._mounted.filter(function(item) { return item; });
 	};
 	return this;
 };
@@ -5503,7 +5510,6 @@ Imba.Touch.prototype.touchend = function (e,t){
 		var tap = new Imba.Event(e);
 		tap.setType('tap');
 		tap.process();
-		if (tap._responder) { e.preventDefault() };
 	};
 	
 	if (e && this.isCaptured()) {
@@ -7031,12 +7037,12 @@ var Dialog = Imba.defineTag('Dialog', Form, function(tag){
 	
 	tag.prototype.footer = function (){
 		let $ = this.$$ || (this.$$ = {}), t0;
-		return (t0 = this._footer = this._footer||(t0=_1('footer',this)).flag('footer').flag('flat').setContent([
-			_1(Button,t0.$,'A',t0).setType('button').on$(0,['tap','tapDismiss'],this),
-			_1(Button,t0.$,'B',t0).flag('primary').setType('submit')
-		],2)).end((
-			t0.$.A.setLabel(this.cancelLabel()).end(),
-			t0.$.B.setLabel(this.submitLabel()).end()
+		return (t0 = this._footer = this._footer||(t0=_1('footer',this)).flag('footer').setContent(t0.$.A || _1('div',t0.$,'A',t0).flag('spaced').flag('bar').flag('justify-end').setContent([
+			_1(Button,t0.$,'B','A').setType('button').on$(0,['tap','tapDismiss'],this),
+			_1(Button,t0.$,'C','A').flag('primary').setType('submit')
+		],2),2)).end((
+			t0.$.B.setLabel(this.cancelLabel()).end(),
+			t0.$.C.setLabel(this.submitLabel()).end()
 		,true));
 	};
 	

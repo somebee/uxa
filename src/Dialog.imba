@@ -68,7 +68,7 @@ export tag Dialog < Form
 				renderTemplate
 		
 	def footer
-		<footer@footer.flat>
+		<footer@footer> <.spaced.bar.justify-end>
 			<Button type='button' label=cancelLabel :tap='tapDismiss'>
 			<Button.primary type='submit' label=submitLabel>
 		
