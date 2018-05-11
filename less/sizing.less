@@ -15,6 +15,28 @@ html {
 	font-size: 12px;
 }
 
+
+.--size(@name,@xs,@sm,@md,@lg) {
+	:root {
+		--@{name}: @md;
+	}
+
+	.sm { --@{name}: @sm; }
+	.md { --@{name}: @md; }
+	.lg { --@{name}: @lg; }
+	.xs { --@{name}: @xs; }
+}
+
+.--size(spacing,3px,3px,3px,3px);
+.--size(header-font-size,16px,16px,20px,24px);
+.--size(legend-size,11px,11px,12px,13px);
+
+// is this not a font-declaration instead?
+.--size(button-font-size,11px,11px,13px,16px);
+.--size(button-height,18px,18px,24px,30px);
+.--size(field-height,24px,24px,28px,36px);
+.--size(button-pad,0px 4px, 0px 6px,0px 6px,0px 10px);
+
 .unit-mixin(@xs,@sm,@md,@lg,@xl) {
 	--xsu: @xs;
 	--smu: @sm;
@@ -51,10 +73,11 @@ html {
 	--font: @font;
 }
 
-.--font(@name,@sm,@md,@lg,@lh) {
+.--font(@name,@xs,@sm,@md,@lg,@lh) {
 	.sm {
 		--@{name}-font-size: (@sm * 1px);
 		--@{name}-line-height: (ceil((@sm * @lh)) * 1px); }
+
 	:root,.md {
 		--@{name}-font-size: (@md * 1px);
 		--@{name}-line-height: (ceil((@md * @lh)) * 1px);
@@ -63,15 +86,20 @@ html {
 		--@{name}-font-size: (@lg * 1px);
 		--@{name}-line-height: (ceil((@lg * @lh)) * 1px);
 	}
+
+	.xs {
+		--@{name}-font-size: (@xs * 1px);
+		--@{name}-line-height: (ceil((@xs * @lh)) * 1px);
+	}
 }
 
-.--font(h1,20,24,36,1.2);
-.--font(h2,16,20,26,1.2);
-.--font(h3,14,16,24,1.2);
-.--font(p,14,16,18,1.6);
-.--font(code,11,12,13,1.4);
-.--font(caption,11,11,12,1.3);
-.--font(legend,11,12,13,1.2);
+.--font(h1,     14,20,24,36,1.2);
+.--font(h2,     13,16,20,26,1.2);
+.--font(h3,     13,14,16,24,1.2);
+.--font(p,      12,14,16,18,1.6);
+.--font(code,   10,11,12,13,1.4);
+.--font(caption,11,11,11,12,1.3);
+.--font(legend, 11,11,12,13,1.2);
 
 h1,.h1,h2,.h2,h3,.h3 { font-weight: 500; }
 
@@ -123,12 +151,18 @@ label,.caption {
 	font-size: var(--p-font-size);
 }
 
+.xs {
+	.unit-mixin(3px,6px,12px,14px,16px);
+	font-size: var(--p-font-size);
+	line-height: var(--p-line-height);
+}
 
 // .mb-xs { margin-bottom: var(--xsu); }
 // .mb-sm { margin-bottom: var(--smu); }
 // .mb-md,.mb { margin-bottom: var(--mdu); }
 // .mb-lg { margin-bottom: var(--lgu); }
 // .mb-xl { margin-bottom: var(--xlu); }
+
 .pad { padding: var(--mdu); }
 
 // .size-modifier(mb,margin-bottom);
@@ -145,3 +179,52 @@ input,select,textarea,button {
 // p,.p,.p1 { font: var(--uxa-p1); }
 // h4,.h4,.c1,caption,.caption { font: var(--uxa-c1); }
 // h5,.h5,.c2,caption,.caption { font: var(--uxa-c2); }
+
+// markdown sizing
+
+.--size(doc-h1-gap,12px,12px,38px,24px);
+.--size(doc-h2-gap,12px,12px,24px,38px);
+.--size(doc-h3-gap,4px,6px,12px,20px);
+// .--size(doc-p-,12px,12px,18px,24px);
+
+.doc {
+	h1,h2,h3,p {
+		margin-bottom: 0px;
+	}
+
+	pre,code {
+		margin-bottom: 0;
+	}
+
+	p + * {
+		margin-top: var(--doc-h3-gap);
+	}
+
+	h1 {
+		margin-top: var(--doc-h1-gap);
+	}
+
+	h2 {
+		margin-top: var(--doc-h2-gap);
+	}
+
+	h3,.li,li {
+		margin-top: var(--doc-h3-gap);
+	}
+
+	p {
+		margin-top: var(--doc-h3-gap); // margin-top: 0px; // var(--doc-gap);
+	}
+
+	p + p {
+		margin-top: var(--doc-h3-gap);
+	}
+
+	li + li, .li + .li {
+		margin-top: 0px;
+	}
+
+	
+
+
+}

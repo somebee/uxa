@@ -2960,7 +2960,7 @@ var socket = new WebSocket('ws://localhost:3002/socket');
 
 var Code = __webpack_require__(7).Code;
 
-var highlight = __webpack_require__(49).highlight;
+var highlight = __webpack_require__(50).highlight;
 Code.highlight = highlight;
 
 
@@ -8457,25 +8457,73 @@ function len$(a){
 	return a && (a.len instanceof Function ? a.len() : a.length) || 0;
 };
 var Imba = __webpack_require__(0);
+// externs;
+
 var Route = __webpack_require__(37).Route;
 
 // check if is web
 
 var isWeb = typeof window !== 'undefined';
 
+// proxy for hash
+function Hash(){ };
+
+
+
+function Request(router,path,referrer){
+	this._router = router;
+	this._path = this._originalPath = path;
+	this._referrer = referrer;
+};
+
+Request.prototype.router = function(v){ return this._router; }
+Request.prototype.setRouter = function(v){ this._router = v; return this; };
+Request.prototype.path = function(v){ return this._path; }
+Request.prototype.setPath = function(v){ this._path = v; return this; };
+Request.prototype.referrer = function(v){ return this._referrer; }
+Request.prototype.setReferrer = function(v){ this._referrer = v; return this; };
+
+Request.prototype.redirect = function (path){
+	console.log("Request.redirect!",path);
+	this._redirected = this._path = path;
+	return this;
+};
+
+Request.prototype.abort = function (){
+	this._aborted = true;
+	return this;
+};
+
+Request.prototype.url = function (){
+	return this.path();
+};
+
+Request.prototype.match = function (str){
+	return new Route(this,str).test();
+};
+
+
 function Router(o){
+	var self = this;
 	if(o === undefined) o = {};
-	this._url = o.url || '';
-	this._hash = '';
-	this._routes = {};
-	this._options = o;
-	this._redirects = o.redirects || {};
-	this._aliases = o.aliases || {};
-	this._busy = [];
-	this._root = o.root || '';
-	this.setMode(o.mode || 'history');
-	this.setup();
-	this;
+	self._url = o.url || '';
+	self._hash = '';
+	self._routes = {};
+	self._options = o;
+	self._redirects = o.redirects || {};
+	self._aliases = o.aliases || {};
+	self._busy = [];
+	self._root = o.root || '';
+	self.setMode(o.mode || 'history');
+	self.setup();
+	
+	if (isWeb) {
+		// warn if multiple instances?
+		self._instance || (self._instance = self);
+		self._clickHandler = function(e) { return self.onclick(e); };
+		self._captor = document.addEventListener('click',self._clickHandler,true);
+	};
+	self;
 };
 
 exports.Router = Router; // export class 
@@ -8494,6 +8542,10 @@ Router.prototype.setBusy = function(v){ this._busy = v; return this; };
 Router.prototype.root = function(v){ return this._root; }
 Router.prototype.setRoot = function(v){ this._root = v; return this; };
 
+Router.instance = function (){
+	return this._instance || (this._instance = new this());
+};
+
 // support redirects
 Router.prototype.option = function (key,value){
 	if (value == undefined) {
@@ -8508,6 +8560,50 @@ Router.prototype.location = function (){
 	return document.location;
 };
 
+Router.prototype.refresh = function (params){
+	if(params === undefined) params = {};
+	if (this._refreshing) { return };
+	this._refreshing = true;
+	let path = this.path();
+	
+	if (path != this._path) {
+		// console.log "refreshing url",path,@path
+		
+		// params:path = path
+		// params:referrer = @path
+		
+		let req = new Request(this,path,this._path);
+		
+		let state = {
+			path: path,
+			referrer: this._path
+		};
+		
+		this.emit('beforechange',req);
+		if (req.path() != path) {
+			// console.log "redirected"
+			this.replace(path = req.path());
+			// what if we cancel?
+		};
+		
+		this._path = path;
+		this.emit('change',req);
+		// console.log "after change",req
+		Imba.commit();
+		
+		// checking hash?
+		// let e = Imba.Event.wrap(type: 'change')
+	};
+	
+	this._refreshing = false;
+	return this;
+};
+
+Router.prototype.onpopstate = function (e){
+	this.refresh({pop: true});
+	return this;
+};
+
 Router.prototype.setup = function (){
 	var self = this;
 	if (isWeb) {
@@ -8517,9 +8613,10 @@ Router.prototype.setup = function (){
 			self._root = window.SCRIMBA_ROOT.replace(/\/$/,'');
 		};
 		
-		let url = self.path();
+		let url = self.url();
 		// if url and @redirects[url]
 		self.history().replaceState({},null,self.normalize(url));
+		window.onpopstate = function(e) { return self.onpopstate(e); };
 		
 		self._hash = self.location().hash;
 		window.addEventListener('hashchange',function(e) {
@@ -8553,8 +8650,26 @@ Router.prototype.hash = function (){
 	return isWeb ? this.location().hash : '';
 };
 
-Router.instance = function (){
-	return this._instance || (this._instance = new this());
+Router.prototype.serializeParams = function (params){
+	if (params instanceof Object) {
+		let res = [];
+		for (let val, i = 0, keys = Object.keys(params), l = keys.length, key; i < l; i++){
+			key = keys[i];val = params[key];res.push([key,encodeURI(val)].join("="));
+		};
+		var value = res;
+		return value.join("&");
+	};
+	return params || '';
+};
+
+Router.prototype.setHash = function (value){
+	if (isWeb) {
+		console.log("set hash",this.serializeParams(value));
+		// will set without jumping
+		this.history().replaceState({},null,'#' + this.serializeParams(value)); // last state?
+		// location:hash = serializeParams(value)
+	};
+	return this;
 };
 
 Router.prototype.history = function (){
@@ -8571,10 +8686,9 @@ Router.prototype.go = function (url,state){
 	var self = this;
 	if(state === undefined) state = {};
 	url = self._redirects[url] || url;
-	
+	// call from here instead?
 	self.history().pushState(state,null,self.normalize(url));
-	// now commit and schedule events afterwards
-	Imba.commit();
+	self.refresh();
 	
 	isWeb && self.onReady(function() {
 		let hash = self.location().hash;
@@ -8588,7 +8702,8 @@ Router.prototype.go = function (url,state){
 Router.prototype.replace = function (url,state){
 	if(state === undefined) state = {};
 	url = this._redirects[url] || url;
-	return this.history().replaceState(state,null,this.normalize(url));
+	this.history().replaceState(state,null,this.normalize(url));
+	return this.refresh();
 };
 
 Router.prototype.normalize = function (url){
@@ -8635,12 +8750,56 @@ Router.prototype.un = function (name){
 	return Imba.unlisten.apply(Imba,[].concat([this,name], [].slice.call(params)));
 };
 
+Router.prototype.onclick = function (e){
+	console.log("onclick",e,e.defaultPrevented);
+	
+	let i = 0;
+	// let path = e:path
+	let el = e.target;
+	let href;
+	
+	if (e.defaultPrevented) { return };
+	
+	while (el && el.getAttribute){ // = e:path[i++]
+		if (href = el.getAttribute('href')) { break; };
+		el = el.parentNode;
+	};
+	
+	if (!el || !href || (href[0] != '#' && href[0] != '/')) {
+		return;
+	};
+	
+	// deal with alternative routes
+	if (el._tag) {
+		if (el._tag.resolveRoute) {
+			el._tag.resolveRoute();
+			href = el.getAttribute('href');
+		};
+		
+		if (el.nodeName != 'A' && (e.metaKey || e.altKey)) {
+			e.preventDefault();
+			e.stopPropagation();
+			window.open(href,'_blank');
+		};
+		
+		// what if we have no tag for this?
+		// trigger anyhow?
+		let ev = el._tag.trigger('taproute',{path: href,sourceEvent: e,router: this}); // include metaKey etc
+		if (!ev.isPrevented()) {
+			e.preventDefault();
+			e.stopPropagation();
+			(e.metaKey || e.altKey) ? window.open(href,'_blank') : this.go(href,{});
+		};
+	};
+	return this;
+};
+
 const LinkExtend = {
 	inject: function(node,opts){
 		let render = node.render;
 		node.resolveRoute = this.resolveRoute;
-		node.beforeRender = this.beforeRender;
-		return node.ontap || (node.ontap = this.ontap);
+		return node.beforeRender = this.beforeRender;
+		// node:ontap ||= self:ontap
 	},
 	
 	beforeRender: function(){
@@ -8649,21 +8808,13 @@ const LinkExtend = {
 	},
 	
 	ontap: function(e){
-		var href = this._route.resolve();
-		
+		this.resolveRoute();
+		var href = this.href ? this.href() : this.dom().href;
 		if (!href) { return };
-		
-		if (this._route.option('sticky')) {
-			let prev = this._route.params().url;
-			if (prev && prev.indexOf(href) == 0) {
-				href = prev;
-			};
-		};
 		
 		if ((href[0] != '#' && href[0] != '/')) {
 			e._responder = null;
 			e.prevent().stop();
-			// need to respect target
 			return window.open(href,'_blank');
 		};
 		
@@ -8673,17 +8824,32 @@ const LinkExtend = {
 			return window.open(this.router().root() + href,'_blank');
 		};
 		
-		e.prevent().stop();
-		return this.router().go(href,{});
+		var ev = this.trigger('taproute',{path: href});
+		
+		if (!ev.isPrevented()) {
+			e.prevent().stop();
+			return this.router().go(href,{});
+		};
 	},
 	
 	resolveRoute: function(){
+		if (!this._route) { return this };
+		
 		let match = this._route.test();
-		this.setAttribute('href',this.router().root() + this._route.resolve());
-		return this.flagIf('active',this._route.test());
+		let href = this._route.resolve();
+		
+		if (this._route && this._route.option('sticky')) {
+			let prev = this._route.params().url;
+			if (prev && prev.indexOf(href) == 0) {
+				href = prev;
+			};
+		};
+		
+		this.setAttribute('href',this.router().root() + href);
+		this.flagIf('active',match);
+		return this;
 	}
 };
-
 
 const RoutedExtend = {
 	
@@ -8691,7 +8857,17 @@ const RoutedExtend = {
 		node._params = {};
 		node.resolveRoute = this.resolveRoute;
 		node.beforeRender = this.beforeRender;
+		node.renderWithStatusCode = this.renderWithStatusCode;
 		return node.detachFromParent();
+	},
+	
+	renderWithStatusCode: function(code){
+		if(code === undefined) code = this._route.status();
+		if (this[("render" + code)]) {
+			this[("render" + code)]();
+			return true;
+		};
+		return false;
 	},
 	
 	beforeRender: function(){
@@ -8700,8 +8876,7 @@ const RoutedExtend = {
 		
 		let status = this._route.status();
 		
-		if (this[("render" + status)]) {
-			this[("render" + status)]();
+		if (this.renderWithStatusCode(status)) {
 			return false;
 		};
 		
@@ -8713,27 +8888,31 @@ const RoutedExtend = {
 	},
 	
 	resolveRoute: function(next){
-		var self = this;
-		let prev = self._params;
-		let match = self._route.test();
+		let prev = this._params;
+		let match = this._route.test();
 		
 		if (match) {
-			if (match != prev) {
-				self.setParams(match);
-				if (self.load) {
-					self.route().load(function() { return self.load(self.params()); });
-				};
-			};
-			// call method every time if the actual url has changed - even if match is the same?
+			let active = match._active;
+			match._active = true;
 			
-			if (!match._active) {
-				match._active = true;
-				// should happen after load?
-				return self.attachToParent();
+			if (match != prev) {
+				this.setParams(match);
 			};
-		} else if (prev._active) {
+			
+			if (match != prev || !active) {
+				this.routeDidMatch(match,prev);
+			};
+			
+			if (!active) {
+				// match.@active = true
+				// should happen after load?
+				this.attachToParent();
+				return Imba.commit();
+			};
+		} else if (prev && prev._active) {
 			prev._active = false;
-			return self.detachFromParent();
+			this.detachFromParent();
+			return Imba.commit();
 		};
 	}
 };
@@ -8815,6 +8994,47 @@ Imba.extendTag('element', function(tag){
 		return this._router || (this._router = (this._owner_ && this._owner_.router() || new Router()));
 		// isWeb ? Router.instance : (@router or (@owner_ ? @owner_.router : (@router ||= Router.new)))
 	};
+	
+	tag.prototype.routeDidLoad = function (params){
+		this.log('routeDidLoad');
+		return this;
+	};
+	
+	tag.prototype.routeDidFail = function (error){
+		return this;
+	};
+	
+	tag.prototype.routeDidMatch = function (params,prev){
+		var self = this;
+		if (!self.load) {
+			self.routeDidLoad(params,prev);
+			return self;
+		};
+		
+		self.route().load(async function() {
+			let val;
+			try {
+				if (params == prev && self.reload) {
+					val = await self.reload(params,prev);
+				} else {
+					val = await self.load(params,prev);
+				};
+			} catch (e) {
+				self.log("route error",e);
+				val = 400;
+				self.routeDidFail(e);
+			};
+			self.routeDidLoad(val);
+			return val;
+		});
+		
+		return self;
+	};
+	
+	
+	tag.prototype.ontaproute = function (){
+		return this;
+	};
 });
 
 
@@ -8855,6 +9075,7 @@ Route.prototype.option = function (key){
 
 Route.prototype.setPath = function (path){
 	var self = this;
+	if (self._raw == path) { return self };
 	self._raw = path;
 	self._groups = [];
 	self._params = {};
@@ -9004,6 +9225,7 @@ var Head = __webpack_require__(39).Head;
 var Nav = __webpack_require__(40).Nav;
 var Home = __webpack_require__(41).Home;
 var Note = __webpack_require__(42).Note;
+var Typography = __webpack_require__(49).Typography;
 
 var App = Imba.defineTag('App', function(tag){
 	
@@ -9014,14 +9236,15 @@ var App = Imba.defineTag('App', function(tag){
 				_1('div',$,1,0).flag('brand').setText("UXA"),
 				_1('div',$,2,0).flag('flexer'),
 				_1('a',$,3,0).flag('tab').setRouteTo("/").setText('Home'),
-				_1('a',$,4,0).flag('tab').setRouteTo("/components").setText('Components'),
+				_1('a',$,4,0).flag('tab').setRouteTo("/typygraphy").setText('Typography'),
 				_1('a',$,5,0).flag('tab').setRouteTo("/elements").setText('Elements'),
 				_1('a',$,6,0).flag('tab').setRouteTo("/form").setText('Form'),
 				_1('a',$,7,0).flag('tab').setRouteTo("/note").setText('Note')
 			],2),
 			
 			_1(Home,$,8,this).setRoute('/'),
-			_1(Note,$,9,this).setRoute('/note')
+			_1(Note,$,9,this).setRoute('/note'),
+			_1(Typography,$,10,this).setRoute('/typygraphy')
 		
 		],2).synced((
 			$[3].end(),
@@ -9030,7 +9253,8 @@ var App = Imba.defineTag('App', function(tag){
 			$[6].end(),
 			$[7].end(),
 			$[8].end(),
-			$[9].end()
+			$[9].end(),
+			$[10].end()
 		,true));
 	};
 })
@@ -10546,12 +10770,56 @@ var note = exports.note = post.json;
 /* 49 */
 /***/ (function(module, exports, __webpack_require__) {
 
+var Imba = __webpack_require__(0), _1 = Imba.createElement;
+var long = "# Heading 1\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec cursus elit at\nodio congue, ac varius massa tincidunt. Nulla blandit odio vel bibendum \ncondimentum. In hac habitasse [platea](#platea) dictumst. Nam eu nisl ut erat \nsollicitudin tincidunt.\n\n## Heading 2\n\nNullam eget urna vitae ex ullamcorper dictum ac ullamcorper nisl. Mauris a\nquam non ante ullamcorper ultrices quis quis libero. Quisque ultrices lorem\nmetus. Duis mi est, elementum nec egestas a, luctus et lacus.\n\n* List item one\n* Another item\n* Testing this list here\n\n### Heading 3\n\nNullam eget urna vitae ex ullamcorper dictum ac ullamcorper nisl. Mauris a\nquam non ante ullamcorper ultrices quis quis libero. Quisque ultrices lorem\nmetus.\n\nMauris a\nquam non ante ullamcorper ultrices quis quis libero. Quisque ultrices lorem\nmetus. Duis mi est, elementum nec egestas a, luctus et lacus.\n\n```javascript\nvar Hello = [1,2,3,4,5,6,7,8,9]\n```\n\nAdipiscing elit. Donec cursus elit at\nodio congue, ac varius massa tincidunt. Nulla blandit odio vel bibendum \ncondimentum. In hac habitasse [platea](#platea) dictumst. Nam eu nisl ut erat \nsollicitudin tincidunt.\n";
+
+var Size = Imba.defineTag('Size', function(tag){
+	
+	tag.prototype.render = function (){
+		var $ = this.$;
+		return this.$open(0).flag('bullets').flag('legend').setChildren($.$ = $.$ || [
+			_1('a',$,0,this).on$(0,['tap',['setSize','xs']],this).setText('xs'),
+			_1('a',$,1,this).on$(0,['tap',['setSize','sm']],this).setText('sm'),
+			_1('a',$,2,this).on$(0,['tap',['setSize','md']],this).setText('md'),
+			_1('a',$,3,this).on$(0,['tap',['setSize','lg']],this).setText('lg')
+		],2).synced();
+	};
+	
+	tag.prototype.setSize = function (size){
+		return this.parent().setFlag('size',size);
+	};
+});
+
+var Typography = Imba.defineTag('Typography', function(tag){
+	
+	tag.prototype.render = function (){
+		var $ = this.$;
+		return this.$open(0).setChildren(
+			$[0] || _1('div',$,0,this).flag('container').flag('light').flag('narrow').flag('mt-xl').setContent(
+				$[1] || _1('div',$,1,0).setContent([
+					_1(Size,$,2,1),
+					_1('div',$,3,1).flag('doc')
+				],2)
+			,2)
+		,2).synced((
+			$[2].end(),
+			$[3].setNestedAttr('uxa','md',long).end()
+		,true));
+	};
+})
+exports.Typography = Typography;
+
+
+/***/ }),
+/* 50 */
+/***/ (function(module, exports, __webpack_require__) {
+
 function iter$(a){ return a ? (a.toArray ? a.toArray() : a) : []; };
 var self = {}, i;
 
-var monarch = __webpack_require__(50);
-var languages = __webpack_require__(51);
-var Theme = __webpack_require__(61).Theme;
+var monarch = __webpack_require__(51);
+var languages = __webpack_require__(52);
+var Theme = __webpack_require__(62).Theme;
 
 
 var raw = Theme.toMonaco();
@@ -10753,7 +11021,7 @@ exports.highlight = self.highlight = function (code,lang,options){
 
 
 /***/ }),
-/* 50 */
+/* 51 */
 /***/ (function(module, exports, __webpack_require__) {
 
 "use strict";
@@ -15455,7 +15723,7 @@ exports.parseTokenTheme = parseTokenTheme;
 /* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(2)))
 
 /***/ }),
-/* 51 */
+/* 52 */
 /***/ (function(module, exports, __webpack_require__) {
 
 
@@ -15465,7 +15733,7 @@ var imba = exports.imba = {
 	extensions: ['.imba'],
 	aliases: ['Imba','imba'],
 	mimetypes: ['application/imba'],
-	language: __webpack_require__(52)
+	language: __webpack_require__(53)
 };
 
 var ruby = exports.ruby = {
@@ -15473,7 +15741,7 @@ var ruby = exports.ruby = {
 	extensions: ['.rb','.rbx','.rjs','.gemspec','.pp'],
 	filenames: ['rakefile'],
 	aliases: ['Ruby','rb'],
-	language: __webpack_require__(53)
+	language: __webpack_require__(54)
 };
 
 var javascript = exports.javascript = {
@@ -15481,7 +15749,7 @@ var javascript = exports.javascript = {
 	extensions: ['.js','.jsx'],
 	aliases: ['JavaScript','js'],
 	mimetypes: ['text/javascript','application/javascript'],
-	language: __webpack_require__(54)
+	language: __webpack_require__(55)
 };
 
 var css = exports.css = {
@@ -15489,7 +15757,7 @@ var css = exports.css = {
 	extensions: ['.css','.scss'],
 	aliases: ['CSS','css'],
 	mimetypes: ['text/css'],
-	language: __webpack_require__(55)
+	language: __webpack_require__(56)
 };
 
 var python = exports.python = {
@@ -15497,7 +15765,7 @@ var python = exports.python = {
 	extensions: ['.py','.rpy','.pyw','.cpy','.gyp','.gypi'],
 	aliases: ['Python','py'],
 	firstLine: '^#!/.*\\bpython[0-9.-]*\\b',
-	language: __webpack_require__(56)
+	language: __webpack_require__(57)
 };
 
 var html = exports.html = {
@@ -15505,7 +15773,7 @@ var html = exports.html = {
 	extensions: ['.html','.htm','.shtml','.xhtml','.mdoc','.jsp','.asp','.aspx','.jshtm'],
 	aliases: ['HTML','htm','html','xhtml'],
 	mimetypes: ['text/html','text/x-jshtm','text/template','text/ng-template'],
-	language: __webpack_require__(57)
+	language: __webpack_require__(58)
 };
 
 var less = exports.less = {
@@ -15513,7 +15781,7 @@ var less = exports.less = {
 	extensions: ['.less'],
 	aliases: ['Less','less'],
 	mimetypes: ['text/x-less','text/less'],
-	language: __webpack_require__(58)
+	language: __webpack_require__(59)
 };
 
 var xml = exports.xml = {
@@ -15522,7 +15790,7 @@ var xml = exports.xml = {
 	firstLine: '(\\<\\?xml.*)|(\\<svg)|(\\<\\!doctype\\s+svg)',
 	aliases: ['XML','xml'],
 	mimetypes: ['text/xml','application/xml','application/xaml+xml','application/xml-dtd'],
-	language: __webpack_require__(59)
+	language: __webpack_require__(60)
 };
 
 var java = exports.java = {
@@ -15530,12 +15798,12 @@ var java = exports.java = {
 	extensions: ['.java','.jav'],
 	aliases: ['Java','java'],
 	mimetypes: ['text/x-java-source','text/x-java'],
-	language: __webpack_require__(60)
+	language: __webpack_require__(61)
 };
 
 
 /***/ }),
-/* 52 */
+/* 53 */
 /***/ (function(module, exports) {
 
 var names = {
@@ -15917,7 +16185,7 @@ var language = exports.language = {
 
 
 /***/ }),
-/* 53 */
+/* 54 */
 /***/ (function(module, exports) {
 
 /*---------------------------------------------------------------------------------------------
@@ -16360,7 +16628,7 @@ exports.language = {
 
 
 /***/ }),
-/* 54 */
+/* 55 */
 /***/ (function(module, exports) {
 
 var language = exports.language = {
@@ -16529,7 +16797,7 @@ var language = exports.language = {
 
 
 /***/ }),
-/* 55 */
+/* 56 */
 /***/ (function(module, exports) {
 
 /*---------------------------------------------------------------------------------------------
@@ -16730,7 +16998,7 @@ exports.language = {
 
 
 /***/ }),
-/* 56 */
+/* 57 */
 /***/ (function(module, exports) {
 
 /*---------------------------------------------------------------------------------------------
@@ -16975,7 +17243,7 @@ exports.language = {
 
 
 /***/ }),
-/* 57 */
+/* 58 */
 /***/ (function(module, exports) {
 
 /*---------------------------------------------------------------------------------------------
@@ -17162,7 +17430,7 @@ exports.language = {
 };
 
 /***/ }),
-/* 58 */
+/* 59 */
 /***/ (function(module, exports) {
 
 /*---------------------------------------------------------------------------------------------
@@ -17336,7 +17604,7 @@ exports.language = {
 
 
 /***/ }),
-/* 59 */
+/* 60 */
 /***/ (function(module, exports) {
 
 /*---------------------------------------------------------------------------------------------
@@ -17440,7 +17708,7 @@ exports.language = {
 
 
 /***/ }),
-/* 60 */
+/* 61 */
 /***/ (function(module, exports) {
 
 /*---------------------------------------------------------------------------------------------
@@ -17590,7 +17858,7 @@ exports.language = {
 
 
 /***/ }),
-/* 61 */
+/* 62 */
 /***/ (function(module, exports) {
 
 function iter$(a){ return a ? (a.toArray ? a.toArray() : a) : []; };
