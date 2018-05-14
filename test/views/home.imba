@@ -28,7 +28,32 @@ Nullam eget urna vitae ex ullamcorper dictum ac ullamcorper nisl. Mauris a
 quam non ante ullamcorper ultrices quis quis libero. Quisque ultrices lorem
 metus. Duis mi est, elementum nec egestas a, luctus et lacus.
 
+* List item one
+* Another item
+* Testing this list here
+
 ### Heading 3
+
+Nullam eget urna vitae ex ullamcorper dictum ac ullamcorper nisl. Mauris a
+quam non ante ullamcorper ultrices quis quis libero. Quisque ultrices lorem
+metus.
+
+---
+
+Mauris a
+quam non ante ullamcorper ultrices quis quis libero. Quisque ultrices lorem
+metus. Duis mi est, elementum nec egestas a, luctus et lacus.
+
+```javascript
+var Hello = [1,2,3,4,5,6,7,8,9]
+```
+
+Adipiscing elit. Donec cursus elit at
+odio congue, ac varius massa tincidunt. Nulla blandit odio vel bibendum 
+condimentum. In hac habitasse [platea](#platea) dictumst. Nam eu nisl ut erat 
+sollicitudin tincidunt.
+
+> This is a quote
 
 Nullam eget urna vitae ex ullamcorper dictum ac ullamcorper nisl. Mauris a
 quam non ante ullamcorper ultrices quis quis libero. Quisque ultrices lorem
@@ -103,6 +128,8 @@ tag LogForm < Form
 			# 	<label data-label="Title"> "Title"
 			# 	<hr>
 			
+			<TextField label="Title" name='title' placeholder="Descriptive title" desc="Some description of this">
+			
 			<.field>
 				<TagInput[state:topics]>
 				<label> "Tags"
@@ -144,13 +171,9 @@ tag LogForm < Form
 					for item in state:categories
 						<option> item
 				<label> "Blue"
-			<TextField label="Title" name='title' placeholder="Descriptive title" desc="Some description of this">
-			# <SelectField label="Category" name='category' desc="Some description of this">
+
 			<TextField label="Secret word" name='secret' placeholder="What is the secret?" required=yes pattern="uxauxa" desc="Can you guess it?">
 			<TextArea label="Description" name='desc' desc="Please feel free to describe" placeholder="Some description" required=yes>
-			# <TextField label="Alias" name='alias' desc="This field is disabled" disabled=yes>
-			# <Button.primary label="Submit" type='submit'>
-			# <Button.primary label="Fill" type='button' :tap='fill'>
 
 	def onsubmit e
 		e.cancel.halt
@@ -341,87 +364,74 @@ export tag Home
 						<li> "Home"
 						<li> "Next"
 						<li> "Other"
-				
-				<section>
-					<div uxa:md.inline="Hello *inline* ">
-					<div uxa:md="Hello *not inline*">
-					
-				<section>
-					<GroupedMenu>
 
 				<section>
-					for item in ['light','dark']
-						<.grid.tiles .{item}>
-							<.tile>
-								<p> "Default color"
-								<p.red> "Red"
-								<p.green> "Green"
-								<p.blue> "Blue"
-								<p.yellow> "Yellow"
-								<p.dim> "Dim"
-								<p.muted> "Muted"
-								<.spaced>
-									<a.button> "Cancel"
-									<a.button.primary> "Submit"
-							<.tile>
-								<.spaced.bar>
-									<a.button data-icon='mclose'> "Archive"
-									<a.button data-icon-after='mclose'> "Undo"
-									<a.sm.button data-icon='mclose'> "Archive"
-									<a.sm.button data-icon-after='mclose'> "Undo"
+					<.grid.tiles>
+						<.tile>
+							<p> "Default color"
+							<p.red> "Red"
+							<p.green> "Green"
+							<p.blue> "Blue"
+							<p.yellow> "Yellow"
+							<p.dim> "Dim"
+							<p.muted> "Muted"
+							<.spaced>
+								<a.button> "Cancel"
+								<a.button.primary> "Submit"
+								<a.button data-icon='mclose'> "Archive"
+								<a.button data-icon-after='mclose'> "Undo"
+								<a.sm.button data-icon='mclose'> "Archive"
+								<a.sm.button data-icon-after='mclose'> "Undo"
+							<hr>
+							<p> "Some text right here"
+							<.bar.spaced>
+								<.green> "Green"
+								<.blue> "Blue"
+								<.yellow> "Yellow"
+							<hr>
+							<.bar.spaced>
+								<a.button.solid.primary data-icon='mclose'> "Archive"
+								<a.button.solid data-icon='mclose'> "Undo"
+								<a.button.solid data-icon='mclose'> "Archive"
+								<a.button.solid> "Undo"
+						<.tile>
+							<GroupedMenu>
+								
+						<.tile>
+							<LogForm>
+
+						<.tile>
+							<.menu>
+								<.item> "Edit item"
+								<.item data-icon='mright'> "Remove item"
 								<hr>
-								<p> "Some text right here"
-								<.bar.spaced>
-									<.green> "Green"
-									<.blue> "Blue"
-									<.yellow> "Yellow"
+								<.item data-icon='mright'> "Edit item"
+								<.item data-icon='mclose'> "Close menu"
 								<hr>
-								<.bar.spaced>
-									<a.button.solid.primary data-icon='mclose'> "Archive"
-									<a.button.solid data-icon='mclose'> "Undo"
-									<a.button.solid data-icon='mclose'> "Archive"
-									<a.button.solid> "Undo"
-
-							<.tile>
-								<.menu>
-									<.item> "Edit item"
-									<.item data-icon='mright'> "Remove item"
-									<hr>
-									<.item data-icon='mright'> "Edit item"
-									<.item data-icon='mclose'> "Close menu"
-									<hr>
-									<.header> "Shortcuts"
-									<.item data-shortcut='space'> "pause / resume"
-									<.item data-shortcut='⇧←'> "slower playback"
-									<.item data-shortcut='⇧→'> "faster playback"
-									<.item data-shortcut='→'> "go forward 10s"
-									<.item data-shortcut='←⌘'> "go back 10s"
-									<hr>
-									for item in state:categories
-										<.field.radio>
-											<input[state:category] type='radio' value=item>
-											<label> item
-											# for item in state:categories
-											#	<option> item
-									<hr>
-									<.field.checkbox>
-										<input[state:enabled] type='checkbox'>
-										<label> "Show invisibles"
-									<hr>
-									# <.item>
-									<.field.range>
-										<input type='range' min=0.4 step=0.1 max=2 number=yes>
-										<label> "Speed"
-
-				<section.section>
-					<header>
-						<.title> "Title"
-						<.subtitle> "Subitle for section"
-					<.grid.tiles> for item,i in ['sm','md','lg']
-						<.tile .dark=(i == 2)>
-							<div.{item} uxa:md=short>
-							<LogForm.{item}>
+								<.header> "Shortcuts"
+								<.item data-shortcut='space'> "pause / resume"
+								<.item data-shortcut='⇧←'> "slower playback"
+								<.item data-shortcut='⇧→'> "faster playback"
+								<.item data-shortcut='→'> "go forward 10s"
+								<.item data-shortcut='←⌘'> "go back 10s"
+								<hr>
+								for item in state:categories
+									<.field.radio>
+										<input[state:category] type='radio' value=item>
+										<label> item
+										# for item in state:categories
+										#	<option> item
+								<hr>
+								<.field.checkbox>
+									<input[state:enabled] type='checkbox'>
+									<label> "Show invisibles"
+								<hr>
+								# <.item>
+								<.field.range>
+									<input type='range' min=0.4 step=0.1 max=2 number=yes>
+									<label> "Speed"
 						
+						<.tile> <div uxa:md=long>
 
 				<section>
 					<.grid.tiles> for item in items

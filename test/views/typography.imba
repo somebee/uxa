@@ -35,6 +35,8 @@ odio congue, ac varius massa tincidunt. Nulla blandit odio vel bibendum
 condimentum. In hac habitasse [platea](#platea) dictumst. Nam eu nisl ut erat 
 sollicitudin tincidunt.
 
+> This is a blockquote right here!
+
 """
 
 tag Size
@@ -53,7 +55,12 @@ export tag Typography
 
 	def render
 		<self>
-			<.container.light.narrow.mt-xl>
-				<div>
-					<Size>
-					<div.doc uxa:md=long>
+			<.container.mt-xl.narrow>
+				<aside uxa:md=long>
+				# <div.doc.sm uxa:md=long>
+				<blockquote>
+					<p> "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante."
+					<footer>
+						"Someone famous in "
+						<cite> "Source Title"
+					

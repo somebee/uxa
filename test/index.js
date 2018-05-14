@@ -9229,32 +9229,63 @@ var Typography = __webpack_require__(49).Typography;
 
 var App = Imba.defineTag('App', function(tag){
 	
+	tag.prototype.__size = {'default': 'md',name: 'size'};
+	tag.prototype.size = function(v){ return this._size; }
+	tag.prototype.setSize = function(v){ this._size = v; return this; }
+	tag.prototype._size = 'md';
+	tag.prototype.__tint = {'default': 'light',name: 'tint'};
+	tag.prototype.tint = function(v){ return this._tint; }
+	tag.prototype.setTint = function(v){ this._tint = v; return this; }
+	tag.prototype._tint = 'light';
+	
 	tag.prototype.render = function (){
 		var $ = this.$;
-		return this.$open(0).setChildren($.$ = $.$ || [
+		return this.$open(0).setFlag(-1,this.size()).setFlag(-2,this.tint()).setChildren($.$ = $.$ || [
 			_1('div',$,0,this).setId('head').flag('masthead').flag('lg').flag('bar').flag('base-bg').flag('flat').flag('dark').setContent([
 				_1('div',$,1,0).flag('brand').setText("UXA"),
 				_1('div',$,2,0).flag('flexer'),
-				_1('a',$,3,0).flag('tab').setRouteTo("/").setText('Home'),
-				_1('a',$,4,0).flag('tab').setRouteTo("/typygraphy").setText('Typography'),
-				_1('a',$,5,0).flag('tab').setRouteTo("/elements").setText('Elements'),
-				_1('a',$,6,0).flag('tab').setRouteTo("/form").setText('Form'),
-				_1('a',$,7,0).flag('tab').setRouteTo("/note").setText('Note')
+				_1('select',$,3,0).setContent([
+					_1('option',$,4,3).setValue('light',1).setText("light"),
+					_1('option',$,5,3).setValue('dark',1).setText("dark")
+				],2),
+				
+				_1('select',$,6,0).setContent([
+					_1('option',$,7,6).setValue('xs',1).setText("xs"),
+					_1('option',$,8,6).setValue('sm',1).setText("sm"),
+					_1('option',$,9,6).setValue('md',1).setText("md"),
+					_1('option',$,10,6).setValue('lg',1).setText("lg")
+				],2),
+				
+				_1('a',$,11,0).flag('tab').setRouteTo("/").setText('Home'),
+				_1('a',$,12,0).flag('tab').setRouteTo("/typygraphy").setText('Typography'),
+				_1('a',$,13,0).flag('tab').setRouteTo("/elements").setText('Elements'),
+				_1('a',$,14,0).flag('tab').setRouteTo("/form").setText('Form'),
+				_1('a',$,15,0).flag('tab').setRouteTo("/note").setText('Note')
 			],2),
 			
-			_1(Home,$,8,this).setRoute('/'),
-			_1(Note,$,9,this).setRoute('/note'),
-			_1(Typography,$,10,this).setRoute('/typygraphy')
+			_1(Home,$,16,this).setRoute('/'),
+			_1(Note,$,17,this).setRoute('/note'),
+			_1(Typography,$,18,this).setRoute('/typygraphy')
 		
 		],2).synced((
-			$[3].end(),
-			$[4].end(),
-			$[5].end(),
-			$[6].end(),
-			$[7].end(),
-			$[8].end(),
-			$[9].end(),
-			$[10].end()
+			$[3].bindData(this,'size',[]).end((
+				$[4].end(),
+				$[5].end()
+			,true)),
+			$[6].bindData(this,'size',[]).end((
+				$[7].end(),
+				$[8].end(),
+				$[9].end(),
+				$[10].end()
+			,true)),
+			$[11].end(),
+			$[12].end(),
+			$[13].end(),
+			$[14].end(),
+			$[15].end(),
+			$[16].end(),
+			$[17].end(),
+			$[18].end()
 		,true));
 	};
 })
@@ -9400,7 +9431,7 @@ var TagInput = __webpack_require__(14).TagInput;
 
 var short = "\n# Main heading\n## Heading 2\n### Heading 3\n\nParagraph text\n";
 
-var long = "# Heading 1\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec cursus elit at\nodio congue, ac varius massa tincidunt. Nulla blandit odio vel bibendum \ncondimentum. In hac habitasse [platea](#platea) dictumst. Nam eu nisl ut erat \nsollicitudin tincidunt.\n\n## Heading 2\n\nNullam eget urna vitae ex ullamcorper dictum ac ullamcorper nisl. Mauris a\nquam non ante ullamcorper ultrices quis quis libero. Quisque ultrices lorem\nmetus. Duis mi est, elementum nec egestas a, luctus et lacus.\n\n### Heading 3\n\nNullam eget urna vitae ex ullamcorper dictum ac ullamcorper nisl. Mauris a\nquam non ante ullamcorper ultrices quis quis libero. Quisque ultrices lorem\nmetus.\n";
+var long = "# Heading 1\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec cursus elit at\nodio congue, ac varius massa tincidunt. Nulla blandit odio vel bibendum \ncondimentum. In hac habitasse [platea](#platea) dictumst. Nam eu nisl ut erat \nsollicitudin tincidunt.\n\n## Heading 2\n\nNullam eget urna vitae ex ullamcorper dictum ac ullamcorper nisl. Mauris a\nquam non ante ullamcorper ultrices quis quis libero. Quisque ultrices lorem\nmetus. Duis mi est, elementum nec egestas a, luctus et lacus.\n\n* List item one\n* Another item\n* Testing this list here\n\n### Heading 3\n\nNullam eget urna vitae ex ullamcorper dictum ac ullamcorper nisl. Mauris a\nquam non ante ullamcorper ultrices quis quis libero. Quisque ultrices lorem\nmetus.\n\n---\n\nMauris a\nquam non ante ullamcorper ultrices quis quis libero. Quisque ultrices lorem\nmetus. Duis mi est, elementum nec egestas a, luctus et lacus.\n\n```javascript\nvar Hello = [1,2,3,4,5,6,7,8,9]\n```\n\nAdipiscing elit. Donec cursus elit at\nodio congue, ac varius massa tincidunt. Nulla blandit odio vel bibendum \ncondimentum. In hac habitasse [platea](#platea) dictumst. Nam eu nisl ut erat \nsollicitudin tincidunt.\n\n> This is a quote\n\nNullam eget urna vitae ex ullamcorper dictum ac ullamcorper nisl. Mauris a\nquam non ante ullamcorper ultrices quis quis libero. Quisque ultrices lorem\nmetus.\n";
 
 var tile = "## Intro to the Hacker News API\nIn this tutorial we'll wrap the Hacker News API in a tiny SDK and learn how to use it to fetch data from Hacker News submissions and comments.";
 
@@ -9487,79 +9518,77 @@ var LogForm = Imba.defineTag('LogForm', Form, function(tag){
 			// 	<label data-label="Title"> "Title"
 			// 	<hr>
 			
-			_1('div',$,0,this).flag('field').setContent([
-				_1(TagInput,$,1,0),
-				_1('label',$,2,0).setText("Tags")
+			_1(TextField,$,0,this).setLabel("Title").setName('title').setPlaceholder("Descriptive title").setDesc("Some description of this"),
+			
+			_1('div',$,1,this).flag('field').setContent([
+				_1(TagInput,$,2,1),
+				_1('label',$,3,1).setText("Tags")
 			],2),
 			
-			_1('div',$,3,this).flag('field').setContent([
-				_1('input',$,4,3).setType('text').setPlaceholder('Subtitle of project').setPattern("Stuff"),
-				_1('label',$,5,3).setText("Subtitle"),
-				_1('hr',$,6,3)
+			_1('div',$,4,this).flag('field').setContent([
+				_1('input',$,5,4).setType('text').setPlaceholder('Subtitle of project').setPattern("Stuff"),
+				_1('label',$,6,4).setText("Subtitle"),
+				_1('hr',$,7,4)
 			],2),
 			
-			_1('div',$,7,this).flag('field').setContent([
-				_1('input',$,8,7).setType('text').setRequired('required').setPlaceholder('Required title'),
-				_1('label',$,9,7).setText("Slug"),
-				_1('hr',$,10,7)
+			_1('div',$,8,this).flag('field').setContent([
+				_1('input',$,9,8).setType('text').setRequired('required').setPlaceholder('Required title'),
+				_1('label',$,10,8).setText("Slug"),
+				_1('hr',$,11,8)
 			],2),
 			
-			_1('div',$,11,this).flag('field').flag('range').setContent([
-				_1('input',$,12,11).setType('range').setMin(0).setMax(10).setStep(1).setName('slide'),
-				_1('label',$,13,11).setText("Font-size")
+			_1('div',$,12,this).flag('field').flag('range').setContent([
+				_1('input',$,13,12).setType('range').setMin(0).setMax(10).setStep(1).setName('slide'),
+				_1('label',$,14,12).setText("Font-size")
 			
 			],2),
 			
-			_1('div',$,14,this).flag('field').flag('checkbox').setContent([
-				_1('input',$,15,14).setType('checkbox'),
-				_1('label',$,16,14).setText("Another checkbox yes")
+			_1('div',$,15,this).flag('field').flag('checkbox').setContent([
+				_1('input',$,16,15).setType('checkbox'),
+				_1('label',$,17,15).setText("Another checkbox yes")
 			],2),
 			
-			_1('div',$,17,this).flag('field').setContent([
-				_1('div',$,18,17).flag('field').flag('radio').setContent([
-					_1('input',$,19,18).setType('radio').setName('group').setValue('red',1),
-					_1('label',$,20,18).setText("Red")
+			_1('div',$,18,this).flag('field').setContent([
+				_1('div',$,19,18).flag('field').flag('radio').setContent([
+					_1('input',$,20,19).setType('radio').setName('group').setValue('red',1),
+					_1('label',$,21,19).setText("Red")
 				],2),
 				
-				_1('div',$,21,17).flag('field').flag('radio').setContent([
-					_1('input',$,22,21).setType('radio').setName('group').setValue('green',1),
-					_1('label',$,23,21).setText("Green")
+				_1('div',$,22,18).flag('field').flag('radio').setContent([
+					_1('input',$,23,22).setType('radio').setName('group').setValue('green',1),
+					_1('label',$,24,22).setText("Green")
 				],2),
 				
-				_1('div',$,24,17).flag('field').flag('radio').setContent([
-					_1('input',$,25,24).setType('radio').setName('group').setValue('blue',1),
-					_1('label',$,26,24).setText("Blue")
+				_1('div',$,25,18).flag('field').flag('radio').setContent([
+					_1('input',$,26,25).setType('radio').setName('group').setValue('blue',1),
+					_1('label',$,27,25).setText("Blue")
 				],2)
 			],2),
 			
-			_1('div',$,27,this).flag('field').flag('select').setContent([
-				_1('select',$,28,27),
-				_1('label',$,30,27).setText("Blue")
+			_1('div',$,28,this).flag('field').flag('select').setContent([
+				_1('select',$,29,28),
+				_1('label',$,31,28).setText("Blue")
 			],2),
-			_1(TextField,$,31,this).setLabel("Title").setName('title').setPlaceholder("Descriptive title").setDesc("Some description of this"),
 			
 			_1(TextField,$,32,this).setLabel("Secret word").setName('secret').setPlaceholder("What is the secret?").setRequired(true).setPattern("uxauxa").setDesc("Can you guess it?"),
 			_1(TextArea,$,33,this).setLabel("Description").setName('desc').setDesc("Please feel free to describe").setPlaceholder("Some description").setRequired(true)
-		
-		
-		
 		],2).synced((
-			$[1].bindData(state,'topics').end(),
-			$[4].bindData(state,'title').end(),
-			$[8].bindData(state,'title').end(),
-			$[12].bindData(state,'rating').end(),
-			$[15].end(),
-			$[19].end(),
-			$[22].end(),
-			$[25].end(),
-			$[28].bindData(state,'category').setContent(
+			$[0].end(),
+			$[2].bindData(state,'topics').end(),
+			$[5].bindData(state,'title').end(),
+			$[9].bindData(state,'title').end(),
+			$[13].bindData(state,'rating').end(),
+			$[16].end(),
+			$[20].end(),
+			$[23].end(),
+			$[26].end(),
+			$[29].bindData(state,'category').setContent(
 				(function tagLoop($0) {
 					for (let i = 0, ary = iter$(state.categories), len = $0.taglen = ary.length; i < len; i++) {
 						($0[i] || _1('option',$0,i)).setContent(ary[i],3);
 					};return $0;
-				})($[29] || _2($,29,$[28]))
+				})($[30] || _2($,30,$[29]))
 			,4).end(),
-			$[31].end(),
 			$[32].end(),
 			$[33].end()
 		,true));
@@ -9887,40 +9916,69 @@ var Home = Imba.defineTag('Home', function(tag){
 					],2)
 				,2),
 				
-				_1('section',$,17,7).setContent([
-					_1('div',$,18,17).setNestedAttr('uxa','md',"Hello *inline* ",{inline:1}),
-					_1('div',$,19,17).setNestedAttr('uxa','md',"Hello *not inline*")
-				],2),
-				
-				_1('section',$,20,7).setContent(
-					$[21] || _1(GroupedMenu,$,21,20)
+				_1('section',$,17,7).setContent(
+					$[18] || _1('div',$,18,17).flag('grid').flag('tiles').setContent([
+						_1('div',$,19,18).flag('tile').setContent([
+							_1('p',$,20,19).setText("Default color"),
+							_1('p',$,21,19).flag('red').setText("Red"),
+							_1('p',$,22,19).flag('green').setText("Green"),
+							_1('p',$,23,19).flag('blue').setText("Blue"),
+							_1('p',$,24,19).flag('yellow').setText("Yellow"),
+							_1('p',$,25,19).flag('dim').setText("Dim"),
+							_1('p',$,26,19).flag('muted').setText("Muted"),
+							_1('div',$,27,19).flag('spaced').setContent([
+								_1('a',$,28,27).flag('button').setText("Cancel"),
+								_1('a',$,29,27).flag('button').flag('primary').setText("Submit"),
+								_1('a',$,30,27).flag('button').dataset('icon','mclose').setText("Archive"),
+								_1('a',$,31,27).flag('button').dataset('icon-after','mclose').setText("Undo"),
+								_1('a',$,32,27).flag('sm').flag('button').dataset('icon','mclose').setText("Archive"),
+								_1('a',$,33,27).flag('sm').flag('button').dataset('icon-after','mclose').setText("Undo")
+							],2),
+							_1('hr',$,34,19),
+							_1('p',$,35,19).setText("Some text right here"),
+							_1('div',$,36,19).flag('bar').flag('spaced').setContent([
+								_1('div',$,37,36).flag('green').setText("Green"),
+								_1('div',$,38,36).flag('blue').setText("Blue"),
+								_1('div',$,39,36).flag('yellow').setText("Yellow")
+							],2),
+							_1('hr',$,40,19),
+							_1('div',$,41,19).flag('bar').flag('spaced').setContent([
+								_1('a',$,42,41).flag('button').flag('solid').flag('primary').dataset('icon','mclose').setText("Archive"),
+								_1('a',$,43,41).flag('button').flag('solid').dataset('icon','mclose').setText("Undo"),
+								_1('a',$,44,41).flag('button').flag('solid').dataset('icon','mclose').setText("Archive"),
+								_1('a',$,45,41).flag('button').flag('solid').setText("Undo")
+							],2)
+						],2),
+						_1('div',$,46,18).flag('tile').setContent(
+							$[47] || _1(GroupedMenu,$,47,46)
+						,2),
+						
+						_1('div',$,48,18).flag('tile').setContent(
+							$[49] || _1(LogForm,$,49,48)
+						,2),
+						
+						_1('div',$,50,18).flag('tile').setContent(
+							$[51] || _1('div',$,51,50).flag('menu')
+						,2),
+						
+						_1('div',$,74,18).flag('tile').setContent($[75] || _1('div',$,75,74),2)
+					],2)
 				,2),
 				
-				_1('section',$,22,7),
-				
-				_1('section',$,24,7).flag('section').setContent([
-					_1('header',$,25,24).setContent([
-						_1('div',$,26,25).flag('title').setText("Title"),
-						_1('div',$,27,25).flag('subtitle').setText("Subitle for section")
-					],2),
-					_1('div',$,28,24).flag('grid').flag('tiles')
-				],2),
-				
-				
-				_1('section',$,30,7).setContent(
-					$[31] || _1('div',$,31,30).flag('grid').flag('tiles')
+				_1('section',$,76,7).setContent(
+					$[77] || _1('div',$,77,76).flag('grid').flag('tiles')
 				,2),
-				_1('section',$,33,7).flag('mb-xl').setContent(
-					$[34] || _1('div',$,34,33).flag('grid').flag('tiles')
+				_1('section',$,79,7).flag('mb-xl').setContent(
+					$[80] || _1('div',$,80,79).flag('grid').flag('tiles')
 				,2)
 			],2),
 			
-			_1('div',$,36,this).flag('container').flag('narrow'),
-			_1('div',$,37,this).flag('container').flag('narrow').flag('sm'),
+			_1('div',$,82,this).flag('container').flag('narrow'),
+			_1('div',$,83,this).flag('container').flag('narrow').flag('sm'),
 			
-			_1('div',$,38,this).flag('container').flag('narrow').setContent(
-				$[39] || _1('div',$,39,38).flag('tile').flag('dark').setContent(
-					$[40] || _1('h2',$,40,39).setText("This is a tile!")
+			_1('div',$,84,this).flag('container').flag('narrow').setContent(
+				$[85] || _1('div',$,85,84).flag('tile').flag('dark').setContent(
+					$[86] || _1('h2',$,86,85).setText("This is a tile!")
 				,2)
 			,2),
 			
@@ -9932,146 +9990,84 @@ var Home = Imba.defineTag('Home', function(tag){
 			
 			
 			
-			_1(Palette,$,41,this).setTint('light')
+			_1(Palette,$,87,this).setTint('light')
 		
 		],2).synced((
-			$[18].end(),
-			$[19].end(),
-			$[21].end(),
-			$[22].setContent(
+			$[30].end(),
+			$[31].end(),
+			$[32].end(),
+			$[33].end(),
+			$[42].end(),
+			$[43].end(),
+			$[44].end(),
+			$[47].end(),
+			$[49].end(),
+			$[51].setContent([
+				$[52] || _1('div',$,52,51).flag('item').setText("Edit item"),
+				$[53] || _1('div',$,53,51).flag('item').dataset('icon','mright').setText("Remove item"),
+				$[54] || _1('hr',$,54,51),
+				$[55] || _1('div',$,55,51).flag('item').dataset('icon','mright').setText("Edit item"),
+				$[56] || _1('div',$,56,51).flag('item').dataset('icon','mclose').setText("Close menu"),
+				$[57] || _1('hr',$,57,51),
+				$[58] || _1('div',$,58,51).flag('header').setText("Shortcuts"),
+				$[59] || _1('div',$,59,51).flag('item').dataset('shortcut','space').setText("pause / resume"),
+				$[60] || _1('div',$,60,51).flag('item').dataset('shortcut','⇧←').setText("slower playback"),
+				$[61] || _1('div',$,61,51).flag('item').dataset('shortcut','⇧→').setText("faster playback"),
+				$[62] || _1('div',$,62,51).flag('item').dataset('shortcut','→').setText("go forward 10s"),
+				$[63] || _1('div',$,63,51).flag('item').dataset('shortcut','←⌘').setText("go back 10s"),
+				$[64] || _1('hr',$,64,51),
 				(function tagLoop($0) {
 					var t0;
-					for (let i = 0, ary = ['light','dark'], len = $0.taglen = ary.length; i < len; i++) {
-						(t0 = $0[i] || (t0=_1('div',$0,i)).flag('grid').flag('tiles').setContent([
-							_1('div',t0.$,'A',t0).flag('tile').setContent([
-								_1('p',t0.$,'B','A').setText("Default color"),
-								_1('p',t0.$,'C','A').flag('red').setText("Red"),
-								_1('p',t0.$,'D','A').flag('green').setText("Green"),
-								_1('p',t0.$,'E','A').flag('blue').setText("Blue"),
-								_1('p',t0.$,'F','A').flag('yellow').setText("Yellow"),
-								_1('p',t0.$,'G','A').flag('dim').setText("Dim"),
-								_1('p',t0.$,'H','A').flag('muted').setText("Muted"),
-								_1('div',t0.$,'I','A').flag('spaced').setContent([
-									_1('a',t0.$,'J','I').flag('button').setText("Cancel"),
-									_1('a',t0.$,'K','I').flag('button').flag('primary').setText("Submit")
-								],2)
-							],2),
-							_1('div',t0.$,'L',t0).flag('tile').setContent([
-								_1('div',t0.$,'M','L').flag('spaced').flag('bar').setContent([
-									_1('a',t0.$,'N','M').flag('button').dataset('icon','mclose').setText("Archive"),
-									_1('a',t0.$,'O','M').flag('button').dataset('icon-after','mclose').setText("Undo"),
-									_1('a',t0.$,'P','M').flag('sm').flag('button').dataset('icon','mclose').setText("Archive"),
-									_1('a',t0.$,'Q','M').flag('sm').flag('button').dataset('icon-after','mclose').setText("Undo")
-								],2),
-								_1('hr',t0.$,'R','L'),
-								_1('p',t0.$,'S','L').setText("Some text right here"),
-								_1('div',t0.$,'T','L').flag('bar').flag('spaced').setContent([
-									_1('div',t0.$,'U','T').flag('green').setText("Green"),
-									_1('div',t0.$,'V','T').flag('blue').setText("Blue"),
-									_1('div',t0.$,'W','T').flag('yellow').setText("Yellow")
-								],2),
-								_1('hr',t0.$,'X','L'),
-								_1('div',t0.$,'Y','L').flag('bar').flag('spaced').setContent([
-									_1('a',t0.$,'Z','Y').flag('button').flag('solid').flag('primary').dataset('icon','mclose').setText("Archive"),
-									_1('a',t0.$,'AA','Y').flag('button').flag('solid').dataset('icon','mclose').setText("Undo"),
-									_1('a',t0.$,'AB','Y').flag('button').flag('solid').dataset('icon','mclose').setText("Archive"),
-									_1('a',t0.$,'AC','Y').flag('button').flag('solid').setText("Undo")
-								],2)
-							],2),
-							
-							_1('div',t0.$,'AD',t0).flag('tile').setContent(
-								t0.$.AE || _1('div',t0.$,'AE','AD').flag('menu')
-							,2)
-						],2)).setFlag(0,ary[i]).end((
-							t0.$.N.end(),
-							t0.$.O.end(),
-							t0.$.P.end(),
-							t0.$.Q.end(),
-							t0.$.Z.end(),
-							t0.$.AA.end(),
-							t0.$.AB.end(),
-							t0.$.AE.setContent([
-								t0.$.AF || _1('div',t0.$,'AF','AE').flag('item').setText("Edit item"),
-								t0.$.AG || _1('div',t0.$,'AG','AE').flag('item').dataset('icon','mright').setText("Remove item"),
-								t0.$.AH || _1('hr',t0.$,'AH','AE'),
-								t0.$.AI || _1('div',t0.$,'AI','AE').flag('item').dataset('icon','mright').setText("Edit item"),
-								t0.$.AJ || _1('div',t0.$,'AJ','AE').flag('item').dataset('icon','mclose').setText("Close menu"),
-								t0.$.AK || _1('hr',t0.$,'AK','AE'),
-								t0.$.AL || _1('div',t0.$,'AL','AE').flag('header').setText("Shortcuts"),
-								t0.$.AM || _1('div',t0.$,'AM','AE').flag('item').dataset('shortcut','space').setText("pause / resume"),
-								t0.$.AN || _1('div',t0.$,'AN','AE').flag('item').dataset('shortcut','⇧←').setText("slower playback"),
-								t0.$.AO || _1('div',t0.$,'AO','AE').flag('item').dataset('shortcut','⇧→').setText("faster playback"),
-								t0.$.AP || _1('div',t0.$,'AP','AE').flag('item').dataset('shortcut','→').setText("go forward 10s"),
-								t0.$.AQ || _1('div',t0.$,'AQ','AE').flag('item').dataset('shortcut','←⌘').setText("go back 10s"),
-								t0.$.AR || _1('hr',t0.$,'AR','AE'),
-								(function tagLoop($0) {
-									var t1;
-									for (let j = 0, array = iter$(state.categories), len = $0.taglen = array.length, item; j < len; j++) {
-										item = array[j];
-										(t1 = $0[j] || (t1=_1('div',$0,j)).flag('field').flag('radio').setContent([
-											_1('input',t1.$,'A',t1).setType('radio'),
-											_1('label',t1.$,'B',t1)
-										
-										
-										],2)).end((
-											t1.$.A.bindData(state,'category').setValue(item,1).end(),
-											t1.$.B.setContent(item,3)
-										,true));
-									};return $0;
-								})(t0.$['AS'] || _2(t0.$,'AS',t0.$.AE)),
-								t0.$.AT || _1('hr',t0.$,'AT','AE'),
-								t0.$.AU || _1('div',t0.$,'AU','AE').flag('field').flag('checkbox').setContent([
-									_1('input',t0.$,'AV','AU').setType('checkbox'),
-									_1('label',t0.$,'AW','AU').setText("Show invisibles")
-								],2),
-								t0.$.AX || _1('hr',t0.$,'AX','AE'),
-								
-								t0.$.AY || _1('div',t0.$,'AY','AE').flag('field').flag('range').setContent([
-									_1('input',t0.$,'AZ','AY').setType('range').setMin(0.4).setStep(0.1).setMax(2).setNumber(true),
-									_1('label',t0.$,'BA','AY').setText("Speed")
-								],2)
-							],1).end((
-								t0.$.AG.end(),
-								t0.$.AI.end(),
-								t0.$.AJ.end(),
-								t0.$.AM.end(),
-								t0.$.AN.end(),
-								t0.$.AO.end(),
-								t0.$.AP.end(),
-								t0.$.AQ.end(),
-								t0.$.AV.bindData(state,'enabled').end(),
-								t0.$.AZ.end()
-							,true))
+					for (let i = 0, ary = iter$(state.categories), len = $0.taglen = ary.length, item; i < len; i++) {
+						item = ary[i];
+						(t0 = $0[i] || (t0=_1('div',$0,i)).flag('field').flag('radio').setContent([
+							_1('input',t0.$,'A',t0).setType('radio'),
+							_1('label',t0.$,'B',t0)
+						
+						
+						],2)).end((
+							t0.$.A.bindData(state,'category').setValue(item,1).end(),
+							t0.$.B.setContent(item,3)
 						,true));
 					};return $0;
-				})($[23] || _2($,23,$[22]))
-			,4),
-			$[28].setContent((function tagLoop($0) {
-				var t0;
-				for (let i = 0, ary = ['sm','md','lg'], len = $0.taglen = ary.length, item; i < len; i++) {
-					item = ary[i];
-					(t0 = $0[i] || (t0=_1('div',$0,i)).flag('tile').setContent([
-						_1('div',t0.$,'A',t0),
-						_1(LogForm,t0.$,'B',t0)
-					],2)).flagIf('dark',(i == 2)).end((
-						t0.$.A.setFlag(0,item).setNestedAttr('uxa','md',short).end(),
-						t0.$.B.setFlag(0,item).end()
-					,true));
-				};return $0;
-			})($[29] || _2($,29,$[28])),4),
-			$[31].setContent((function tagLoop($0) {
+				})($[65] || _2($,65,$[51])),
+				$[66] || _1('hr',$,66,51),
+				$[67] || _1('div',$,67,51).flag('field').flag('checkbox').setContent([
+					_1('input',$,68,67).setType('checkbox'),
+					_1('label',$,69,67).setText("Show invisibles")
+				],2),
+				$[70] || _1('hr',$,70,51),
+				
+				$[71] || _1('div',$,71,51).flag('field').flag('range').setContent([
+					_1('input',$,72,71).setType('range').setMin(0.4).setStep(0.1).setMax(2).setNumber(true),
+					_1('label',$,73,71).setText("Speed")
+				],2)
+			],1).end((
+				$[53].end(),
+				$[55].end(),
+				$[56].end(),
+				$[59].end(),
+				$[60].end(),
+				$[61].end(),
+				$[62].end(),
+				$[63].end(),
+				$[68].bindData(state,'enabled').end(),
+				$[72].end()
+			,true)),
+			$[75].setNestedAttr('uxa','md',long).end(),
+			$[77].setContent((function tagLoop($0) {
 				for (let i = 0, len = $0.taglen = items.length; i < len; i++) {
 					($0[i] || _1(TileTest,$0,i)).setData(items[i]).end();
 				};return $0;
-			})($[32] || _2($,32,$[31])),4),
-			$[34].setContent((function tagLoop($0) {
+			})($[78] || _2($,78,$[77])),4),
+			$[80].setContent((function tagLoop($0) {
 				for (let i = 0, len = $0.taglen = items.length; i < len; i++) {
 					($0[i] || _1(TileTest,$0,i).flag('dark')).setData(items[i]).end();
 				};return $0;
-			})($[35] || _2($,35,$[34])),4),
-			$[36].setNestedAttr('uxa','md',long).end(),
-			$[37].setNestedAttr('uxa','md',long).end(),
-			$[41].end()
+			})($[81] || _2($,81,$[80])),4),
+			$[82].setNestedAttr('uxa','md',long).end(),
+			$[83].setNestedAttr('uxa','md',long).end(),
+			$[87].end()
 		,true));
 	};
 })
@@ -10771,7 +10767,7 @@ var note = exports.note = post.json;
 /***/ (function(module, exports, __webpack_require__) {
 
 var Imba = __webpack_require__(0), _1 = Imba.createElement;
-var long = "# Heading 1\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec cursus elit at\nodio congue, ac varius massa tincidunt. Nulla blandit odio vel bibendum \ncondimentum. In hac habitasse [platea](#platea) dictumst. Nam eu nisl ut erat \nsollicitudin tincidunt.\n\n## Heading 2\n\nNullam eget urna vitae ex ullamcorper dictum ac ullamcorper nisl. Mauris a\nquam non ante ullamcorper ultrices quis quis libero. Quisque ultrices lorem\nmetus. Duis mi est, elementum nec egestas a, luctus et lacus.\n\n* List item one\n* Another item\n* Testing this list here\n\n### Heading 3\n\nNullam eget urna vitae ex ullamcorper dictum ac ullamcorper nisl. Mauris a\nquam non ante ullamcorper ultrices quis quis libero. Quisque ultrices lorem\nmetus.\n\nMauris a\nquam non ante ullamcorper ultrices quis quis libero. Quisque ultrices lorem\nmetus. Duis mi est, elementum nec egestas a, luctus et lacus.\n\n```javascript\nvar Hello = [1,2,3,4,5,6,7,8,9]\n```\n\nAdipiscing elit. Donec cursus elit at\nodio congue, ac varius massa tincidunt. Nulla blandit odio vel bibendum \ncondimentum. In hac habitasse [platea](#platea) dictumst. Nam eu nisl ut erat \nsollicitudin tincidunt.\n";
+var long = "# Heading 1\n\nLorem ipsum dolor sit amet, consectetur adipiscing elit. Donec cursus elit at\nodio congue, ac varius massa tincidunt. Nulla blandit odio vel bibendum \ncondimentum. In hac habitasse [platea](#platea) dictumst. Nam eu nisl ut erat \nsollicitudin tincidunt.\n\n## Heading 2\n\nNullam eget urna vitae ex ullamcorper dictum ac ullamcorper nisl. Mauris a\nquam non ante ullamcorper ultrices quis quis libero. Quisque ultrices lorem\nmetus. Duis mi est, elementum nec egestas a, luctus et lacus.\n\n* List item one\n* Another item\n* Testing this list here\n\n### Heading 3\n\nNullam eget urna vitae ex ullamcorper dictum ac ullamcorper nisl. Mauris a\nquam non ante ullamcorper ultrices quis quis libero. Quisque ultrices lorem\nmetus.\n\nMauris a\nquam non ante ullamcorper ultrices quis quis libero. Quisque ultrices lorem\nmetus. Duis mi est, elementum nec egestas a, luctus et lacus.\n\n```javascript\nvar Hello = [1,2,3,4,5,6,7,8,9]\n```\n\nAdipiscing elit. Donec cursus elit at\nodio congue, ac varius massa tincidunt. Nulla blandit odio vel bibendum \ncondimentum. In hac habitasse [platea](#platea) dictumst. Nam eu nisl ut erat \nsollicitudin tincidunt.\n\n> This is a blockquote right here!\n";
 
 var Size = Imba.defineTag('Size', function(tag){
 	
@@ -10795,15 +10791,19 @@ var Typography = Imba.defineTag('Typography', function(tag){
 	tag.prototype.render = function (){
 		var $ = this.$;
 		return this.$open(0).setChildren(
-			$[0] || _1('div',$,0,this).flag('container').flag('light').flag('narrow').flag('mt-xl').setContent(
-				$[1] || _1('div',$,1,0).setContent([
-					_1(Size,$,2,1),
-					_1('div',$,3,1).flag('doc')
+			$[0] || _1('div',$,0,this).flag('container').flag('mt-xl').flag('narrow').setContent([
+				_1('aside',$,1,0),
+				
+				_1('blockquote',$,2,0).setContent([
+					_1('p',$,3,2).setText("Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer posuere erat a ante."),
+					_1('footer',$,4,2).setContent([
+						"Someone famous in ",
+						$[5] || _1('cite',$,5,4).setText("Source Title")
+					],2)
 				],2)
-			,2)
+			],2)
 		,2).synced((
-			$[2].end(),
-			$[3].setNestedAttr('uxa','md',long).end()
+			$[1].setNestedAttr('uxa','md',long).end()
 		,true));
 	};
 })
