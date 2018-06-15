@@ -8482,9 +8482,10 @@ Request.prototype.path = function(v){ return this._path; }
 Request.prototype.setPath = function(v){ this._path = v; return this; };
 Request.prototype.referrer = function(v){ return this._referrer; }
 Request.prototype.setReferrer = function(v){ this._referrer = v; return this; };
+Request.prototype.aborted = function(v){ return this._aborted; }
+Request.prototype.setAborted = function(v){ this._aborted = v; return this; };
 
 Request.prototype.redirect = function (path){
-	console.log("Request.redirect!",path);
 	this._redirected = this._path = path;
 	return this;
 };
@@ -8521,7 +8522,7 @@ function Router(o){
 		// warn if multiple instances?
 		self._instance || (self._instance = self);
 		self._clickHandler = function(e) { return self.onclick(e); };
-		self._captor = document.addEventListener('click',self._clickHandler,true);
+		self._captor = window.addEventListener('click',self._clickHandler,true);
 	};
 	self;
 };
@@ -8560,36 +8561,54 @@ Router.prototype.location = function (){
 	return document.location;
 };
 
+Router.prototype.state = function (){
+	return {};
+};
+
 Router.prototype.refresh = function (params){
 	if(params === undefined) params = {};
 	if (this._refreshing) { return };
 	this._refreshing = true;
-	let path = this.path();
+	let path = params.path || this.path();
 	
 	if (path != this._path) {
-		// console.log "refreshing url",path,@path
-		
-		// params:path = path
-		// params:referrer = @path
 		
 		let req = new Request(this,path,this._path);
 		
-		let state = {
-			path: path,
-			referrer: this._path
-		};
-		
 		this.emit('beforechange',req);
-		if (req.path() != path) {
-			// console.log "redirected"
-			this.replace(path = req.path());
-			// what if we cancel?
+		
+		if (req.aborted()) {
+			// console.log "request was aborted",params
+			var res = window.confirm("Are you sure you want to leave? You might have unsaved changes");
+			
+			if (res) {
+				req.setAborted(false);
+			} else if (params.pop) {
+				path = this._path;
+				this.history().pushState(this.state(),null,this.normalize(this._path));
+			} else if (!params.push) {
+				this.history().replaceState(this.state(),null,this.normalize(this._path));
+			};
+			
+			// if we're not popping - should happen before we are changing
 		};
 		
-		this._path = path;
-		this.emit('change',req);
-		// console.log "after change",req
-		Imba.commit();
+		if (!req.aborted()) {
+			this._path = req.path();
+			
+			if (params.push) {
+				// console.log "actually changing url"
+				this.history().pushState(params.state || this.state(),null,this.normalize(req.path()));
+			} else {
+				if (path != req.path()) {
+					this.replace(path = req.path());
+				};
+				this;
+			};
+			
+			this.emit('change',req);
+			Imba.commit();
+		};
 		
 		// checking hash?
 		// let e = Imba.Event.wrap(type: 'change')
@@ -8600,8 +8619,19 @@ Router.prototype.refresh = function (params){
 };
 
 Router.prototype.onpopstate = function (e){
+	// console.log "onpopstate",e
 	this.refresh({pop: true});
 	return this;
+};
+
+Router.prototype.onbeforeunload = function (e){
+	// console.log "onbeforeunload"
+	let req = new Request(this,null,this.path());
+	this.emit('beforechange',req);
+	if (req.aborted()) { return true };
+	return;
+	
+	// return req.aborted ? true : false
 };
 
 Router.prototype.setup = function (){
@@ -8615,8 +8645,9 @@ Router.prototype.setup = function (){
 		
 		let url = self.url();
 		// if url and @redirects[url]
-		self.history().replaceState({},null,self.normalize(url));
-		window.onpopstate = function(e) { return self.onpopstate(e); };
+		self.history().replaceState(self.state(),null,self.normalize(url));
+		window.onpopstate = self.onpopstate.bind(self); // do |e| onpopstate(e)
+		window.onbeforeunload = self.onbeforeunload.bind(self);
 		
 		self._hash = self.location().hash;
 		window.addEventListener('hashchange',function(e) {
@@ -8664,7 +8695,7 @@ Router.prototype.serializeParams = function (params){
 
 Router.prototype.setHash = function (value){
 	if (isWeb) {
-		console.log("set hash",this.serializeParams(value));
+		// console.log "set hash",serializeParams(value)
 		// will set without jumping
 		this.history().replaceState({},null,'#' + this.serializeParams(value)); // last state?
 		// location:hash = serializeParams(value)
@@ -8687,8 +8718,8 @@ Router.prototype.go = function (url,state){
 	if(state === undefined) state = {};
 	url = self._redirects[url] || url;
 	// call from here instead?
-	self.history().pushState(state,null,self.normalize(url));
-	self.refresh();
+	// history.pushState(state,null,normalize(url))
+	self.refresh({push: true,path: url,state: state});
 	
 	isWeb && self.onReady(function() {
 		let hash = self.location().hash;
@@ -8751,7 +8782,7 @@ Router.prototype.un = function (name){
 };
 
 Router.prototype.onclick = function (e){
-	console.log("onclick",e,e.defaultPrevented);
+	// console.log "onclick",e, e:defaultPrevented
 	
 	let i = 0;
 	// let path = e:path
@@ -9020,7 +9051,7 @@ Imba.extendTag('element', function(tag){
 					val = await self.load(params,prev);
 				};
 			} catch (e) {
-				self.log("route error",e);
+				// log "route error",e
 				val = 400;
 				self.routeDidFail(e);
 			};
@@ -9091,10 +9122,12 @@ Route.prototype.setPath = function (path){
 	});
 	
 	path = '^' + path;
-	if (self._options.exact && path[path.length - 1] != '$') {
+	let end = path[path.length - 1];
+	if (self._options.exact && end != '$') {
 		path = path + '(?=[\#\?]|$)';
-	} else {
+	} else if (end != '/' && end != '$') {
 		// we only want to match end OR /
+		// if path[path:length - 1]
 		path = path + '(?=[\/\#\?]|$)';
 	};
 	self._regex = new RegExp(path);
@@ -9172,7 +9205,7 @@ Route.prototype.load = function (cb){
 	var handler = self._handler = function(res) {
 		var v_;
 		if (handler != self._handler) {
-			console.log("another load has started after this");
+			// console.log "another load has started after this"
 			return;
 		};
 		
@@ -9892,93 +9925,65 @@ var Home = Imba.defineTag('Home', function(tag){
 				$[1] || _1('div',$,1,0).flag('container').flag('narrow').flag('pad').flag('lg').setContent([
 					_1('h1',$,2,1).setText("Hello, future expert"),
 					_1('p',$,3,1).setText("Scrimba is a powerful new way of learning code. Play around with the instructors code any time, right in the player."),
-					_1('div',$,4,1).flag('spaced').flag('center').setContent(
-						$[5] || _1('a',$,5,4).flag('button').flag('primary').setText("Take Tour")
-					,2),
-					_1('hr',$,6,1)
+					_1('div',$,4,1).flag('bar').flag('spaced').flag('center').setContent([
+						_1('a',$,5,4).flag('button').setText("Learn more"),
+						
+						_1('a',$,6,4).flag('button').flag('primary').setText("Take Tour")
+					],2),
+					_1('hr',$,7,1)
 				],2)
 			,2),
 			
-			_1('div',$,7,this).flag('container').flag('light').setContent([
+			_1('div',$,8,this).flag('container').flag('light').setContent([
 				
-				_1('div',$,8,7).flag('masthead').setContent([
-					_1('a',$,9,8).flag('logo').setText("Scrimba"),
-					_1('a',$,10,8).flag('item').setText("tes")
+				_1('div',$,9,8).flag('masthead').setContent([
+					_1('a',$,10,9).flag('logo').setText("Scrimba"),
+					_1('a',$,11,9).flag('item').setText("tes")
 				],2),
 				
-				_1('div',$,11,7).flag('masthead').flag('dark').setText("Masthead"),
+				_1('div',$,12,8).flag('masthead').flag('dark').setText("Masthead"),
 				
-				_1('div',$,12,7).flag('breadcrumb').setContent(
-					$[13] || _1('ul',$,13,12).setContent([
-						_1('li',$,14,13).setText("Home"),
-						_1('li',$,15,13).setText("Next"),
-						_1('li',$,16,13).setText("Other")
+				_1('div',$,13,8).flag('breadcrumb').setContent(
+					$[14] || _1('ul',$,14,13).setContent([
+						_1('li',$,15,14).setText("Home"),
+						_1('li',$,16,14).setText("Next"),
+						_1('li',$,17,14).setText("Other")
 					],2)
 				,2),
 				
-				_1('section',$,17,7).setContent(
-					$[18] || _1('div',$,18,17).flag('grid').flag('tiles').setContent([
-						_1('div',$,19,18).flag('tile').setContent([
-							_1('p',$,20,19).setText("Default color"),
-							_1('p',$,21,19).flag('red').setText("Red"),
-							_1('p',$,22,19).flag('green').setText("Green"),
-							_1('p',$,23,19).flag('blue').setText("Blue"),
-							_1('p',$,24,19).flag('yellow').setText("Yellow"),
-							_1('p',$,25,19).flag('dim').setText("Dim"),
-							_1('p',$,26,19).flag('muted').setText("Muted"),
-							_1('div',$,27,19).flag('spaced').setContent([
-								_1('a',$,28,27).flag('button').setText("Cancel"),
-								_1('a',$,29,27).flag('button').flag('primary').setText("Submit"),
-								_1('a',$,30,27).flag('button').dataset('icon','mclose').setText("Archive"),
-								_1('a',$,31,27).flag('button').dataset('icon-after','mclose').setText("Undo"),
-								_1('a',$,32,27).flag('sm').flag('button').dataset('icon','mclose').setText("Archive"),
-								_1('a',$,33,27).flag('sm').flag('button').dataset('icon-after','mclose').setText("Undo")
-							],2),
-							_1('hr',$,34,19),
-							_1('p',$,35,19).setText("Some text right here"),
-							_1('div',$,36,19).flag('bar').flag('spaced').setContent([
-								_1('div',$,37,36).flag('green').setText("Green"),
-								_1('div',$,38,36).flag('blue').setText("Blue"),
-								_1('div',$,39,36).flag('yellow').setText("Yellow")
-							],2),
-							_1('hr',$,40,19),
-							_1('div',$,41,19).flag('bar').flag('spaced').setContent([
-								_1('a',$,42,41).flag('button').flag('solid').flag('primary').dataset('icon','mclose').setText("Archive"),
-								_1('a',$,43,41).flag('button').flag('solid').dataset('icon','mclose').setText("Undo"),
-								_1('a',$,44,41).flag('button').flag('solid').dataset('icon','mclose').setText("Archive"),
-								_1('a',$,45,41).flag('button').flag('solid').setText("Undo")
-							],2)
-						],2),
-						_1('div',$,46,18).flag('tile').setContent(
-							$[47] || _1(GroupedMenu,$,47,46)
+				_1('section',$,18,8).setContent(
+					$[19] || _1('div',$,19,18).flag('grid').flag('tiles').setContent([
+						_1('div',$,20,19).flag('tile'),
+						_1('div',$,48,19).flag('tile').setContent(
+							$[49] || _1(GroupedMenu,$,49,48)
 						,2),
 						
-						_1('div',$,48,18).flag('tile').setContent(
-							$[49] || _1(LogForm,$,49,48)
+						_1('div',$,50,19).flag('tile').setContent(
+							$[51] || _1(LogForm,$,51,50)
 						,2),
 						
-						_1('div',$,50,18).flag('tile').setContent(
-							$[51] || _1('div',$,51,50).flag('menu')
+						_1('div',$,52,19).flag('tile').setContent(
+							$[53] || _1('div',$,53,52).flag('menu')
 						,2),
 						
-						_1('div',$,74,18).flag('tile').setContent($[75] || _1('div',$,75,74),2)
+						_1('div',$,76,19).flag('tile').setContent($[77] || _1('div',$,77,76),2)
 					],2)
 				,2),
 				
-				_1('section',$,76,7).setContent(
-					$[77] || _1('div',$,77,76).flag('grid').flag('tiles')
+				_1('section',$,78,8).setContent(
+					$[79] || _1('div',$,79,78).flag('grid').flag('tiles')
 				,2),
-				_1('section',$,79,7).flag('mb-xl').setContent(
-					$[80] || _1('div',$,80,79).flag('grid').flag('tiles')
+				_1('section',$,81,8).flag('mb-xl').setContent(
+					$[82] || _1('div',$,82,81).flag('grid').flag('tiles')
 				,2)
 			],2),
 			
-			_1('div',$,82,this).flag('container').flag('narrow'),
-			_1('div',$,83,this).flag('container').flag('narrow').flag('sm'),
+			_1('div',$,84,this).flag('container').flag('narrow'),
+			_1('div',$,85,this).flag('container').flag('narrow').flag('sm'),
 			
-			_1('div',$,84,this).flag('container').flag('narrow').setContent(
-				$[85] || _1('div',$,85,84).flag('tile').flag('dark').setContent(
-					$[86] || _1('h2',$,86,85).setText("This is a tile!")
+			_1('div',$,86,this).flag('container').flag('narrow').setContent(
+				$[87] || _1('div',$,87,86).flag('tile').flag('dark').setContent(
+					$[88] || _1('h2',$,88,87).setText("This is a tile!")
 				,2)
 			,2),
 			
@@ -9990,32 +9995,79 @@ var Home = Imba.defineTag('Home', function(tag){
 			
 			
 			
-			_1(Palette,$,87,this).setTint('light')
+			_1(Palette,$,89,this).setTint('light')
 		
 		],2).synced((
-			$[30].end(),
-			$[31].end(),
-			$[32].end(),
-			$[33].end(),
-			$[42].end(),
-			$[43].end(),
-			$[44].end(),
-			$[47].end(),
+			$[20].setContent([
+				$[21] || _1('p',$,21,20).setText("Default color"),
+				$[22] || _1('p',$,22,20).flag('red').setText("Red"),
+				$[23] || _1('p',$,23,20).flag('green').setText("Green"),
+				$[24] || _1('p',$,24,20).flag('blue').setText("Blue"),
+				$[25] || _1('p',$,25,20).flag('yellow').setText("Yellow"),
+				$[26] || _1('p',$,26,20).flag('dim').setText("Dim"),
+				$[27] || _1('p',$,27,20).flag('muted').setText("Muted"),
+				$[28] || _1('div',$,28,20).flag('spaced').setContent([
+					_1('a',$,29,28).flag('button').setText("Cancel"),
+					_1('a',$,30,28).flag('button').flag('primary').setText("Submit"),
+					_1('a',$,31,28).flag('button').dataset('icon','mclose').setText("Archive"),
+					_1('a',$,32,28).flag('button').dataset('icon-after','mclose').setText("Undo"),
+					_1('a',$,33,28).flag('sm').flag('button').dataset('icon','mclose').setText("Archive"),
+					_1('a',$,34,28).flag('sm').flag('button').dataset('icon-after','mclose').setText("Undo")
+				],2),
+				$[35] || _1('hr',$,35,20),
+				$[36] || _1('p',$,36,20).setText("Some text right here"),
+				$[37] || _1('div',$,37,20).flag('bar').flag('spaced').setContent([
+					_1('div',$,38,37).flag('green').setText("Green"),
+					_1('div',$,39,37).flag('blue').setText("Blue"),
+					_1('div',$,40,37).flag('yellow').setText("Yellow")
+				],2),
+				$[41] || _1('hr',$,41,20),
+				$[42] || _1('div',$,42,20).flag('bar').flag('spaced').setContent([
+					_1('a',$,43,42).flag('button').flag('solid').flag('primary').dataset('icon','mclose').setText("Archive"),
+					_1('a',$,44,42).flag('button').flag('solid').dataset('icon','mclose').setText("Undo"),
+					_1('a',$,45,42).flag('button').flag('solid').dataset('icon','mclose').setText("Archive"),
+					_1('a',$,46,42).flag('button').flag('solid').setText("Undo")
+				],2),
+				
+				(function tagLoop($0) {
+					var t0;
+					for (let i = 0, ary = ['lg','md','sm','xs'], len = $0.taglen = ary.length, size; i < len; i++) {
+						
+						size = ary[i];
+						(t0 = $0[i] || (t0=_1('div',$0,i)).flag('bar').flag('spaced').setContent([
+							_1('div',t0.$,'A',t0).flag('button').flag('primary').setText('Primary'),
+							_1('div',t0.$,'B',t0).flag('button').setText('Button')
+						],2)).end((
+							t0.$.A.setFlag(0,size),
+							t0.$.B.setFlag(0,size)
+						,true));
+					};return $0;
+				})($[47] || _2($,47,$[20]))
+			],1).end((
+				$[31].end(),
+				$[32].end(),
+				$[33].end(),
+				$[34].end(),
+				$[43].end(),
+				$[44].end(),
+				$[45].end()
+			,true)),
 			$[49].end(),
-			$[51].setContent([
-				$[52] || _1('div',$,52,51).flag('item').setText("Edit item"),
-				$[53] || _1('div',$,53,51).flag('item').dataset('icon','mright').setText("Remove item"),
-				$[54] || _1('hr',$,54,51),
-				$[55] || _1('div',$,55,51).flag('item').dataset('icon','mright').setText("Edit item"),
-				$[56] || _1('div',$,56,51).flag('item').dataset('icon','mclose').setText("Close menu"),
-				$[57] || _1('hr',$,57,51),
-				$[58] || _1('div',$,58,51).flag('header').setText("Shortcuts"),
-				$[59] || _1('div',$,59,51).flag('item').dataset('shortcut','space').setText("pause / resume"),
-				$[60] || _1('div',$,60,51).flag('item').dataset('shortcut','⇧←').setText("slower playback"),
-				$[61] || _1('div',$,61,51).flag('item').dataset('shortcut','⇧→').setText("faster playback"),
-				$[62] || _1('div',$,62,51).flag('item').dataset('shortcut','→').setText("go forward 10s"),
-				$[63] || _1('div',$,63,51).flag('item').dataset('shortcut','←⌘').setText("go back 10s"),
-				$[64] || _1('hr',$,64,51),
+			$[51].end(),
+			$[53].setContent([
+				$[54] || _1('div',$,54,53).flag('item').setText("Edit item"),
+				$[55] || _1('div',$,55,53).flag('item').dataset('icon','mright').setText("Remove item"),
+				$[56] || _1('hr',$,56,53),
+				$[57] || _1('div',$,57,53).flag('item').dataset('icon','mright').setText("Edit item"),
+				$[58] || _1('div',$,58,53).flag('item').dataset('icon','mclose').setText("Close menu"),
+				$[59] || _1('hr',$,59,53),
+				$[60] || _1('div',$,60,53).flag('header').setText("Shortcuts"),
+				$[61] || _1('div',$,61,53).flag('item').dataset('shortcut','space').setText("pause / resume"),
+				$[62] || _1('div',$,62,53).flag('item').dataset('shortcut','⇧←').setText("slower playback"),
+				$[63] || _1('div',$,63,53).flag('item').dataset('shortcut','⇧→').setText("faster playback"),
+				$[64] || _1('div',$,64,53).flag('item').dataset('shortcut','→').setText("go forward 10s"),
+				$[65] || _1('div',$,65,53).flag('item').dataset('shortcut','←⌘').setText("go back 10s"),
+				$[66] || _1('hr',$,66,53),
 				(function tagLoop($0) {
 					var t0;
 					for (let i = 0, ary = iter$(state.categories), len = $0.taglen = ary.length, item; i < len; i++) {
@@ -10030,44 +10082,44 @@ var Home = Imba.defineTag('Home', function(tag){
 							t0.$.B.setContent(item,3)
 						,true));
 					};return $0;
-				})($[65] || _2($,65,$[51])),
-				$[66] || _1('hr',$,66,51),
-				$[67] || _1('div',$,67,51).flag('field').flag('checkbox').setContent([
-					_1('input',$,68,67).setType('checkbox'),
-					_1('label',$,69,67).setText("Show invisibles")
+				})($[67] || _2($,67,$[53])),
+				$[68] || _1('hr',$,68,53),
+				$[69] || _1('div',$,69,53).flag('field').flag('checkbox').setContent([
+					_1('input',$,70,69).setType('checkbox'),
+					_1('label',$,71,69).setText("Show invisibles")
 				],2),
-				$[70] || _1('hr',$,70,51),
+				$[72] || _1('hr',$,72,53),
 				
-				$[71] || _1('div',$,71,51).flag('field').flag('range').setContent([
-					_1('input',$,72,71).setType('range').setMin(0.4).setStep(0.1).setMax(2).setNumber(true),
-					_1('label',$,73,71).setText("Speed")
+				$[73] || _1('div',$,73,53).flag('field').flag('range').setContent([
+					_1('input',$,74,73).setType('range').setMin(0.4).setStep(0.1).setMax(2).setNumber(true),
+					_1('label',$,75,73).setText("Speed")
 				],2)
 			],1).end((
-				$[53].end(),
 				$[55].end(),
-				$[56].end(),
-				$[59].end(),
-				$[60].end(),
+				$[57].end(),
+				$[58].end(),
 				$[61].end(),
 				$[62].end(),
 				$[63].end(),
-				$[68].bindData(state,'enabled').end(),
-				$[72].end()
+				$[64].end(),
+				$[65].end(),
+				$[70].bindData(state,'enabled').end(),
+				$[74].end()
 			,true)),
-			$[75].setNestedAttr('uxa','md',long).end(),
-			$[77].setContent((function tagLoop($0) {
+			$[77].setNestedAttr('uxa','md',long).end(),
+			$[79].setContent((function tagLoop($0) {
 				for (let i = 0, len = $0.taglen = items.length; i < len; i++) {
 					($0[i] || _1(TileTest,$0,i)).setData(items[i]).end();
 				};return $0;
-			})($[78] || _2($,78,$[77])),4),
-			$[80].setContent((function tagLoop($0) {
+			})($[80] || _2($,80,$[79])),4),
+			$[82].setContent((function tagLoop($0) {
 				for (let i = 0, len = $0.taglen = items.length; i < len; i++) {
 					($0[i] || _1(TileTest,$0,i).flag('dark')).setData(items[i]).end();
 				};return $0;
-			})($[81] || _2($,81,$[80])),4),
-			$[82].setNestedAttr('uxa','md',long).end(),
-			$[83].setNestedAttr('uxa','md',long).end(),
-			$[87].end()
+			})($[83] || _2($,83,$[82])),4),
+			$[84].setNestedAttr('uxa','md',long).end(),
+			$[85].setNestedAttr('uxa','md',long).end(),
+			$[89].end()
 		,true));
 	};
 })

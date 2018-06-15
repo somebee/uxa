@@ -346,7 +346,9 @@ export tag Home
 				<.container.narrow.pad.lg>
 					<h1> "Hello, future expert"
 					<p> "Scrimba is a powerful new way of learning code. Play around with the instructors code any time, right in the player."
-					<.spaced.center>
+					<.bar.spaced.center>
+						<a.button> "Learn more"
+						
 						<a.button.primary> "Take Tour"
 					<hr>
 
@@ -394,6 +396,12 @@ export tag Home
 								<a.button.solid data-icon='mclose'> "Undo"
 								<a.button.solid data-icon='mclose'> "Archive"
 								<a.button.solid> "Undo"
+							
+							for size in ['lg','md','sm','xs']
+								
+								<.bar.spaced>
+									<.button.primary .{size}> 'Primary'
+									<.button .{size}> 'Button'
 						<.tile>
 							<GroupedMenu>
 								
