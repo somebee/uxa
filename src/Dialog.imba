@@ -5,8 +5,8 @@ import Indicator from './Indicator'
 export tag Dialog < Form
 
 	prop type
-	prop submitLabel default: 'confirm'
-	prop cancelLabel default: 'dismiss'
+	prop submitLabel default: 'Confirm'
+	prop cancelLabel default: 'Dismiss'
 	
 	def setContent content, type
 		log "setting content for dialog"
@@ -69,7 +69,7 @@ export tag Dialog < Form
 		
 	def footer
 		<footer@footer> <.spaced.bar.justify-end>
-			<Button type='button' label=cancelLabel :tap='tapDismiss'>
+			<Button.link type='button' label=cancelLabel :tap='tapDismiss'>
 			<Button.primary type='submit' label=submitLabel>
 		
 	def render

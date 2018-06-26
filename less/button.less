@@ -47,6 +47,10 @@
 	&.inline {
 
 	}
+
+	&[data-icon]:before,i {
+		margin-right: 4px;
+	}
 }
 
 .button {
@@ -59,6 +63,18 @@
 	}
 }
 
+.button.plain {
+	background: transparent;
+	border-color: transparent;
+	&:hover,&:active,&.uxa-overlay-active { border-color: rgba(0,0,0,0.05); }
+}
+
+.button.link {
+	background: transparent;
+	border-color: transparent;
+	color: var(--link-color);
+	&:hover,&:active,&.uxa-overlay-active { border-color: rgba(0,0,0,0.05); }
+}
 .button.primary {
 	--color: var(--blue);
 	color: white;

@@ -75,17 +75,17 @@ export tag Overlay
 		e.stop
 	
 	def setup
-		@isMenu = component isa Menu or component isa Popover
+		@isMenu = component isa Menu or component isa Popover or component.hasFlag('menu')
 		@isModal = component.hasFlag('modal')
 		@eventResponder = (@options and @options:responder) or (target)
 	
 	def reflow
 		let box = @options:anchor
-		if (!box or box == yes) and target isa Imba.Tag 
+		if (!box or box == yes) and (target and target.@dom isa Element) # isa Imba.Tag 
 			unless target.dom:offsetParent
 				hide unless hasFlag('hide')
 				return self
-			box ||= target.dom.getBoundingClientRect
+			box = target.dom.getBoundingClientRect
 		
 		# var box = target.dom.getBoundingClientRect
 		return unless box
@@ -128,7 +128,7 @@ export tag Overlay
 		else
 			css:right = Math.max((vw - box:right),10)
 
-		console.log x,vw,y,vh,ax,ay
+		console.log x,vw,y,vh,ax,ay,box
 		component.css(css)
 
 
