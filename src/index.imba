@@ -92,7 +92,7 @@ class UXAWrapper
 			item = <Snackbar .{typ or 'dark'} uxa:md=item>
 		
 		if item isa Snackbar
-			open(item)
+			open(item, autohide: yes)
 		self
 
 	def set key, value

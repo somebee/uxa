@@ -49,4 +49,9 @@
 	& > .inline + .backdrop {
 		opacity: 0;
 	}
+
+	&.autohide {
+		pointer-events: none;
+		& > .floating { pointer-events: auto; }
+	}
 }

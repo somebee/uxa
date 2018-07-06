@@ -18,6 +18,8 @@ export tag Overlay
 	# TODO improve state transitioning to allow reusing overlays
 	def show
 		@activeElement = document:activeElement
+		@autohider = do |e|
+			hide if !e or !component.dom.contains(e:target)
 		# also store the closest focusable parent?
 		document:body.appendChild(dom)
 		component.trigger('uxashow')
@@ -25,10 +27,14 @@ export tag Overlay
 		dom:offsetWidth
 		Imba.TagManager.insert(self,dom:parentNode)
 		flag('uxa-show')
+		flag('autohide',!!@options:autohide)
 		component.flag('uxa-show')
 		Imba.TagManager.refresh
 		if target
 			target?.flag('uxa-overlay-active')
+
+		if @options:autohide
+			window.addEventListener('click',@autohider,yes)
 		self
 
 	def hide
@@ -43,6 +49,8 @@ export tag Overlay
 
 		if target
 			target?.unflag('uxa-overlay-active')
+
+		window.removeEventListener('click',@autohider,yes)
 		
 		setTimeout(&,20) do
 			if refocus and refocus:offsetParent
