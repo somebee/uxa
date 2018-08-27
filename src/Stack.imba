@@ -29,7 +29,7 @@ export tag Overlay
 		flag('uxa-show')
 		flag('autohide',!!@options:autohide)
 		component.flag('uxa-show')
-		Imba.TagManager.refresh
+		Imba.TagManager.refresh(yes)
 		if target
 			target?.flag('uxa-overlay-active')
 
@@ -62,7 +62,7 @@ export tag Overlay
 			Imba.TagManager.remove(self,par)
 			component.unflag('uxa-hide')
 			# remove css positions as well
-			Imba.TagManager.refresh
+			Imba.TagManager.refresh(yes)
 		self
 
 	def onevent e
