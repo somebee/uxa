@@ -15,6 +15,25 @@ label {
 	line-height: var(--caption-line-height);
 }
 
+:root {
+	--placeholder-color: var(--muted);
+}
+
+input:not([type=checkbox]):not([type=radio]):not([type=range]):not(.plain),select:not(.plain) {
+	border: 1px solid var(--border-color);
+	height: var(--field-height);
+	font-size: var(--field-font-size);
+    border-radius: 2px;
+    padding: 0px var(--smu);
+    box-sizing: border-box;
+
+    &::-webkit-input-placeholder { color: var(--placeholder-color); }
+	&::-moz-placeholder { color: var(--placeholder-color); }
+	&::-ms-input-placeholder { color: var(--placeholder-color); }
+
+	&:focus { outline: none; }
+}
+
 .field {
 	position: relative;
 	font-size: var(--p-font-size);
@@ -97,9 +116,9 @@ label {
 		display: block;
 		position: relative;
 		min-height: var(--field-height);
-		border-radius: 0px;
-		border: 1px solid var(--border-color);
-		border-width: 0px 0px 1px;
+		// border-radius: 0px;
+		// border: 1px solid var(--border-color);
+		// border-width: 0px 0px 1px;
 		width: 100%;
 		background: transparent;
 		color: inherit;

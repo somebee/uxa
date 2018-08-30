@@ -36,6 +36,12 @@ export tag Overlay
 		if @options:autohide
 			window.addEventListener('click',@autohider,yes)
 		self
+	
+	def mount
+		schedule(events: yes)
+	
+	def unmount
+		unschedule
 
 	def hide
 		return if hasFlag('uxa-hide')
