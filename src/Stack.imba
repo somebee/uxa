@@ -131,16 +131,16 @@ export tag Overlay
 		component.flag('abs')
 		
 		if ay < 0.5
-			css:top = box:bottom
+			css:top = Math.round(box:bottom)
 			css:maxHeight = vh - css:top
 		else
-			css:bottom = vh - box:top
+			css:bottom = Math.round(vh - box:top)
 			css:maxHeight = vh - css:bottom
 		
 		if ax < 0.5
-			css:left = Math.max(box:left,10)
+			css:left = Math.round(Math.max(box:left,10))
 		else
-			css:right = Math.max((vw - box:right),10)
+			css:right = Math.round(Math.max((vw - box:right),10))
 
 		console.log x,vw,y,vh,ax,ay,box
 		component.css(css)
