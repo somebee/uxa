@@ -191,11 +191,12 @@ label {
 			background: transparent;
 			border: 1px solid var(--border-color);
 			border-radius: 2px;
+			box-shadow: inset 0px 1px 2px rgba(0, 0, 0, 0.04);
 		}
 
 		&:after {
 			content: "✓";
-			opacity: 0.2;
+			opacity: 0.1;
 			transition: all 0.1s ease-out;
 		}
 	}
@@ -235,6 +236,17 @@ label {
 
 	[type=radio]:checked ~ label:after {
 		transform: scale(0.6);
+	}
+
+	:disabled ~ label {
+		opacity: 0.5;
+		&:before { filter: grayscale(1); }
+	}
+
+	:checked:disabled ~ label {
+		opacity: 0.5;
+		&:before { filter: grayscale(1); }
+		// &:after { opacity: 1; color: white; }
 	}
 }
 
