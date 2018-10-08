@@ -1,6 +1,6 @@
 
 
-.button {
+button,.button {
 	--webkit-appearance: none;
 	display: inline-flex;
 	vertical-align: top;
@@ -13,7 +13,6 @@
 	font-size: var(--button-font-size);
 	line-height: 1em;
 	font-weight: inherit;
-
 	padding: var(--button-pad);
 	height: var(--button-height);
 	border-radius: 2px;
@@ -37,7 +36,7 @@
 	}
 
 	&.disabled,&[disabled] {
-		opacity: 0.5;
+		opacity: 0.9;
 	}
 
 	b {
@@ -55,8 +54,8 @@
 
 .button {
 	border-color: rgba(0, 0, 0, 0.03);
-	border-bottom-color: rgba(0, 0, 0, 0.05);
-	background: linear-gradient(rgba(0, 0, 0, 0.04),rgba(0, 0, 0, 0.05));
+	border-bottom-color: rgba(0, 0, 0, 0.04);
+	background: linear-gradient(rgba(0, 0, 0, 0.04),rgba(0, 0, 0, 0.045));
 
 	&:active {
 		border-color: rgba(0,0,0,0.05);

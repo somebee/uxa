@@ -29,13 +29,19 @@ export tag Overlay
 		flag('uxa-show')
 		flag('autohide',!!@options:autohide)
 		component.flag('uxa-show')
-		Imba.TagManager.refresh
+		Imba.TagManager.refresh(yes)
 		if target
 			target?.flag('uxa-overlay-active')
 
 		if @options:autohide
 			window.addEventListener('click',@autohider,yes)
 		self
+	
+	def mount
+		schedule(events: yes)
+	
+	def unmount
+		unschedule
 
 	def hide
 		return if hasFlag('uxa-hide')
@@ -62,7 +68,7 @@ export tag Overlay
 			Imba.TagManager.remove(self,par)
 			component.unflag('uxa-hide')
 			# remove css positions as well
-			Imba.TagManager.refresh
+			Imba.TagManager.refresh(yes)
 		self
 
 	def onevent e
@@ -125,16 +131,16 @@ export tag Overlay
 		component.flag('abs')
 		
 		if ay < 0.5
-			css:top = box:bottom
+			css:top = Math.round(box:bottom)
 			css:maxHeight = vh - css:top
 		else
-			css:bottom = vh - box:top
+			css:bottom = Math.round(vh - box:top)
 			css:maxHeight = vh - css:bottom
 		
 		if ax < 0.5
-			css:left = Math.max(box:left,10)
+			css:left = Math.round(Math.max(box:left,10))
 		else
-			css:right = Math.max((vw - box:right),10)
+			css:right = Math.round(Math.max((vw - box:right),10))
 
 		console.log x,vw,y,vh,ax,ay,box
 		component.css(css)

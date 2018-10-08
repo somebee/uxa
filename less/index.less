@@ -40,7 +40,8 @@ a[href] {
 	--light-blue: hsl(210, 95%, 70%);
 	--yellow: hsl(48, 91%, 54%);
 	--muted: rgb(119, 125, 136);
-	// dim fb rgb(144, 148, 156)
+	--loud: #5865e7;
+	--tinged: whitesmoke;
 	--sky: white;
 	--fog: #whitesmoke;
 
@@ -69,6 +70,7 @@ a[href] {
 
 	--hero-bg: hsl(215, 33%, 93%);
 
+	--field-bg: white;
 	--field-color: black;
 	--field-label-color: hsl(218, 33%, 42%);
 
@@ -93,6 +95,7 @@ a[href] {
 	--muted: hsl(231, 5%, 27%);
 	--sky: hsl(223, 14%, 28%);
 	--yellow: hsl(48, 80%, 69%);
+	--tinged: hsl(223, 14%, 5%);
 
 	--h-color: white;
 	--link-color: hsl(212, 100%, 68%);
@@ -113,6 +116,7 @@ a[href] {
 	--breadcrumb-color: var(--link-color);
 	--breadcrumb-active-color: hsl(218, 0%, 100%);
 
+	--field-bg: black;
 	--field-color: white;
 	--field-label-color: hsl(218, 33%, 80%);
 
@@ -133,6 +137,10 @@ a[href] {
 	--legend-color: var(--dim);
 }
 
+h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6 {
+	color: var(--h-color);
+}
+
 .nocolor {color: inherit !important; }
 .dim { color: var(--dim); }
 .neutral { color: var(--neutral); }
@@ -141,6 +149,8 @@ a[href] {
 .green { color: var(--green); }
 .muted { color: var(--muted); }
 .yellow { color: var(--yellow); }
+.loud { color: var(--loud); --color: var(--loud); }
+
 // .ayellow { color: var(--ayellow); }
 
 .title {
@@ -177,9 +187,7 @@ a[href] {
 	.title { font-size: var(--header-font-size); }
 }
 
-h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6 {
-	color: var(--h-color);
-}
+
 
 .grid {
 	display: grid;
@@ -189,6 +197,12 @@ h1,h2,h3,h4,h5,h6,.h1,.h2,.h3,.h4,.h5,.h6 {
 .spaced {
 	margin: calc(var(--spacing) * -1);
 	& > * { margin: var(--spacing); }
+}
+
+.spaced {
+	margin: calc(var(--spacing) * -1);
+	& > * { margin: var(--spacing); }
+	&.pad { padding: calc(var(--spacing) * 2) 0px; }
 }
 
 .masthead {
