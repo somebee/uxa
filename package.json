@@ -1,7 +1,7 @@
 {
   "name": "uxa",
-  "private": true,
-  "version": "1.0.1-0",
+  "private": false,
+  "version": "1.0.0-pre",
   "devDependencies": {
     "css-loader": "^0.28.5",
     "express": "^4.15.4",
