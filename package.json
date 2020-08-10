@@ -1,5 +1,5 @@
 {
-  "name": "uxa",
+  "name": "uxa1",
   "private": true,
   "version": "0.0.2",
   "devDependencies": {
@@ -18,12 +18,12 @@
   },
   "main": "src/index",
   "scripts": {
-    "build": "imbapack --watch --colors --display-modules"
+    "build": "imbapack1 --watch --colors --display-modules"
   },
   "dependencies": {
     "marked": "^0.3.6"
   },
   "peerDependencies": {
-    "imba": "1.x"
+    "imba1": "1.x"
   }
 }
