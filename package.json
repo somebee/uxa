@@ -11,7 +11,7 @@
     "build": "imbapack --watch --colors --display-modules"
   },
   "dependencies": {
-    "marked": "^0.5.2"
+    "marked": "^0.7.0"
   },
   "peerDependencies": {
     "imba": "1.x"
