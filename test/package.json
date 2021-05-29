@@ -4,6 +4,6 @@
     "less": "^3.0.2",
     "less-plugin-clean-css": "^1.5.1",
     "node-watch": "^0.5.8",
-    "ws": "^5.1.1"
+    "ws": "^7.4.6"
   }
 }
